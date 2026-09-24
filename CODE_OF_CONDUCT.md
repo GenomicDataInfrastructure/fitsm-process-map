@@ -67,7 +67,9 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-[INSERT CONTACT METHOD].
+opening a [GitHub issue](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues).
+If the matter is sensitive, open an issue asking for a private contact and
+leave out the details; a maintainer will reach out.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the

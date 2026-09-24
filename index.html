@@ -1,17 +1,628 @@
 <!--
-SPDX-FileCopyrightText: 2024 PNED G.I.E.
+SPDX-FileCopyrightText: 2026 PNED G.I.E.
 
 SPDX-License-Identifier: Apache-2.0
 -->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Hello, World!</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FitSM Process Map</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='4' width='12' height='9' rx='2' fill='%2334628F'/%3E%3Crect x='18' y='19' width='12' height='9' rx='2' fill='%232F6B49'/%3E%3Cpath d='M8 13v10h8' fill='none' stroke='%2315222A' stroke-width='2'/%3E%3C/svg%3E">
+<meta name="description" content="Interactive map of the 14 FitSM processes, their interfaces, requirements, roles, databases and activities.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root {
+    --bg: #EDF1F0;
+    --surface: #FFFFFF;
+    --surface-2: #F5F8F7;
+    --ink: #15222A;
+    --muted: #56666D;
+    --line: #CBD5D4;
+    --grid: #D5DDDC;
+    --edge: #9AA8AC;
+    --in: #0A6E86;
+    --out: #B4531A;
+    --focus: #0A6E86;
+    --hover: #E6EDEC;
+
+    --g-agree-f: #DDE8F4;   --g-agree-s: #34628F;
+    --g-quality-f: #E6E2F4; --g-quality-s: #5B4C9C;
+    --g-rel-f: #F3E6D2;     --g-rel-s: #8E5E27;
+    --g-ops-f: #F4DFDE;     --g-ops-s: #9B3B3B;
+    --g-control-f: #DCEDE3; --g-control-s: #2F6B49;
+    --g-improve-f: #ECEAD3; --g-improve-s: #6A6424;
+
+    --f-display: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0F1619; --surface: #152025; --surface-2: #1A272C; --ink: #E2EAEB; --muted: #92A3A8;
+      --line: #2A3A40; --grid: #1F2C31; --edge: #4E6269; --in: #52B8D1; --out: #EC8F55; --focus: #52B8D1; --hover: #1F2F35;
+      --g-agree-f: #17283A;   --g-agree-s: #7EA9D6;
+      --g-quality-f: #221E38; --g-quality-s: #A597DE;
+      --g-rel-f: #2E2415;     --g-rel-s: #D3A566;
+      --g-ops-f: #321C1D;     --g-ops-s: #E08A87;
+      --g-control-f: #152B20; --g-control-s: #79C49A;
+      --g-improve-f: #29281A; --g-improve-s: #C4BC6C;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0F1619; --surface: #152025; --surface-2: #1A272C; --ink: #E2EAEB; --muted: #92A3A8;
+    --line: #2A3A40; --grid: #1F2C31; --edge: #4E6269; --in: #52B8D1; --out: #EC8F55; --focus: #52B8D1; --hover: #1F2F35;
+    --g-agree-f: #17283A;   --g-agree-s: #7EA9D6;
+    --g-quality-f: #221E38; --g-quality-s: #A597DE;
+    --g-rel-f: #2E2415;     --g-rel-s: #D3A566;
+    --g-ops-f: #321C1D;     --g-ops-s: #E08A87;
+    --g-control-f: #152B20; --g-control-s: #79C49A;
+    --g-improve-f: #29281A; --g-improve-s: #C4BC6C;
+  }
+
+  html, body { height: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--bg); color: var(--ink);
+    font: 14px/1.5 var(--f-body);
+    display: flex; flex-direction: column;
+    padding-inline: 16px; box-sizing: border-box;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* ── Header ─────────────────────────────── */
+  .top {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px;
+    padding-block: 14px 12px;
+  }
+  .brand h1 {
+    font: 700 22px/1.1 var(--f-display); letter-spacing: -0.01em; margin: 0;
+  }
+  .brand p { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+  .brand .mono { font-family: var(--f-mono); font-size: 11.5px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; border: 1.5px solid; display: inline-block; }
+  .ln { width: 22px; height: 0; border-top: 2px solid; display: inline-block; position: relative; }
+  .ln::after { content: ""; position: absolute; right: -2px; top: -5px; border: 4px solid transparent; border-left: 6px solid currentColor; }
+  .ln.in { color: var(--in); border-color: var(--in); }
+  .ln.out { color: var(--out); border-color: var(--out); }
+  .jump { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+  .jump select {
+    font: 500 13px var(--f-body); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; max-width: 64vw;
+  }
+
+  /* ── Workspace ──────────────────────────── */
+  .work {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 16px;
+    padding-block-end: 16px;
+  }
+  .map {
+    position: relative; min-height: 0; overflow: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  }
+  .map svg { display: block; width: 100%; height: auto; min-height: 100%; }
+  .hint {
+    position: absolute; left: 12px; bottom: 10px; margin: 0; font-size: 11.5px; color: var(--muted);
+    background: color-mix(in srgb, var(--surface) 88%, transparent); padding: 2px 6px; border-radius: 4px; pointer-events: none;
+  }
+
+  /* SVG */
+  .grid-dot { fill: var(--grid); }
+  .node { cursor: pointer; }
+  .node rect.box { stroke-width: 1.5; transition: opacity .15s; }
+  .node .code { font: 700 17px var(--f-display); letter-spacing: .01em; }
+  .node .nm { font: 500 11px var(--f-display); fill: var(--ink); }
+  .node:hover rect.box { stroke-width: 2.5; }
+  .node:focus { outline: none; }
+  .node:focus-visible rect.box { stroke: var(--focus); stroke-width: 3; }
+  .node.sel rect.box { stroke-width: 3; }
+  .node .ring { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 3 3; opacity: 0; }
+  .node.sel .ring { opacity: .55; }
+  .node.dim { opacity: .38; }
+  .any { cursor: pointer; }
+  .any rect { fill: var(--surface); stroke: currentColor; stroke-width: 1; }
+  .any text { font: 600 8.5px var(--f-mono); fill: currentColor; letter-spacing: .04em; }
+  .any:hover rect, .any.active rect { fill: currentColor; }
+  .any:hover text, .any.active text { fill: var(--surface); }
+
+  .edge { cursor: pointer; }
+  .edge .vis { fill: none; stroke: var(--edge); stroke-width: 1.4; transition: opacity .15s, stroke .15s; }
+  .edge .hit { fill: none; stroke: transparent; stroke-width: 14; }
+  .edge:hover .vis { stroke-width: 2.6; stroke: var(--ink); }
+  .edge.in .vis { stroke: var(--in); stroke-width: 2.2; }
+  .edge.out .vis { stroke: var(--out); stroke-width: 2.2; }
+  .edge.active .vis { stroke: var(--ink); stroke-width: 3; }
+  .edge.dim .vis { opacity: .16; }
+  .mk-default { fill: var(--edge); } .mk-in { fill: var(--in); } .mk-out { fill: var(--out); } .mk-ink { fill: var(--ink); }
+
+  .tip {
+    position: absolute; pointer-events: none; z-index: 5; max-width: 280px;
+    background: var(--ink); color: var(--surface); font-size: 12px; line-height: 1.4;
+    padding: 6px 9px; border-radius: 6px;
+  }
+  .tip b { font-family: var(--f-mono); font-weight: 500; }
+
+  /* ── Panel ──────────────────────────────── */
+  .panel {
+    min-height: 0; overflow: auto; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    display: flex; flex-direction: column;
+  }
+  .crumbs {
+    position: sticky; top: 0; z-index: 2; background: var(--surface);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
+    padding: 10px 18px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted);
+  }
+  .crumbs button { background: none; border: 0; padding: 2px 4px; border-radius: 4px; cursor: pointer; color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumbs button:hover { background: var(--hover); color: var(--ink); }
+  .crumbs button[aria-current] { color: var(--ink); font-weight: 600; cursor: default; background: none; }
+  .crumbs .sep { opacity: .6; }
+  .view { padding: 18px 18px 28px; display: flex; flex-direction: column; gap: 22px; }
+  .eyebrow { font: 500 11px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .eyebrow .gdot { width: 9px; height: 9px; border-radius: 2px; border: 1.5px solid; }
+  h2.title { font: 700 24px/1.15 var(--f-display); margin: 4px 0 0; text-wrap: balance; }
+  .objective { margin: 10px 0 0; font-size: 14.5px; color: var(--ink); max-width: 60ch; }
+  .objective::before { content: "Objective — "; color: var(--muted); font-style: italic; }
+  .section h3 {
+    font: 600 12px var(--f-display); text-transform: uppercase; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 8px; display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .section h3 .n { font-family: var(--f-mono); font-weight: 400; letter-spacing: 0; }
+  .reqs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .reqs li { display: grid; grid-template-columns: 58px 1fr; gap: 8px; font-size: 13px; }
+  .reqs code { font: 500 11.5px/1.7 var(--f-mono); color: var(--muted); }
+  .rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .rows li { border-bottom: 1px solid var(--line); }
+  .row {
+    width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+    display: grid; grid-template-columns: 1fr auto 14px; gap: 10px; align-items: center;
+    padding: 8px 6px; font-size: 13.5px; border-radius: 4px;
+  }
+  .row:hover { background: var(--hover); }
+  .row .meta { font-size: 11.5px; color: var(--muted); text-align: right; white-space: nowrap; }
+  .row .chev { color: var(--muted); font-size: 13px; }
+  .row .ifc { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+  .row .ifc b { font: 500 12px var(--f-mono); white-space: nowrap; }
+  .row .ifc span { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .row.in b { color: var(--in); } .row.out b { color: var(--out); }
+  .subhead { font-size: 12px; color: var(--muted); margin: 12px 0 4px; display: flex; align-items: center; gap: 8px; }
+  details { border-top: 1px solid var(--line); padding-top: 10px; }
+  details + details { margin-top: -12px; }
+  summary { cursor: pointer; font: 600 12px var(--f-display); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  details ul, .plain { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 5px; font-size: 13px; }
+  .tasks { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13.5px; }
+  .tasks.generic { color: var(--muted); font-size: 13px; }
+  .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 0; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 6px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+  .steps li::before { content: counter(s, decimal-leading-zero); font: 500 11.5px/1.75 var(--f-mono); color: var(--muted); }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; margin: 0; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  .desc { font-size: 14px; margin: 0; max-width: 62ch; }
+  .quote { margin: 0; padding: 10px 12px; background: var(--surface-2); border-radius: 6px; font-size: 13.5px; }
+  .quote cite { display: block; font: normal 500 11px var(--f-mono); color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+  .note { font-size: 12.5px; color: var(--muted); margin: 0; padding-left: 10px; border-left: 2px solid var(--line); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font: 500 12px var(--f-mono); padding: 3px 8px; border-radius: 4px; cursor: pointer;
+    border: 1.5px solid; background: var(--surface);
+  }
+  .chip:hover { background: var(--hover); }
+  .flow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; }
+  .flow .end { border: 1.5px solid; border-radius: 6px; padding: 8px 10px; background: var(--surface); cursor: pointer; text-align: left; }
+  .flow .end:hover { background: var(--hover); }
+  .flow .end small { display: block; font: 500 10.5px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .flow .end b { font: 700 16px var(--f-display); }
+  .flow .end span { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .flow .arrow { align-self: center; font: 500 18px var(--f-mono); color: var(--muted); }
+  .items { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .items li { display: flex; gap: 10px; align-items: baseline; font-size: 13.5px; padding: 7px 10px; background: var(--surface-2); border-radius: 6px; }
+  .items li::before { content: "▸"; color: var(--out); font-size: 11px; }
+  .tag { font: 500 10.5px var(--f-mono); padding: 1px 6px; border-radius: 3px; background: var(--surface-2); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .src { font: 400 11.5px var(--f-mono); color: var(--muted); margin: 0; }
+  .btn {
+    align-self: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer; font-size: 12.5px;
+  }
+  .btn:hover { background: var(--hover); }
+  footer.credit { font-size: 11px; color: var(--muted); padding-block: 0 12px; }
+  footer.credit a { color: inherit; }
+
+  @media (max-width: 900px) {
+    body { height: auto; }
+    html { height: auto; }
+    .work { grid-template-columns: 1fr; flex: none; }
+    .map { overflow-x: auto; min-height: auto; }
+    .map svg { width: 900px; min-height: 0; }
+    .panel { overflow: visible; }
+    .jump { margin-left: 0; width: 100%; }
+    .jump select { flex: 1; max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
 </head>
-
 <body>
-    <h1>Hello, World!</h1>
-</body>
 
+<header class="top">
+  <div class="brand">
+    <h1>FitSM Process Map</h1>
+    <p><span class="mono">FitSM v3</span> · 14 processes · <span id="stat-ifc"></span> interfaces · select a process or an arrow</p>
+  </div>
+  <div class="legend" id="legend" aria-label="Legend"></div>
+  <label class="jump" for="jump">Process
+    <select id="jump"></select>
+  </label>
+</header>
+
+<main class="work">
+  <section class="map" id="map" aria-label="Process diagram">
+    <svg id="svg" viewBox="0 0 1260 800" role="group" aria-label="FitSM processes and their interfaces"></svg>
+    <p class="hint">Click a box for its details · click an arrow for the interface</p>
+    <div class="tip" id="tip" hidden></div>
+  </section>
+  <aside class="panel" id="panel" aria-live="polite">
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+    <div class="view" id="view"></div>
+  </aside>
+</main>
+<footer class="credit">Content from FitSM-0 v3.0, FitSM-1 v3.0.1, FitSM-2 v3.0.2 and FitSM-3 v3.0.1 by ITEMO e.V., licensed CC BY 4.0 — <a href="https://www.fitsm.eu/downloads/" target="_blank" rel="noopener">fitsm.eu</a>. Process groupings are a study aid, not part of the standard.</footer>
+
+<script src="fitsm-data.js" charset="utf-8"></script>
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 156, H = 66, HW = W / 2, HH = H / 2;
+  const P = Object.fromEntries(PROCESSES.map(p => [p.id, p]));
+  const svg = document.getElementById("svg");
+  const view = document.getElementById("view");
+  const crumbs = document.getElementById("crumbs");
+  const tip = document.getElementById("tip");
+  const mapEl = document.getElementById("map");
+  document.getElementById("stat-ifc").textContent = INTERFACES.length + ANY_INTERFACES.length;
+
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const gvar = (g, k) => `var(--g-${g}-${k})`;
+
+  /* ── Legend & jump menu ───────────────── */
+  const legend = document.getElementById("legend");
+  legend.innerHTML = Object.entries(GROUPS).map(([k, g]) =>
+    `<span><i class="sw" style="background:${gvar(k, "f")};border-color:${gvar(k, "s")}"></i>${esc(g.name)}</span>`).join("") +
+    `<span><i class="ln in"></i>Input to selected</span><span><i class="ln out"></i>Output of selected</span>`;
+  const jump = document.getElementById("jump");
+  jump.innerHTML = PROCESSES.map(p => `<option value="${p.id}">${p.num} · ${p.id} — ${esc(p.name)}</option>`).join("");
+  jump.addEventListener("change", () => openProcess(jump.value));
+
+  /* ── SVG: defs ────────────────────────── */
+  const defs = el("defs", {}, svg);
+  const pat = el("pattern", { id: "dots", width: 20, height: 20, patternUnits: "userSpaceOnUse" }, defs);
+  el("circle", { cx: 1, cy: 1, r: 1, class: "grid-dot" }, pat);
+  ["default", "in", "out", "ink"].forEach(k => {
+    const m = el("marker", { id: "mk-" + k, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse", markerUnits: "userSpaceOnUse" }, defs);
+    el("path", { d: "M0,0 L10,5 L0,10 z", class: "mk-" + k }, m);
+  });
+  el("rect", { x: 0, y: 0, width: 1260, height: 800, fill: "url(#dots)" }, svg);
+
+  /* ── Geometry ─────────────────────────── */
+  const clip = (c, p, pad) => {           // point where segment c→p leaves the box centred on c
+    const dx = p[0] - c[0], dy = p[1] - c[1];
+    const t = Math.min((HW + pad) / Math.abs(dx || 1e-9), (HH + pad) / Math.abs(dy || 1e-9));
+    return [c[0] + dx * t, c[1] + dy * t];
+  };
+  const pathFor = (ifc) => {
+    const a = P[ifc.from].pos, b = P[ifc.to].pos;
+    let pts;
+    if (ifc.route) {
+      pts = [[a.x, a.y], ...ifc.route, [b.x, b.y]];
+    } else {
+      pts = [[a.x, a.y], [b.x, b.y]];
+      if (ifc.pair) {                      // shift to the right of travel so two-way links separate
+        const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy);
+        const ox = -dy / len * 5, oy = dx / len * 5;
+        pts = pts.map(([x, y]) => [x + ox, y + oy]);
+      }
+    }
+    const start = clip(pts[0], pts[1], 1);
+    const end = clip(pts[pts.length - 1], pts[pts.length - 2], 3);
+    const all = [start, ...pts.slice(1, -1), end];
+    let d = `M${start[0].toFixed(1)},${start[1].toFixed(1)}`;
+    for (let i = 1; i < all.length - 1; i++) {   // rounded corners at waypoints
+      const [px, py] = all[i - 1], [cx, cy] = all[i], [nx, ny] = all[i + 1];
+      const r = 12;
+      const l1 = Math.hypot(cx - px, cy - py), l2 = Math.hypot(nx - cx, ny - cy);
+      const r1 = Math.min(r, l1 / 2), r2 = Math.min(r, l2 / 2);
+      const ax = cx - (cx - px) / l1 * r1, ay = cy - (cy - py) / l1 * r1;
+      const bx = cx + (nx - cx) / l2 * r2, by = cy + (ny - cy) / l2 * r2;
+      d += ` L${ax.toFixed(1)},${ay.toFixed(1)} Q${cx},${cy} ${bx.toFixed(1)},${by.toFixed(1)}`;
+    }
+    d += ` L${end[0].toFixed(1)},${end[1].toFixed(1)}`;
+    return d;
+  };
+
+  /* ── Edges ────────────────────────────── */
+  const edgeLayer = el("g", {}, svg);
+  const edgeEls = INTERFACES.map((ifc, i) => {
+    const g = el("g", { class: "edge", "data-i": i }, edgeLayer);
+    const d = pathFor(ifc);
+    el("path", { d, class: "hit" }, g);
+    const vis = el("path", { d, class: "vis", "marker-end": "url(#mk-default)" }, g);
+    g.addEventListener("click", e => { e.stopPropagation(); openInterface(i); });
+    g.addEventListener("mousemove", e => showTip(e, `<b>${ifc.from} → ${ifc.to}</b><br>${ifc.items.map(esc).join(" · ")}`));
+    g.addEventListener("mouseleave", hideTip);
+    return { g, vis, ifc };
+  });
+
+  /* ── Nodes ────────────────────────────── */
+  const wrap = (s, max) => {
+    const words = s.split(" "), lines = [""];
+    words.forEach(w => {
+      const cur = lines[lines.length - 1];
+      if ((cur + " " + w).trim().length > max && cur) lines.push(w); else lines[lines.length - 1] = (cur + " " + w).trim();
+    });
+    return lines;
+  };
+  const nodeLayer = el("g", {}, svg);
+  const nodeEls = {};
+  PROCESSES.forEach(p => {
+    const { x, y } = p.pos;
+    const g = el("g", { class: "node", tabindex: 0, role: "button", "aria-label": `${p.id} ${p.name}`, transform: `translate(${x - HW},${y - HH})` }, nodeLayer);
+    el("rect", { class: "ring", x: -5, y: -5, width: W + 10, height: H + 10, rx: 9 }, g);
+    el("rect", { class: "box", width: W, height: H, rx: 6, fill: gvar(p.group, "f"), stroke: gvar(p.group, "s") }, g);
+    const code = el("text", { class: "code", x: 11, y: 22, fill: gvar(p.group, "s") }, g);
+    code.textContent = p.id;
+    const num = el("text", { x: 11 + p.id.length * 10.2 + 6, y: 21, fill: "var(--muted)", style: "font:500 9.5px var(--f-mono)" }, g);
+    num.textContent = p.num;
+    const lines = wrap(p.name, 25).slice(0, 2);
+    lines.forEach((ln, k) => { const t = el("text", { class: "nm", x: 11, y: 40 + k * 13 }, g); t.textContent = ln; });
+    const any = ANY_INTERFACES.findIndex(a => a.process === p.id);
+    if (any > -1) {
+      const a = ANY_INTERFACES[any];
+      const b = el("g", { class: "any", "data-any": any, transform: `translate(${W - 58},8)`, style: `color:${a.dir === "in" ? "var(--in)" : "var(--out)"}` }, g);
+      el("rect", { width: 50, height: 16, rx: 3 }, b);
+      const t = el("text", { x: 25, y: 11.3, "text-anchor": "middle" }, b);
+      t.textContent = a.dir === "in" ? "← ANY" : "ANY →";
+      b.addEventListener("click", e => { e.stopPropagation(); openAny(any); });
+      b.addEventListener("mousemove", e => showTip(e, a.dir === "in" ? `<b>Any process → ${p.id}</b><br>${esc(a.items.join(" · "))}` : `<b>${p.id} → any process</b><br>${esc(a.items.join(" · "))}`));
+      b.addEventListener("mouseleave", hideTip);
+    }
+    g.addEventListener("click", () => openProcess(p.id));
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openProcess(p.id); } });
+    g.addEventListener("mousemove", e => showTip(e, `<b>${p.id}</b> ${esc(p.name)}`));
+    g.addEventListener("mouseleave", hideTip);
+    nodeEls[p.id] = g;
+  });
+
+  function showTip(e, html) {
+    const r = mapEl.getBoundingClientRect();
+    tip.innerHTML = html; tip.hidden = false;
+    let left = e.clientX - r.left + mapEl.scrollLeft + 14, top = e.clientY - r.top + mapEl.scrollTop + 14;
+    const maxL = mapEl.scrollLeft + mapEl.clientWidth - tip.offsetWidth - 8;
+    tip.style.left = Math.min(left, maxL) + "px"; tip.style.top = top + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  /* ── Highlight state on the map ───────── */
+  function highlight(state) {
+    const focusId = state.process;
+    Object.entries(nodeEls).forEach(([id, g]) => {
+      g.classList.toggle("sel", id === focusId || (state.nodes || []).includes(id));
+      g.classList.remove("dim");
+    });
+    document.querySelectorAll(".any").forEach(b => b.classList.toggle("active", +b.dataset.any === state.any));
+    const linked = new Set();
+    edgeEls.forEach(({ g, vis, ifc }, i) => {
+      g.classList.remove("in", "out", "active", "dim");
+      let mk = "default";
+      if (focusId) {
+        if (ifc.from === focusId) { g.classList.add("out"); mk = "out"; linked.add(ifc.to); }
+        else if (ifc.to === focusId) { g.classList.add("in"); mk = "in"; linked.add(ifc.from); }
+        else g.classList.add("dim");
+      } else if (state.edge != null) {
+        if (i === state.edge) { g.classList.add("active"); mk = "ink"; } else g.classList.add("dim");
+      }
+      vis.setAttribute("marker-end", `url(#mk-${mk})`);
+      if (g.classList.contains("active") || g.classList.contains("in") || g.classList.contains("out")) edgeLayer.appendChild(g);
+    });
+    if (focusId) {
+      const anyIn = ANY_INTERFACES.some(a => a.dir === "out" && a.process !== focusId);
+      Object.entries(nodeEls).forEach(([id, g]) => {
+        if (id !== focusId && !linked.has(id)) g.classList.add("dim");
+      });
+    } else if (state.edge != null) {
+      const { from, to } = INTERFACES[state.edge];
+      Object.entries(nodeEls).forEach(([id, g]) => { if (id !== from && id !== to) g.classList.add("dim"); });
+    }
+  }
+
+  /* ── Panel navigation ─────────────────── */
+  let stack = [];
+  const label = v => ({
+    process: () => v.id,
+    role: () => P[v.pid].roles[v.idx].name,
+    db: () => P[v.pid].databases[v.idx].name,
+    activity: () => P[v.pid].activities[v.idx].name,
+    iface: () => `${INTERFACES[v.idx].from} → ${INTERFACES[v.idx].to}`,
+    any: () => { const a = ANY_INTERFACES[v.idx]; return a.dir === "in" ? `Any → ${a.process}` : `${a.process} → Any`; }
+  }[v.kind])();
+
+  function go(v, reset) {
+    stack = reset ? [v] : [...stack, v];
+    render();
+  }
+  function render() {
+    const v = stack[stack.length - 1];
+    crumbs.innerHTML = stack.map((s, i) =>
+      (i ? `<span class="sep" aria-hidden="true">›</span>` : "") +
+      `<button type="button" data-i="${i}" ${i === stack.length - 1 ? 'aria-current="page"' : ""} title="${esc(label(s))}">${esc(label(s))}</button>`).join("");
+    const html = { process: viewProcess, role: viewRole, db: viewDb, activity: viewActivity, iface: viewIface, any: viewAny }[v.kind](v);
+    view.innerHTML = html;
+    document.getElementById("panel").scrollTop = 0;
+    // map state
+    const root = stack[0];
+    if (root.kind === "iface") highlight({ edge: root.idx });
+    else if (root.kind === "any") highlight({ any: root.idx, nodes: [ANY_INTERFACES[root.idx].process] });
+    else highlight({ process: root.id || root.pid });
+    const pid = root.id || root.pid || (root.kind === "any" ? ANY_INTERFACES[root.idx].process : INTERFACES[root.idx]?.from);
+    if (root.kind === "process") { jump.value = root.id; try { history.replaceState(null, "", "#" + root.id); } catch (e) {} }
+  }
+  crumbs.addEventListener("click", e => {
+    const b = e.target.closest("button[data-i]"); if (!b) return;
+    const i = +b.dataset.i; if (i === stack.length - 1) return;
+    stack = stack.slice(0, i + 1); render();
+  });
+  view.addEventListener("click", e => {
+    const t = e.target.closest("[data-go]"); if (!t) return;
+    const [kind, a, b] = t.dataset.go.split(":");
+    if (kind === "process") return openProcess(a);
+    if (kind === "iface") return go({ kind, idx: +a });
+    if (kind === "any") return go({ kind, idx: +a });
+    go({ kind, pid: a, idx: +b });
+  });
+
+  function openProcess(id) { go({ kind: "process", id }, true); }
+  function openInterface(i) { go({ kind: "iface", idx: i }, true); }
+  function openAny(i) { go({ kind: "any", idx: i }, true); }
+
+  /* ── Views ────────────────────────────── */
+  const eyebrow = (p, kind) =>
+    `<div class="eyebrow"><i class="gdot" style="background:${gvar(p.group, "f")};border-color:${gvar(p.group, "s")}"></i>${kind ? esc(kind) + " · " : ""}${p.num} · ${p.id} · ${esc(GROUPS[p.group].name)}</div>`;
+  const chipFor = id => `<button type="button" class="chip" data-go="process:${id}" style="border-color:${gvar(P[id].group, "s")};color:${gvar(P[id].group, "s")}">${id}</button>`;
+  const roleCount = r => r.count;
+
+  function viewProcess({ id }) {
+    const p = P[id];
+    const ins = INTERFACES.map((f, i) => [f, i]).filter(([f]) => f.to === id);
+    const outs = INTERFACES.map((f, i) => [f, i]).filter(([f]) => f.from === id);
+    const anyIn = ANY_INTERFACES.map((a, i) => [a, i]).filter(([a]) => a.process === id && a.dir === "in");
+    const anyOut = ANY_INTERFACES.map((a, i) => [a, i]).filter(([a]) => a.process === id && a.dir === "out");
+    const ifRow = ([f, i], dir) => `<li><button type="button" class="row ${dir}" data-go="iface:${i}">
+        <span class="ifc"><b>${dir === "in" ? f.from + " →" : "→ " + f.to}</b><span>${esc(f.items.join(" · "))}</span></span><span class="meta"></span><span class="chev">›</span></button></li>`;
+    const anyRow = ([a, i]) => `<li><button type="button" class="row ${a.dir}" data-go="any:${i}">
+        <span class="ifc"><b>${a.dir === "in" ? "Any →" : "→ Any"}</b><span>${esc(a.items.join(" · "))}</span></span><span class="meta"></span><span class="chev">›</span></button></li>`;
+    return `
+      <div>${eyebrow(p)}<h2 class="title">${esc(p.name)}</h2><p class="objective">${esc(p.objective)}</p></div>
+
+      <div class="section"><h3>Requirements <span class="n">FitSM-1 · ${p.requirements.length}</span></h3>
+        <ul class="reqs">${p.requirements.map(([k, t]) => `<li><code>${k}</code><span>${esc(t)}</span></li>`).join("")}</ul></div>
+
+      <div class="section"><h3>Roles <span class="n">FitSM-3 · ${p.roles.length}</span></h3>
+        <ul class="rows">${p.roles.map((r, i) => `<li><button type="button" class="row" data-go="role:${id}:${i}"><span>${esc(r.name)}</span><span class="meta">${esc(roleCount(r))}</span><span class="chev">›</span></button></li>`).join("")}</ul></div>
+
+      <div class="section"><h3>Databases &amp; records <span class="n">${p.databases.length}</span></h3>
+        <ul class="rows">${p.databases.map((d, i) => `<li><button type="button" class="row" data-go="db:${id}:${i}"><span>${esc(d.name)}</span><span class="meta"></span><span class="chev">›</span></button></li>`).join("")}</ul></div>
+
+      <div class="section"><h3>Activities <span class="n">FitSM-2 · ${p.activities.length}</span></h3>
+        <ul class="rows">${p.activities.map((a, i) => `<li><button type="button" class="row" data-go="activity:${id}:${i}"><span>${esc(a.name)}</span><span class="meta">${a.procedures.length} procedures</span><span class="chev">›</span></button></li>`).join("")}</ul></div>
+
+      <div class="section"><h3>Interfaces <span class="n">${ins.length + outs.length + anyIn.length + anyOut.length}</span></h3>
+        <div class="subhead"><i class="ln in"></i>Incoming — inputs from</div>
+        <ul class="rows">${ins.map(x => ifRow(x, "in")).join("")}${anyIn.map(anyRow).join("")}${!ins.length && !anyIn.length ? `<li class="note" style="border:0;padding:6px 0">Only the CMDB (from CONFM, available to any process).</li>` : ""}</ul>
+        <div class="subhead"><i class="ln out"></i>Outgoing — outputs to</div>
+        <ul class="rows">${outs.map(x => ifRow(x, "out")).join("")}${anyOut.map(anyRow).join("")}</ul>
+      </div>
+
+      <div>
+        <details><summary>Process inputs &amp; outputs</summary>
+          <div class="subhead">Inputs</div><ul>${p.inputs.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+          <div class="subhead">Outputs</div><ul>${p.outputs.map(s => `<li>${esc(s)}</li>`).join("")}</ul></details>
+        <details><summary>Initial process setup</summary><ul>${p.setup.map(s => `<li>${esc(s)}</li>`).join("")}</ul></details>
+        <details><summary>Key questions</summary><ul>${p.questions.map(s => `<li>${esc(s)}</li>`).join("")}</ul></details>
+      </div>`;
+  }
+
+  function viewRole({ pid, idx }) {
+    const p = P[pid], r = p.roles[idx];
+    const generic = r.noGeneric ? null : GENERIC_TASKS[r.type];
+    const genericTitle = { owner: "Generic process owner tasks", manager: "Generic process manager tasks", caseOwner: "Generic case owner tasks", staff: "Generic process staff tasks" }[r.type];
+    return `
+      <div>${eyebrow(p, "Role")}<h2 class="title">${esc(r.name)}</h2></div>
+      <dl class="kv"><dt>Context</dt><dd>${esc(p.name)} (${p.id})</dd><dt>Implemented</dt><dd>${esc(r.count)}</dd>
+        <dt>Role type</dt><dd>${{ owner: "Process owner — accountable, oversight", manager: "Process manager — responsible, day-to-day control", caseOwner: "Case owner — owns one case through its lifetime", staff: "Process staff — executes procedures", board: "Board" }[r.type]}</dd></dl>
+      ${r.specific.length ? `<div class="section"><h3>${r.type === "owner" || r.type === "staff" ? "Tasks" : "Process-specific tasks"} <span class="n">${r.specific.length}</span></h3>
+        <ul class="tasks">${r.specific.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}
+      ${r.notes ? `<div class="section"><h3>Notes</h3><ul class="tasks generic">${r.notes.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}
+      ${generic ? `<div class="section"><h3>${genericTitle} <span class="n">FitSM-3 §5</span></h3>
+        <ul class="tasks${r.specific.length ? " generic" : ""}">${generic.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}
+      ${r.type === "staff" ? `<p class="note">FitSM-3 does not list process staff per process; this is the common role that applies to anyone performing tasks in ${p.id} without holding one of the other roles.</p>` : ""}
+      <p class="src">Source: FitSM-3 Role model v3.0.1, §${r.type === "staff" ? "5" : "6." + p.num.slice(2)}</p>`;
+  }
+
+  function viewDb({ pid, idx }) {
+    const p = P[pid], d = p.databases[idx];
+    return `
+      <div>${eyebrow(p, "Database / record")}<h2 class="title">${esc(d.name)}</h2></div>
+      <p class="desc">${esc(d.desc)}</p>
+      <dl class="kv"><dt>Maintained by</dt><dd>${chipFor(p.id)}</dd>
+        ${d.usedBy.length ? `<dt>Used by</dt><dd class="chips">${d.usedBy.map(chipFor).join("")}</dd>` : ""}</dl>
+      <p class="src">Source: ${esc(d.src)}</p>`;
+  }
+
+  function viewActivity({ pid, idx }) {
+    const p = P[pid], a = p.activities[idx];
+    return `
+      <div>${eyebrow(p, "Activity")}<h2 class="title">${esc(a.name)}</h2></div>
+      <div class="section"><h3>Procedures <span class="n">${a.procedures.length}</span></h3>
+        <ol class="steps">${a.procedures.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>
+      <p class="note">FitSM-2 lists these as the steps of the ongoing activity. Under GR2.2, each step can be written up as a documented procedure in your ${p.id} process definition, as needed.</p>
+      <p class="src">Source: FitSM-2 v3.0.2, ${p.num} ${p.id} — Activities: ongoing process execution</p>`;
+  }
+
+  function endBox(id, role) {
+    const p = P[id];
+    return `<button type="button" class="end" data-go="process:${id}" style="border-color:${gvar(p.group, "s")}"><small>${role}</small><b style="color:${gvar(p.group, "s")}">${id}</b><span>${esc(p.name)}</span></button>`;
+  }
+  function viewIface({ idx }) {
+    const f = INTERFACES[idx];
+    const rev = INTERFACES.findIndex(g => g.from === f.to && g.to === f.from);
+    const same = f.sender === f.receiver;
+    return `
+      <div><div class="eyebrow">Interface · FitSM-2 key interfaces</div><h2 class="title">${f.from} → ${f.to}</h2></div>
+      <div class="flow">${endBox(f.from, "Output of")}<span class="arrow">→</span>${endBox(f.to, "Input to")}</div>
+      <div class="section"><h3>Relationship</h3>
+        ${same ? `<p class="quote"><cite>Both process tables</cite>${esc(f.sender)}</p>`
+               : `<div style="display:grid;gap:8px"><p class="quote"><cite>${f.from} · to process ${f.to}</cite>${esc(f.sender)}</p><p class="quote"><cite>${f.to} · from process ${f.from}</cite>${esc(f.receiver)}</p></div>`}</div>
+      <div class="section"><h3>Inputs / outputs exchanged <span class="n">${f.items.length}</span></h3>
+        <ul class="items">${f.items.map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
+      ${f.note ? `<p class="note">${esc(f.note)}</p>` : ""}
+      ${rev > -1 ? `<button type="button" class="btn" data-go="iface:${rev}">See reverse: ${f.to} → ${f.from}</button>` : ""}`;
+  }
+  function viewAny({ idx }) {
+    const a = ANY_INTERFACES[idx], p = P[a.process];
+    const drawn = INTERFACES.map((f, i) => [f, i]).filter(([f]) => a.dir === "in" ? f.to === a.process : f.from === a.process);
+    return `
+      <div><div class="eyebrow">Interface · any process</div><h2 class="title">${a.dir === "in" ? `Any process → ${a.process}` : `${a.process} → any process`}</h2></div>
+      <div class="flow">${a.dir === "in" ? `<div class="end" style="border-color:var(--line);cursor:default"><small>Output of</small><b>Any</b><span>All ITSM processes</span></div>` : endBox(a.process, "Output of")}
+        <span class="arrow">→</span>
+        ${a.dir === "in" ? endBox(a.process, "Input to") : `<div class="end" style="border-color:var(--line);cursor:default"><small>Input to</small><b>Any</b><span>All ITSM processes</span></div>`}</div>
+      <div class="section"><h3>Relationship</h3><p class="quote"><cite>${a.process} key interfaces</cite>${esc(a.text)}</p></div>
+      <div class="section"><h3>Inputs / outputs exchanged</h3><ul class="items">${a.items.map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
+      <div class="section"><h3>Named explicitly in FitSM-2 <span class="n">${drawn.length}</span></h3>
+        <ul class="rows">${drawn.map(([f, i]) => `<li><button type="button" class="row ${a.dir}" data-go="iface:${i}"><span class="ifc"><b>${f.from} → ${f.to}</b><span>${esc(f.items.join(" · "))}</span></span><span class="meta"></span><span class="chev">›</span></button></li>`).join("")}</ul></div>
+      <p class="note">FitSM-2 lists this interface with “Any” as the ${a.dir === "in" ? "source" : "target"}. The diagram draws the named links as arrows and shows the general rule as the ${a.dir === "in" ? "← ANY" : "ANY →"} tag on ${a.process}.</p>`;
+  }
+
+  /* ── Boot ─────────────────────────────── */
+  let startId = "ISRM";
+  try { const h = location.hash.slice(1).toUpperCase(); if (P[h]) startId = h; } catch (e) {}
+  svg.addEventListener("click", e => { if (e.target === svg || e.target.getAttribute("fill") === "url(#dots)") hideTip(); });
+  openProcess(startId);
+})();
+</script>
+</body>
 </html>

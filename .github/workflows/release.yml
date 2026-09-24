@@ -4,90 +4,33 @@
 
 name: Publish release
 
+# On a version tag (e.g. v1.0.0): create a GitHub release with the site attached as a zip.
+# The live site itself is deployed by "Publish main".
 on:
   push:
     tags:
       - "v*"
 
-env:
-  REGISTRY: ghcr.io
-  # TODO Update it to your project name
-  IMAGE_NAME: ghcr.io/genomicdatainfrastructure/oss-project-template
+permissions:
+  contents: read
 
 jobs:
-  ort:
-    strategy:
-      fail-fast: false
+  release:
+    name: Create GitHub release
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oss-review-toolkit/ort-ci-github-action@7f23c1f8d169dad430e41df223d3b8409c7a156e
-        with:
-          allow-dynamic-versions: "true"
-          fail-on: "issues"
-          run: "cache-dependencies,cache-scan-results,labels,analyzer,evaluator,advisor,reporter,upload-results"
-
-# TODO You must review how you deliver you software and adapt the following steps.
-  publish-docker-image:
-    runs-on: ubuntu-latest
-    needs: ort
     permissions:
-      contents: read
-      packages: write
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=schedule,priority=400
-            type=ref,event=branch,priority=600
-            type=ref,event=pr,priority=500
-            type=semver,pattern={{version}},priority=700
-            type=semver,pattern={{major}}.{{minor}},priority=900
-            type=semver,pattern={{major}},priority=800
-            type=sha,priority=1000
-
-      - name: Extract SHA tag
-        id: tag
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check FitSM data and page script
+        run: node scripts/check.js
+      - name: Package site
         run: |
-          IFS=',' read -ra TAGS <<< "${{ steps.meta.outputs.tags }}"
-          LAST_INDEX=$((${#TAGS[@]} - 1))
-          echo "sha_tag=${TAGS[LAST_INDEX]}" >> $GITHUB_OUTPUT
-
-      - name: Build Docker image for scanning
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          load: true
-          tags: ${{ steps.tag.outputs.sha_tag }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ steps.tag.outputs.sha_tag }}"
-          format: "table"
-          exit-code: "1"
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          mkdir -p "fitsm-process-map-${GITHUB_REF_NAME}"
+          cp index.html fitsm-data.js README.md "fitsm-process-map-${GITHUB_REF_NAME}/"
+          cp -r LICENSES "fitsm-process-map-${GITHUB_REF_NAME}/"
+          zip -r "fitsm-process-map-${GITHUB_REF_NAME}.zip" "fitsm-process-map-${GITHUB_REF_NAME}"
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "fitsm-process-map-${GITHUB_REF_NAME}.zip" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
