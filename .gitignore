@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 PNED G.I.E.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+# Local tooling (Claude Code preview config, editor settings)
+.claude/
+.DS_Store
+
+# Site build output (assembled in CI)
+_site/

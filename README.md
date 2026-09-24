@@ -4,73 +4,92 @@ SPDX-FileCopyrightText: 2024 PNED G.I.E.
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
-[![REUSE status](https://api.reuse.software/badge/github.com/GenomicDataInfrastructure/oss-project-template)](https://api.reuse.software/info/github.com/GenomicDataInfrastructure/oss-project-template)
-![example workflow](https://github.com/GenomicDataInfrastructure/oss-project-template/actions/workflows/main.yml/badge.svg)
-![example workflow](https://github.com/GenomicDataInfrastructure/oss-project-template/actions/workflows/test.yml/badge.svg)
-![example workflow](https://github.com/GenomicDataInfrastructure/oss-project-template/actions/workflows/release.yml/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GenomicDataInfrastructure_oss-project-template&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GenomicDataInfrastructure_oss-project-template)
-[![GitHub contributors](https://img.shields.io/github/contributors/GenomicDataInfrastructure/oss-project-template)](https://github.com/GenomicDataInfrastructure/oss-project-template/graphs/contributors)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+[![REUSE status](https://api.reuse.software/badge/github.com/GenomicDataInfrastructure/fitsm-process-map)](https://api.reuse.software/info/github.com/GenomicDataInfrastructure/fitsm-process-map)
+[![Run Tests](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/test.yml/badge.svg)](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/test.yml)
+[![Publish main](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/main.yml/badge.svg)](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/main.yml)
+[![Publish release](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/release.yml/badge.svg)](https://github.com/GenomicDataInfrastructure/fitsm-process-map/actions/workflows/release.yml)
+[![GitHub contributors](https://img.shields.io/github/contributors/GenomicDataInfrastructure/fitsm-process-map)](https://github.com/GenomicDataInfrastructure/fitsm-process-map/graphs/contributors)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-# oss-project-template
+# FitSM Process Map
 
-This is a OSS project template. It suggests an initial setup for a successful open-source project.
+An interactive diagram for learning [FitSM](https://www.fitsm.eu/), the lightweight IT service management standard. It shows the 14 FitSM processes and the interfaces between them, and lets you drill into each part of the standard.
 
-## Software Development Guidelines
+**Live site:** https://genomicdatainfrastructure.github.io/fitsm-process-map/
 
-- We encourage the use of docker image to ship the code - GitHub offers free storage for open source projects.
-- Testing is fundamental for stable and secure code.
-- Follow free and Open Source Software principles:
-    - Keep `CHANGELOG.md`, `README.md`, and `CONTRIBUTING.md` up to date.
-    - Add license and copyrights to headers for each file - we suggest following [REUSE](https://reuse.software/).
-    - Keep an issue tracker open for everyone.
-    - Review regularly dependencies licenses and comply with all license requirements.
-    - For more suggestions, please check [OpenSSF Best Practices](https://www.bestpractices.dev/en).
-- Automated and recurrent CI/CD - GitHub offers a few thousand minutes per month.
-- Quality checks are mandatory - SonarCloud is free for open-source projects.
-- Vulnerability checks are mandatory - SonarCloud for code, ORT for dependencies, Trivy for packages and libraries inside docker images.
+## What you can explore
+
+| Click on | You see |
+| --- | --- |
+| A process | Its objective, requirements (FitSM-1), roles, databases and records, activities and interfaces |
+| A role | Its tasks (FitSM-3), split into process-specific and generic tasks, and how many are assigned |
+| A database or record | Its description, source, and which processes use it |
+| An activity | Its procedures, as the ordered steps from FitSM-2 |
+| An arrow (interface) | The relationship description and the inputs / outputs exchanged between the two processes |
+
+A process can also be opened directly by link, e.g. `…/fitsm-process-map/#ISRM`.
+
+## Sources
+
+The content comes from the FitSM v3 standard, published by ITEMO e.V. under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) at [fitsm.eu/downloads](https://www.fitsm.eu/downloads/):
+
+- FitSM-0 Overview and vocabulary v3.0: definitions used for databases and records
+- FitSM-1 Requirements v3.0.1: requirements PR1–PR14
+- FitSM-2 Process activities and implementation v3.0.2: objectives, activities, inputs / outputs and key interfaces
+- FitSM-3 Role model v3.0.1: roles and tasks
+
+A few things are interpretation rather than quotation, and each is labelled on the page:
+
+- FitSM does not list databases per process; they are derived from each process's outputs, and each one names its source.
+- Where FitSM-2's two interface tables disagree, both descriptions are shown with a note.
+- The colour groups are a study aid, not part of the standard.
+
+## Project structure
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | The page: layout, styles and the diagram / panel logic |
+| `fitsm-data.js` | All FitSM content: processes, requirements, roles, databases, activities, interfaces and diagram positions |
+| `scripts/check.js` | Consistency checks run in CI (references resolve, nothing missing, page script parses) |
+
+To correct or extend the content, edit `fitsm-data.js`. No build step is needed.
+
+## Running locally
+
+The page loads `fitsm-data.js` next to it, so serve the folder over HTTP:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000. To run the same checks as CI:
+
+```bash
+node scripts/check.js
+```
 
 ## CI/CD
 
-There are three workflows available, `test.yml`, `main.yml`, and `release.yml`. 
+| Workflow | Trigger | What it does |
+| --- | --- | --- |
+| `test.yml` — Run Tests | Every push and pull request | [REUSE](https://reuse.software/) compliance and `scripts/check.js` |
+| `main.yml` — Publish main | After Run Tests succeeds on `main` (or manually) | Re-runs `scripts/check.js`, then deploys the site to GitHub Pages |
+| `release.yml` — Publish release | Tags matching `v*` | Creates a GitHub release with the site attached as a zip |
 
-In `test.yml` should go all kinds of tests, like: unit/integration tests, linters, prettiers, sonar, etc. This workflow should be fast and happen on every push.
+All actions are pinned to commit SHAs.
 
-In `main.yml` should go all kinds of checks that are still needed to enforce code quality, or license and security compliance checks. This workflow can be heavy, so it is advisable to happen only when the PR is open or when changes are merged to main. 
+The project has no package-managed dependencies (no npm, pip or similar), and no Docker image is built, so neither a dependency licence scan (ORT) nor an image scan (Trivy) runs. The only external resource is the [IBM Plex](https://github.com/IBM/plex) font family, loaded at runtime from Google Fonts under the SIL Open Font License 1.1. If a package-managed dependency or a container image is added, reintroduce those scans.
 
-Similarly to the previous workflow, `release.yml` also should enforce code quality, license compliance, or security checks, that can be potentially heavy.
+**One-time setup:** in the repository's *Settings → Pages*, set **Source** to **GitHub Actions**.
 
-In this template, you will find jobs for [ORT](https://oss-review-toolkit.org/ort/), [REUSE](https://reuse.software/), [Trivy](https://trivy.dev/), and [GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-docker-registry).
+## Contributing
 
-## Installation
-
-![template](./select_repo_template.png)
-
-## Usage
-
-You will need to review the existing files, after you innitialised you project with this template.
-
-- Search for TODO and replace dummy content by the correct value (e.g. links and repository names).
-- Replace all references of `GenomicDataInfrastructure/oss-project-template` by your project repository.
-- Keep `CHANGELOG.md` up to date, to reflect your deliveries.
-- Update `CONTRIBUTING.md` to your project's needs, there are sessions to be fulfilled or simply removed.
-- Update `README.md` to reflect your projects needs.
-- Replace and add missing licenses accordingly.
-- Review projects `README.md` badges.
-- Register your open project in, if you want to get a `REUSE compliant` badge.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Every file must carry SPDX copyright and licence information ([REUSE](https://reuse.software/)); check with `reuse lint`.
 
 ## Licenses
 
 This work is licensed under multiple licences:
-- All original source code is licensed under [Apache-2.0](./LICENSES/Apache-2.0.txt).
-- All documentation and images are licensed under [CC-BY-4.0](./LICENSES/CC-BY-4.0.txt).
-- For more accurate information, check the individual files.
 
-## References
-- https://fossid.com/blog/19-guidelines-for-free-and-open-source-software-usage/
-- https://reuse.software/
-- https://oss-review-toolkit.org/ort/
-- https://www.sonarsource.com/products/sonarcloud/
-- https://www.bestpractices.dev/en
-- https://trivy.dev/
-- https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-docker-registry
+- Source code (`index.html`, `scripts/`, workflows) is licensed under [Apache-2.0](./LICENSES/Apache-2.0.txt).
+- Documentation and the FitSM content in `fitsm-data.js` are licensed under [CC-BY-4.0](./LICENSES/CC-BY-4.0.txt). FitSM content © ITEMO e.V.
+- For more accurate information, check the individual files.

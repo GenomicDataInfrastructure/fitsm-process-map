@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 <!-- omit in toc -->
 
-# Contributing to GDI User Portal Front-end
+# Contributing to FitSM Process Map
 
 First off, thanks for taking the time to contribute! ❤️
 
@@ -32,24 +32,23 @@ All types of contributions are encouraged and valued. See the [Table of Contents
   - [Improving The Documentation](#improving-the-documentation)
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
-- [Join The Project Team](#join-the-project-team)
 
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the
-[GDI User Portal Front-end Code of Conduct](https://github.com/GenomicDataInfrastructure/oss-project-template/blob/master/CODE_OF_CONDUCT.md).
+[FitSM Process Map Code of Conduct](CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
-to <>.
+by opening a [GitHub issue](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues/new). If the matter is sensitive, open an issue asking for a private contact and leave out the details.
 
 ## I Have a Question
 
-> If you want to ask a question, we assume that you have read the available [Documentation](https://genomicdatainfrastructure.github.io/gdi-userportal-docs/).
+> If you want to ask a question, we assume that you have read the available [Documentation](README.md).
 
-Before you ask a question, it is best to search for existing [Issues](https://github.com/GenomicDataInfrastructure/oss-project-template/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.
+Before you ask a question, it is best to search for existing [Issues](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.
 
 If you then still feel the need to ask a question and need clarification, we recommend the following:
 
-- Open an [Issue](https://github.com/GenomicDataInfrastructure/oss-project-template/issues/new).
+- Open an [Issue](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues/new).
 - Provide as much context as you can about what you're running into.
 - Provide project and platform versions (nodejs, npm, etc), depending on what seems relevant.
 
@@ -85,8 +84,8 @@ Depending on how large the project is, you may want to outsource the questioning
 A good bug report shouldn't leave others needing to chase you up for more information. Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report. Please complete the following steps in advance to help us fix any potential bug as fast as possible.
 
 - Make sure that you are using the latest version.
-- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](https://genomicdatainfrastructure.github.io/gdi-userportal-docs/). If you are looking for support, you might want to check [this section](#i-have-a-question)).
-- To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the [bug tracker](https://github.com/GenomicDataInfrastructure/oss-project-template/labels/bug)
+- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](README.md). If you are looking for support, you might want to check [this section](#i-have-a-question)).
+- To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the [bug tracker](https://github.com/GenomicDataInfrastructure/fitsm-process-map/labels/bug)
 - Also make sure to search the internet (including Stack Overflow) to see if users outside of the GitHub community have discussed the issue.
 - Collect information about the bug:
   - Stack trace (Traceback)
@@ -99,13 +98,13 @@ A good bug report shouldn't leave others needing to chase you up for more inform
 
 #### How Do I Submit a Good Bug Report?
 
-> You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead sensitive bugs must be sent by email to <>.
+> You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead, open a [GitHub issue](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues/new) that only asks the maintainers for a private contact, without describing the vulnerability; a maintainer will follow up privately.
 
 <!-- You may add a PGP key to allow the messages to be sent encrypted as well. -->
 
 We use GitHub issues to track bugs and errors. If you run into an issue with the project:
 
-- Open an [Issue](https://github.com/GenomicDataInfrastructure/oss-project-template/issues/new). (Since we can't be sure at this point whether it is a bug or not, we ask you not to talk about a bug yet and not to label the issue.)
+- Open an [Issue](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues/new). (Since we can't be sure at this point whether it is a bug or not, we ask you not to talk about a bug yet and not to label the issue.)
 - Explain the behavior you would expect and the actual behavior.
 - Please provide as much context as possible and describe the _reproduction steps_ that someone else can follow to recreate the issue on their own. This usually includes your code. For good bug reports you should isolate the problem and create a reduced test case.
 - Provide the information you collected in the previous section.
@@ -120,56 +119,66 @@ Once it's filed:
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for GDI User Portal Front-end, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
+This section guides you through submitting an enhancement suggestion for FitSM Process Map, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
 
 <!-- omit in toc -->
 
 #### Before Submitting an Enhancement
 
 - Make sure that you are using the latest version.
-- Read the [documentation](https://TODO/) carefully and find out if the functionality is already covered, maybe by an individual configuration.
-- Perform a [search](https://github.com/GenomicDataInfrastructure/oss-project-template/issues) to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
+- Read the [documentation](README.md) carefully and find out if the functionality is already covered, maybe by an individual configuration.
+- Perform a [search](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues) to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 - Find out whether your idea fits with the scope and aims of the project. It's up to you to make a strong case to convince the project's developers of the merits of this feature. Keep in mind that we want features that will be useful to the majority of our users and not just a small subset. If you're just targeting a minority of users, consider writing an add-on/plugin library.
 
 <!-- omit in toc -->
 
 #### How Do I Submit a Good Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://github.com/GenomicDataInfrastructure/oss-project-template/issues).
+Enhancement suggestions are tracked as [GitHub issues](https://github.com/GenomicDataInfrastructure/fitsm-process-map/issues).
 
 - Use a **clear and descriptive title** for the issue to identify the suggestion.
 - Provide a **step-by-step description of the suggested enhancement** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why. At this point you can also tell which alternatives do not work for you.
 - You may want to **include screenshots and animated GIFs** which help you demonstrate the steps or point out the part which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux. <!-- this should only be included if the project has a GUI -->
-- **Explain why this enhancement would be useful** to most GDI User Portal Front-end users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
+- **Explain why this enhancement would be useful** to most FitSM Process Map users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
 <!-- You might want to create an issue template for enhancement suggestions that can be used as a guide and that defines the structure of the information to be included. If you do so, reference it here in the description. -->
 
 ### Your First Code Contribution
 
-<!-- TODO
-include Setup of env, IDE and typical getting started instructions?
+The project is a static page with no build step or dependencies. You need Git, a browser, Python 3 (to serve the folder) and Node.js (to run the checks).
 
--->
+1. Fork and clone the repository, then create a branch for your change.
+2. Serve the folder and open http://localhost:8000:
+
+   ```bash
+   python3 -m http.server 8000
+   ```
+
+3. Make your change:
+   - **FitSM content** (requirements, roles, databases, activities, interfaces) lives in `fitsm-data.js`. Quote the FitSM documents as published at [fitsm.eu](https://www.fitsm.eu/downloads/) and name the source; mark anything that is interpretation rather than quotation.
+   - **Layout, styles and behaviour** live in `index.html`. Diagram positions and arrow routes are the `pos` and `route` fields in `fitsm-data.js`.
+4. Run the same checks as CI before opening a pull request:
+
+   ```bash
+   node scripts/check.js
+   reuse lint
+   ```
+
+   `reuse lint` needs the [REUSE tool](https://reuse.software/) (`pipx install reuse`). Every new file needs an SPDX header: Apache-2.0 for code, CC-BY-4.0 for documentation and FitSM content.
+5. Add a line to the `[Unreleased]` section of `CHANGELOG.md` and open a pull request using the template.
 
 ### Improving The Documentation
 
-<!-- TODO
-Updating, improving and correcting the documentation
-
--->
+Documentation lives in `README.md`, this file and `CHANGELOG.md`. Corrections to FitSM content are welcome too: if the map disagrees with the FitSM documents, open an issue or a pull request that cites the document, version and section.
 
 ## Styleguides
 
 ### Commit Messages
 
-<!-- TODO
-
--->
-
-## Join The Project Team
-
-<!-- TODO -->
+- Write a short summary in the imperative mood (e.g. "Add CAB notes to CHM roles"), at most about 72 characters.
+- Add a body when the reason for the change is not obvious, and reference related issues (e.g. `Fixes #12`).
+- Keep each commit to one logical change.
 
 <!-- omit in toc -->
 

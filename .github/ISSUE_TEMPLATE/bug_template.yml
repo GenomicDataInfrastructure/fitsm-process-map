@@ -17,8 +17,8 @@ body:
         Please use this form to provide as much information as possible about the issue. This not only helps us in prompt troubleshooting but also ensures we keep improving the user experience.
 
         **Quick Links for Your Reference**
-        - [📜 Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)
-        - [👥 Contribution Guide](https://github.com/GenomicDataInfrastructure/gdi-userportal-frontend/graphs/contributors)
+        - [📜 Code of Conduct](https://github.com/GenomicDataInfrastructure/fitsm-process-map/blob/main/CODE_OF_CONDUCT.md)
+        - [👥 Contribution Guide](https://github.com/GenomicDataInfrastructure/fitsm-process-map/blob/main/CONTRIBUTING.md)
 
   - type: checkboxes
     id: duplicates
