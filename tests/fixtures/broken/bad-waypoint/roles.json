@@ -1,0 +1,730 @@
+{
+  "generic": {
+    "owner": {
+      "name": "Generic owner",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        "Generic task of owner"
+      ]
+    },
+    "manager": {
+      "name": "Generic manager",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        "Generic task of manager"
+      ]
+    },
+    "case-owner": {
+      "name": "Generic case-owner",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        "Generic task of case-owner"
+      ]
+    },
+    "staff": {
+      "name": "Generic staff",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        "Generic task of staff"
+      ]
+    }
+  },
+  "roles": [
+    {
+      "id": "AA.owner",
+      "process": "AA",
+      "kind": "owner",
+      "name": "Process owner AA",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "AA.manager",
+      "process": "AA",
+      "kind": "manager",
+      "name": "Process manager AA",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "AA.staff",
+      "process": "AA",
+      "kind": "staff",
+      "name": "Staff AA",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "AA.case-owner",
+      "process": "AA",
+      "kind": "case-owner",
+      "name": "Case owner: Thing owner",
+      "count": "1 per thing",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Own the thing",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "BB.owner",
+      "process": "BB",
+      "kind": "owner",
+      "name": "Process owner BB",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "BB.manager",
+      "process": "BB",
+      "kind": "manager",
+      "name": "Process manager BB",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "BB.staff",
+      "process": "BB",
+      "kind": "staff",
+      "name": "Staff BB",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "CC.owner",
+      "process": "CC",
+      "kind": "owner",
+      "name": "Process owner CC",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "CC.manager",
+      "process": "CC",
+      "kind": "manager",
+      "name": "Process manager CC",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "CC.staff",
+      "process": "CC",
+      "kind": "staff",
+      "name": "Staff CC",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "DD.owner",
+      "process": "DD",
+      "kind": "owner",
+      "name": "Process owner DD",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "DD.manager",
+      "process": "DD",
+      "kind": "manager",
+      "name": "Process manager DD",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "DD.staff",
+      "process": "DD",
+      "kind": "staff",
+      "name": "Staff DD",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "EE.owner",
+      "process": "EE",
+      "kind": "owner",
+      "name": "Process owner EE",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "EE.manager",
+      "process": "EE",
+      "kind": "manager",
+      "name": "Process manager EE",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "EE.staff",
+      "process": "EE",
+      "kind": "staff",
+      "name": "Staff EE",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "FF.owner",
+      "process": "FF",
+      "kind": "owner",
+      "name": "Process owner FF",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "FF.manager",
+      "process": "FF",
+      "kind": "manager",
+      "name": "Process manager FF",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "FF.staff",
+      "process": "FF",
+      "kind": "staff",
+      "name": "Staff FF",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "GG.owner",
+      "process": "GG",
+      "kind": "owner",
+      "name": "Process owner GG",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "GG.manager",
+      "process": "GG",
+      "kind": "manager",
+      "name": "Process manager GG",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "GG.staff",
+      "process": "GG",
+      "kind": "staff",
+      "name": "Staff GG",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "HH.owner",
+      "process": "HH",
+      "kind": "owner",
+      "name": "Process owner HH",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "HH.manager",
+      "process": "HH",
+      "kind": "manager",
+      "name": "Process manager HH",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "HH.staff",
+      "process": "HH",
+      "kind": "staff",
+      "name": "Staff HH",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "II.owner",
+      "process": "II",
+      "kind": "owner",
+      "name": "Process owner II",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "II.manager",
+      "process": "II",
+      "kind": "manager",
+      "name": "Process manager II",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "II.staff",
+      "process": "II",
+      "kind": "staff",
+      "name": "Staff II",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "JJ.owner",
+      "process": "JJ",
+      "kind": "owner",
+      "name": "Process owner JJ",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "JJ.manager",
+      "process": "JJ",
+      "kind": "manager",
+      "name": "Process manager JJ",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "JJ.staff",
+      "process": "JJ",
+      "kind": "staff",
+      "name": "Staff JJ",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "KK.owner",
+      "process": "KK",
+      "kind": "owner",
+      "name": "Process owner KK",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "KK.manager",
+      "process": "KK",
+      "kind": "manager",
+      "name": "Process manager KK",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "KK.staff",
+      "process": "KK",
+      "kind": "staff",
+      "name": "Staff KK",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "LL.owner",
+      "process": "LL",
+      "kind": "owner",
+      "name": "Process owner LL",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "LL.manager",
+      "process": "LL",
+      "kind": "manager",
+      "name": "Process manager LL",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "LL.staff",
+      "process": "LL",
+      "kind": "staff",
+      "name": "Staff LL",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "MM.owner",
+      "process": "MM",
+      "kind": "owner",
+      "name": "Process owner MM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "MM.manager",
+      "process": "MM",
+      "kind": "manager",
+      "name": "Process manager MM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "MM.staff",
+      "process": "MM",
+      "kind": "staff",
+      "name": "Staff MM",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "NN.owner",
+      "process": "NN",
+      "kind": "owner",
+      "name": "Process owner NN",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    },
+    {
+      "id": "NN.manager",
+      "process": "NN",
+      "kind": "manager",
+      "name": "Process manager NN",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": [
+        {
+          "text": "Specific task",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "NN.staff",
+      "process": "NN",
+      "kind": "staff",
+      "name": "Staff NN",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 4
+      },
+      "tasks": []
+    }
+  ]
+}

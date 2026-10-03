@@ -33,6 +33,17 @@ test("yieldingPath merges crossings that are too close into one gap", () => {
   assert.match(apart, /L23 0 .* M37 0 L63 0 .* M77 0 L100 0$/);
 });
 
+test("yieldingPath cuts a gap around a bend that lies on another line", () => {
+  // The route turns at (50,0), which sits on a vertical line; neither segment crosses it
+  // in its interior, so the vertex itself must be skipped with a tick on each side.
+  const bend = yieldingPath([[0, 0], [50, 0], [100, 50]], [[[50, -50], [50, 50]]]);
+  assert.ok(!bend.includes("L50 0"), bend);
+  assert.match(bend, /^M0 0 L43 0 M43 4 L43 -4 M/, "stops 7 px before the bend with a vertical tick");
+  assert.match(bend, / L100 50$/, "resumes after the bend and reaches the far end");
+  // A bend that is not on any other line is drawn through as before.
+  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]]).startsWith("M0 0 L50 0 "), true);
+});
+
 test("selectionState: nothing selected", () => {
   assert.deepEqual(selectionState(null, "#ISRM"), { selected: false, related: false });
   assert.deepEqual(selectionState(null, "#ISRM-PM"), { selected: false, related: false });

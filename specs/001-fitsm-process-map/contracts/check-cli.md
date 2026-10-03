@@ -81,7 +81,8 @@ than stopping at the first.
 9. **Interfaces**: id alphabetical and equal to `processes` joined by `-`; no duplicate pair;
    flow endpoints within the pair and distinct; ≥ 1 description or ≥ 1 flow.
 10. **Map**: station for every process and no extra; unique cells within the grid; route for
-    every interface and no extra; octilinear segments; colours are `#rrggbb`; station
+    every interface and no extra; waypoints are `[x, y]` grid points within the grid;
+    octilinear segments; colours are `#rrggbb`; station
     `label` valid; a line's `labelSide`, if present, is valid and differs from the `label`
     side of the line's first station.
 11. **Contrast**: WCAG 2.1 relative luminance and contrast ratio; each line colour and the

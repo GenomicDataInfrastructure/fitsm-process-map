@@ -93,6 +93,7 @@ export function buildModel(files) {
 export async function loadContent(fetchImpl, baseUrl = "content/") {
   const editionsUrl = `${baseUrl}editions.json`;
   const editions = await fetchJson(fetchImpl, editionsUrl, "content/editions.json");
+  if (!editions || !Array.isArray(editions.editions)) throw new Error("Could not load content/editions.json");
   const current = editions.editions.find((e) => e.id === editions.current);
   if (!current) throw new Error(`Could not load content/editions.json: current edition "${editions.current}" is not listed`);
 

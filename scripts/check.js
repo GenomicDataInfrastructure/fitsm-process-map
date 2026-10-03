@@ -309,6 +309,16 @@ function checkEdition({ id: ed, dir }) {
     }
     const [a, b] = id.split("-");
     if (!stations[a] || !stations[b] || !Array.isArray(waypoints)) continue;
+    // Waypoints are grid points: [x, y] non-negative integers within the grid.
+    let badWaypoint = false;
+    for (const [k, w] of waypoints.entries()) {
+      const isPoint = Array.isArray(w) && w.length === 2 && Number.isInteger(w[0]) && Number.isInteger(w[1]) && w[0] >= 0 && w[1] >= 0;
+      if (!isPoint || (gridOk && (w[0] > grid.cols || w[1] > grid.rows))) {
+        err("map", `routes.${id}`, `waypoint ${k} is not a grid point [x, y] within the grid`);
+        badWaypoint = true;
+      }
+    }
+    if (badWaypoint) continue;
     const points = [[stations[a].x, stations[a].y], ...waypoints, [stations[b].x, stations[b].y]];
     for (let k = 1; k < points.length; k++) {
       const dx = Math.abs(points[k][0] - points[k - 1][0]);

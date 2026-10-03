@@ -5,6 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -46,14 +47,19 @@ const cases = {
   "bad-alias": 'error   bad-alias/processes.json: aliases: "isrm" does not match ^[A-Z]{2,6}$',
   "bad-grid": "error   bad-grid/map.json: grid: unit, cols and rows must be positive integers",
   "role-without-tasks": "error   role-without-tasks/roles.json: AA.manager: tasks must be an array (may be empty)",
+  "bad-waypoint": "error   bad-waypoint/map.json: routes.AA-BB: waypoint 0 is not a grid point [x, y] within the grid",
 };
 
 test("the syntax check does not depend on the working directory", () => {
-  const r = spawnSync(process.execPath, [script, "--content", join(root, "tests", "fixtures", "valid")], { cwd: join(root, "content"), encoding: "utf8" });
-  assert.equal(r.status, 0, r.stderr);
-  // 8 source files parsed (src/*.js + scripts/check.js) on top of the fixture's items.
-  assert.match(r.stdout, /\d+ items checked/);
-  assert.ok(!r.stderr.includes("syntax"), r.stderr);
+  const args = [script, "--content", join(root, "tests", "fixtures", "valid")];
+  const fromRoot = spawnSync(process.execPath, args, { cwd: root, encoding: "utf8" });
+  const fromElsewhere = spawnSync(process.execPath, args, { cwd: join(root, "content"), encoding: "utf8" });
+  assert.equal(fromElsewhere.status, 0, fromElsewhere.stderr);
+  // The same items are checked, including the parsed source files, wherever the script runs.
+  assert.equal(fromElsewhere.stdout, fromRoot.stdout);
+  const sources = readdirSync(join(root, "src")).filter((f) => f.endsWith(".js")).length + 1;
+  const items = Number(fromRoot.stdout.match(/(\d+) items checked/)[1]);
+  assert.ok(items > sources, `expected more than ${sources} items, got ${items}`);
 });
 
 for (const [name, expected] of Object.entries(cases)) {

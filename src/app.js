@@ -40,6 +40,7 @@ async function start() {
     loaded = await loadContent(fetch.bind(window), "content/");
   } catch (error) {
     render("error", error.message, ctx);
+    announceHeading(false);
     return;
   }
   state.model = loaded.model;
@@ -53,7 +54,7 @@ async function start() {
     const link = event.target.closest("a[data-hash]");
     if (!link || link.dataset.hash !== state.current) return;
     event.preventDefault();
-    history.pushState(null, "", location.pathname);
+    history.pushState(null, "", location.pathname + location.search);
     route();
   });
   route();
@@ -63,12 +64,14 @@ function route() {
   const model = state.model;
   const result = canonical(parse(location.hash), model);
   if (result.redirect) {
-    history.replaceState(null, "", result.hash || location.pathname);
+    history.replaceState(null, "", result.hash || location.pathname + location.search);
   }
   const hash = result.kind === "unknown" ? location.hash : result.hash;
   const firstRoute = state.current === null;
   if (hash !== state.current) {
     if (state.skipPush) state.skipPush = false;
+    // Arriving at the previous view (typically the browser's Back button) is a step back.
+    else if (state.backStack[state.backStack.length - 1] === hash) state.backStack.pop();
     else if (!firstRoute) state.backStack.push(state.current);
     state.current = hash;
   }
@@ -126,12 +129,17 @@ function route() {
       title = `Not found – ${SITE_TITLE}`;
   }
   document.title = title;
-  // Announce the new heading only (not the whole frame) and move focus to it, so keyboard
-  // and screen-reader users land in the frame after a selection. Not on the first route,
-  // which would steal focus on page load.
+  announceHeading(!firstRoute);
+}
+
+/* Lets screen-reader users know the frame changed, once: after a selection focus moves to
+ * the new heading (which announces it and puts keyboard users in the frame); on the first
+ * route and on a load error, where stealing focus would be wrong, the heading's text goes
+ * to the live status line instead. */
+function announceHeading(moveFocus) {
   const headingEl = dom.panel.querySelector("#panel-title");
-  dom.status.textContent = headingEl ? headingEl.textContent : "";
-  if (!firstRoute) headingEl?.focus();
+  if (moveFocus) headingEl?.focus();
+  else dom.status.textContent = headingEl ? headingEl.textContent : "";
 }
 
 /* The frame's back control: previous hash in this visit, else the item's parent. */
@@ -147,7 +155,7 @@ function goBack() {
   }
   state.skipPush = true;
   if (target === "") {
-    history.pushState(null, "", location.pathname);
+    history.pushState(null, "", location.pathname + location.search);
     route();
   } else {
     location.hash = target;

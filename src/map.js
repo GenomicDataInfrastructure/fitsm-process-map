@@ -43,6 +43,11 @@ const STATION_LABEL = {
 
 /* ---------- crossings ---------- */
 
+function unitVector(p, q) {
+  const len = Math.hypot(q[0] - p[0], q[1] - p[1]);
+  return [(q[0] - p[0]) / len, (q[1] - p[1]) / len];
+}
+
 /* Intersection point of segments p1-p2 and p3-p4 strictly inside both, or null. */
 export function intersection(p1, p2, p3, p4) {
   const d = (p2[0] - p1[0]) * (p4[1] - p3[1]) - (p2[1] - p1[1]) * (p4[0] - p3[0]);
@@ -60,21 +65,48 @@ export function intersection(p1, p2, p3, p4) {
  * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
 export function yieldingPath(points, others) {
   let d = `M${points[0][0]} ${points[0][1]}`;
+  // Direction of the other line that an interior vertex lies on, or null (a bend sitting
+  // exactly on another line is a crossing neither adjacent segment sees as interior).
+  const vertexHit = (v) => {
+    for (const other of others) {
+      for (let k = 1; k < other.length; k++) {
+        const p = other[k - 1], q = other[k];
+        const cross = (q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]);
+        const dot = (v[0] - p[0]) * (q[0] - p[0]) + (v[1] - p[1]) * (q[1] - p[1]);
+        const l2 = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2;
+        if (Math.abs(cross) < 1e-6 && dot > 1e-6 && dot < l2 - 1e-6) return unitVector(p, q);
+      }
+    }
+    return null;
+  };
+  const tick = ([x, y], [tx, ty]) => ` M${x + tx * TICK} ${y + ty * TICK} L${x - tx * TICK} ${y - ty * TICK}`;
+  let resume = null; // direction of the line the previous segment stopped short of at its end vertex
   for (let i = 1; i < points.length; i++) {
     const a = points[i - 1], b = points[i];
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    const dir = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+    const dir = unitVector(a, b);
+    const halfFor = (odir) => {
+      const sin = Math.abs(dir[0] * odir[1] - dir[1] * odir[0]);
+      return Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
+    };
+    // Gaps around a vertex on another line: the end of this segment, the start of the next.
+    const endHit = i < points.length - 1 ? vertexHit(b) : null;
+    const lo = resume ? halfFor(resume) : 0;
+    const hi = len - (endHit ? halfFor(endHit) : 0);
+    if (resume) {
+      const start = [a[0] + dir[0] * lo, a[1] + dir[1] * lo];
+      d += tick(start, resume) + ` M${start[0]} ${start[1]}`;
+      resume = null;
+    }
     const gaps = [];
     for (const other of others) {
       for (let k = 1; k < other.length; k++) {
         const p = other[k - 1], q = other[k];
         const hit = intersection(a, b, p, q);
         if (!hit) continue;
-        const olen = Math.hypot(q[0] - p[0], q[1] - p[1]);
-        const odir = [(q[0] - p[0]) / olen, (q[1] - p[1]) / olen];
-        const sin = Math.abs(dir[0] * odir[1] - dir[1] * odir[0]);
-        const half = Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
-        if (hit.t * len > half + TICK && (1 - hit.t) * len > half + TICK) gaps.push({ ...hit, odir, half });
+        const odir = unitVector(p, q);
+        const half = halfFor(odir);
+        if (hit.t * len > lo + half + TICK && hit.t * len < hi - half - TICK) gaps.push({ ...hit, odir, half });
       }
     }
     gaps.sort((p, q) => p.t - q.t);
@@ -94,13 +126,15 @@ export function yieldingPath(points, others) {
     for (const gap of merged) {
       const from = [a[0] + dir[0] * gap.start, a[1] + dir[1] * gap.start];
       const to = [a[0] + dir[0] * gap.end, a[1] + dir[1] * gap.end];
-      const [fx, fy] = gap.odirStart, [tx, ty] = gap.odirEnd;
-      d += ` L${from[0]} ${from[1]}`;
-      d += ` M${from[0] + fx * TICK} ${from[1] + fy * TICK} L${from[0] - fx * TICK} ${from[1] - fy * TICK}`;
-      d += ` M${to[0] + tx * TICK} ${to[1] + ty * TICK} L${to[0] - tx * TICK} ${to[1] - ty * TICK}`;
-      d += ` M${to[0]} ${to[1]}`;
+      d += ` L${from[0]} ${from[1]}` + tick(from, gap.odirStart) + tick(to, gap.odirEnd) + ` M${to[0]} ${to[1]}`;
     }
-    d += ` L${b[0]} ${b[1]}`;
+    if (endHit) {
+      const stop = [a[0] + dir[0] * hi, a[1] + dir[1] * hi];
+      d += ` L${stop[0]} ${stop[1]}` + tick(stop, endHit);
+      resume = endHit;
+    } else {
+      d += ` L${b[0]} ${b[1]}`;
+    }
   }
   return d;
 }
