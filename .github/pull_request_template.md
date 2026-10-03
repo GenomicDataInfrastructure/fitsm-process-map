@@ -1,6 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2024 PNED G.I.E. -->
 
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
 ## 🚀 Pull Request Checklist
 

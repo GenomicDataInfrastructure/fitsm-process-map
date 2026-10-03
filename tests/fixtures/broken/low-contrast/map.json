@@ -1,0 +1,121 @@
+{
+  "note": "Study aid",
+  "background": "#ffffff",
+  "transfer": {
+    "colour": "#6b6b6b",
+    "dash": "6 4"
+  },
+  "grid": {
+    "unit": 60,
+    "cols": 14,
+    "rows": 6
+  },
+  "lines": [
+    {
+      "id": "one",
+      "name": "One",
+      "colour": "#ffcc00",
+      "stations": [
+        "AA",
+        "BB"
+      ],
+      "labelSide": "n"
+    },
+    {
+      "id": "two",
+      "name": "Two",
+      "colour": "#c62828",
+      "stations": [
+        "CC",
+        "DD",
+        "EE",
+        "FF",
+        "GG",
+        "HH",
+        "II",
+        "JJ",
+        "KK",
+        "LL",
+        "MM",
+        "NN"
+      ],
+      "labelSide": "n"
+    }
+  ],
+  "stations": {
+    "AA": {
+      "x": 1,
+      "y": 1,
+      "label": "s"
+    },
+    "BB": {
+      "x": 3,
+      "y": 1,
+      "label": "s"
+    },
+    "CC": {
+      "x": 5,
+      "y": 1,
+      "label": "s"
+    },
+    "DD": {
+      "x": 7,
+      "y": 1,
+      "label": "s"
+    },
+    "EE": {
+      "x": 9,
+      "y": 1,
+      "label": "s"
+    },
+    "FF": {
+      "x": 11,
+      "y": 1,
+      "label": "s"
+    },
+    "GG": {
+      "x": 13,
+      "y": 1,
+      "label": "s"
+    },
+    "HH": {
+      "x": 1,
+      "y": 4,
+      "label": "s"
+    },
+    "II": {
+      "x": 3,
+      "y": 4,
+      "label": "s"
+    },
+    "JJ": {
+      "x": 5,
+      "y": 4,
+      "label": "s"
+    },
+    "KK": {
+      "x": 7,
+      "y": 4,
+      "label": "s"
+    },
+    "LL": {
+      "x": 9,
+      "y": 4,
+      "label": "s"
+    },
+    "MM": {
+      "x": 11,
+      "y": 4,
+      "label": "s"
+    },
+    "NN": {
+      "x": 13,
+      "y": 4,
+      "label": "s"
+    }
+  },
+  "routes": {
+    "AA-BB": [],
+    "BB-CC": []
+  }
+}

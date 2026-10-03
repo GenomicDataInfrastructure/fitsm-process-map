@@ -1,0 +1,15 @@
+{
+  "current": "good",
+  "editions": [
+    {
+      "id": "good",
+      "label": "Good",
+      "path": "good"
+    },
+    {
+      "id": "bad",
+      "label": "Bad",
+      "path": "bad"
+    }
+  ]
+}

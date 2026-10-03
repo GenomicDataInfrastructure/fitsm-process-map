@@ -1,0 +1,32 @@
+version = 1
+
+# FitSM content transcribed from the FitSM 3.0 documents (ITEMO e.V., CC BY 4.0) plus the
+# project's own structure and map layout. JSON cannot carry comment headers, so the files
+# are annotated here.
+[[annotations]]
+path = ["content/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["ITEMO e.V. (FitSM content)", "2026 PNED G.I.E."]
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Project files without a comment syntax, and the feature specifications.
+[[annotations]]
+path = ["package.json", "tests/fixtures/**", "specs/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 PNED G.I.E."
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Spec Kit tooling (templates, scripts, workflow definitions) installed by
+# `specify init`; third-party, kept under its own licence.
+[[annotations]]
+path = [".specify/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "GitHub, Inc. (Spec Kit)"
+SPDX-License-Identifier = "MIT"
+
+# The project's own Spec Kit files: the constitution and the feature pointer.
+[[annotations]]
+path = [".specify/memory/**", ".specify/feature.json"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 PNED G.I.E."
+SPDX-License-Identifier = "CC-BY-4.0"

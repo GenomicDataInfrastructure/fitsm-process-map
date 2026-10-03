@@ -1,0 +1,92 @@
+{
+  "note": "The lines group related processes as a study aid. They are not part of FitSM.",
+  "background": "#ffffff",
+  "transfer": { "colour": "#6b6b6b", "dash": "6 4" },
+  "grid": { "unit": 60, "cols": 14, "rows": 9 },
+  "lines": [
+    {
+      "id": "agreements",
+      "name": "Agreements",
+      "colour": "#1565c0",
+      "stations": ["SPM", "SLM", "CRM", "SUPPM"],
+      "labelSide": "w"
+    },
+    {
+      "id": "assurance",
+      "name": "Assurance",
+      "colour": "#2e7d32",
+      "stations": ["CAPM", "SACM", "ISM", "SLM"],
+      "labelSide": "n"
+    },
+    {
+      "id": "operations",
+      "name": "Operations",
+      "colour": "#c62828",
+      "stations": ["PM", "ISRM"],
+      "labelSide": "n"
+    },
+    {
+      "id": "control",
+      "name": "Control",
+      "colour": "#6a1b9a",
+      "stations": ["RDM", "CHM", "CONFM"],
+      "labelSide": "e"
+    },
+    {
+      "id": "reporting",
+      "name": "Reporting and improvement",
+      "colour": "#bf360c",
+      "stations": ["CSI", "SRM"],
+      "labelSide": "n"
+    }
+  ],
+  "stations": {
+    "SPM":   { "x": 1,  "y": 1, "label": "n" },
+    "SLM":   { "x": 4,  "y": 1, "label": "n" },
+    "CRM":   { "x": 7,  "y": 1, "label": "n" },
+    "SUPPM": { "x": 10, "y": 1, "label": "n" },
+    "SRM":   { "x": 1,  "y": 3, "label": "w" },
+    "SACM":  { "x": 4,  "y": 3, "label": "s" },
+    "CAPM":  { "x": 7,  "y": 3, "label": "s" },
+    "ISM":   { "x": 10, "y": 3, "label": "s" },
+    "CSI":   { "x": 13, "y": 5, "label": "e" },
+    "ISRM":  { "x": 2,  "y": 6, "label": "w" },
+    "PM":    { "x": 5,  "y": 6, "label": "s" },
+    "CONFM": { "x": 4,  "y": 8, "label": "s" },
+    "CHM":   { "x": 7,  "y": 8, "label": "s" },
+    "RDM":   { "x": 10, "y": 8, "label": "s" }
+  },
+  "routes": {
+    "CRM-SPM":     [[6, 0], [2, 0]],
+    "SPM-SUPPM":   [[2, 0], [9, 0]],
+    "SLM-SPM":     [],
+    "CHM-SPM":     [[6, 9], [0, 9], [0, 2]],
+    "ISRM-SPM":    [[2, 5], [2, 2]],
+    "CRM-SLM":     [],
+    "SLM-SUPPM":   [[5, 0], [9, 0]],
+    "SLM-SRM":     [[2, 3]],
+    "SACM-SLM":    [],
+    "CAPM-SLM":    [[6, 3]],
+    "ISM-SLM":     [[9, 2], [5, 2]],
+    "ISRM-SLM":    [[3, 5], [3, 2]],
+    "SACM-SRM":    [],
+    "CAPM-SRM":    [[6, 4], [2, 4]],
+    "CRM-SRM":     [[6, 2], [2, 2]],
+    "CSI-SRM":     [[2, 5], [1, 4]],
+    "CHM-SACM":    [[6, 7], [6, 6], [4, 4]],
+    "CAPM-CHM":    [],
+    "CHM-ISM":     [[8, 7], [9, 7], [10, 6]],
+    "CHM-CRM":     [[8, 7], [8, 6], [8, 2]],
+    "CRM-CSI":     [[9, 1], [11, 3]],
+    "ISRM-PM":     [],
+    "CONFM-ISRM":  [],
+    "ISRM-RDM":    [[2, 7], [9, 7]],
+    "CHM-ISRM":    [[6, 7], [2, 7]],
+    "CONFM-PM":    [[4, 7]],
+    "CHM-PM":      [],
+    "CHM-CONFM":   [],
+    "CHM-RDM":     [],
+    "CONFM-RDM":   [[5, 9], [9, 9]],
+    "CHM-CSI":     [[8, 7], [12, 7], [13, 6]]
+  }
+}
