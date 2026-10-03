@@ -23,3 +23,7 @@ document versions they bring in.
   (`#ISRM`, `#ISRM-PM`, `#GR`), keyboard and screen-reader access.
 - `scripts/check.js` consistency and contrast checks, unit tests, REUSE compliance, GitHub
   Pages deployment and release workflows.
+- Map layout on a finer grid: no two connections share a segment, a connection yields at a
+  crossing (a short gap with ticks parallel to the crossing line, which stays unbroken),
+  transfers are thin solid grey, stations show only their code (full name as tooltip and in
+  the frame), and line names appear in the legend only.

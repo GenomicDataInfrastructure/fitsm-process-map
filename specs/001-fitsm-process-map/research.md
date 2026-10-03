@@ -44,18 +44,17 @@ release zip say so and give the one-line server command.
 **Decision**: `map.js` builds one `<svg>` at load time from the edition's `map.json`. Stations
 have integer grid coordinates; routes are lists of grid waypoints, so segments are horizontal,
 vertical or 45° (octilinear). A station on two or more lines is an interchange, drawn as a
-white disc with one coloured ring per line. **Each line's name is drawn as a text label on the
-map** next to the first station in its `stations` list (position side given by
-`lines[].labelSide`), in the line's colour on a white halo, so the line can be identified
-without the legend and without colour (FR-006; analysis G1). Stations and connections are SVG
-`<a href="#...">` elements. Each connection has a wide transparent stroke under the visible one
+white disc with one coloured ring per line. Stations are labelled with their FitSM code only;
+the full name is the station link's `<title>` tooltip and its spoken name, and the frame
+shows it when opened. Line names are not drawn on the map: the legend beside the map and the
+frame's wording identify lines (FR-006). Stations and connections are SVG `<a href="#...">`
+elements. Each connection has a wide transparent stroke under the visible one
 as a hit area. The SVG uses `viewBox` and scales to its container; under 900 px the container
 scrolls horizontally.
 
 **Rationale**: SVG is resolution-independent, styleable with CSS and accessible through native
-links. Generating it from data keeps the layout editable without touching code (FR-025). A
-line label on the map is how real transport maps name lines; it answers FR-006 without
-relying on the legend.
+links. Generating it from data keeps the layout editable without touching code (FR-025).
+Code-only station labels keep the map uncluttered; the legend carries the line names (FR-006).
 
 **Alternatives considered**: Canvas (no DOM, no native links); a diagram library (dependency);
 hand-drawn static SVG (drifts from content). All rejected.
@@ -142,12 +141,20 @@ plain links.
   the A and B lines").
 - Connection `aria-label`: "Interface between <A name> and <B name>, <line name> line" or
   "Interface between <A name> and <B name>, transfer between lines".
-- The selected item gets `aria-current="true"` and a thicker stroke, not only a colour change.
+- The selected item gets `aria-current="true"`; it and what it connects to keep full strength
+  while everything else fades, and the selected station or connection shows a soft halo in
+  its own colour (a translucent disc behind the station; a translucent wide stroke under the
+  connection). Strokes never change width, so lines never overlap when selected.
+- A selected connection carries moving markers (SVG `animateMotion` along the route, three
+  per direction, ~70 px/s) in the direction of each flow; the route is reversed for the
+  second direction. Hidden under `prefers-reduced-motion: reduce`.
 - The frame is `<section aria-live="polite" aria-labelledby="panel-title">`, so a new
   selection announces the new heading. `document.title` follows the selection.
-- Lines are told apart by name: the on-map label (R3), the legend (name + swatch + "study
-  aid"), and the frame's wording. The transfer style is dashed, so shape differs as well as
-  colour.
+- Lines are told apart by name: the legend (name + swatch + "study aid") and the frame's
+  wording; nothing on the map relies on reading a line's name. The transfer style is a thinner solid grey stroke, so width
+  differs as well as colour. Connections never share a segment; at crossings the later-drawn
+  connection yields: it stops short of the other with a short perpendicular tick at each end
+  and resumes beyond it, so the crossing line stays unbroken.
 - `check.js` computes WCAG 2.1 contrast: each line colour and the transfer colour against the
   map background ≥ 3:1; label text ≥ 4.5:1.
 - Focus is visible on every link (`:focus-visible` outline, 3 px, ≥ 3:1 against white).

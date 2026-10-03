@@ -199,8 +199,8 @@ Study aid, not FitSM content (FR-003).
 | `id` | string | slug; unique |
 | `name` | string | Shown on the map, in the legend and in the frame |
 | `colour` | string | `#rrggbb`; contrast ≥ 3:1 against `map.background` |
-| `stations` | string[] | ≥ 2 process codes, each existing; the first is where the name label is drawn |
-| `labelSide` | enum | `n`, `s`, `e`, `w`: side of the first station on which the line name is drawn; MUST differ from that station's `label` side |
+| `stations` | string[] | ≥ 2 process codes, each existing |
+| `labelSide` | enum | Optional and unused by the page (line names appear only in the legend); if present, `n`, `s`, `e` or `w` and different from the first station's `label` side |
 
 Rules: every process appears in at least one line (error); when two connected processes share
 several lines, the first line in file order colours the connection.
@@ -211,10 +211,10 @@ several lines, the first line in file order colours the connection.
 {
   "note": "The lines group related processes as a study aid. They are not part of FitSM.",
   "background": "#ffffff",
-  "transfer": { "colour": "#6b6b6b", "dash": "6 4" },
+  "transfer": { "colour": "#8a8a8a", "width": 4 },
   "grid": { "unit": 60, "cols": 14, "rows": 9 },
   "lines": [ { "id": "operations", "name": "Operations", "colour": "#d81b60",
-               "stations": ["ISRM", "PM"], "labelSide": "w" } ],
+               "stations": ["ISRM", "PM"] } ],
   "stations": { "ISRM": { "x": 3, "y": 4, "label": "s" } },
   "routes": { "ISRM-PM": [ [4, 4] ] }
 }
@@ -224,7 +224,8 @@ several lines, the first line in file order colours the connection.
 |---|---|
 | `stations` | One entry per process code (all 14); `x`,`y` integers within the grid; `label` ∈ `n`,`s`,`e`,`w`; no two stations share a cell |
 | `routes` | One entry per interface id; waypoints are grid points; empty array = straight segment; each consecutive pair must be horizontal, vertical or 45° |
-| `transfer` | Style for cross-line connections; colour contrast ≥ 3:1 |
+| `transfer` | Style for cross-line connections: `colour` (contrast ≥ 3:1) and `width` in px, thinner than line strokes; drawn solid |
+| `grid.margin` | Optional `{ x, y }` in grid cells added around the grid for edge labels (default 2 and 1) |
 
 ## Derived values (computed by `content.js` / `graph.js`, never stored)
 
@@ -253,8 +254,8 @@ several lines, the first line in file order colours the connection.
 7. Interface ids are alphabetical and match `processes`; no duplicate pair; ≥ 1 description or
    flow.
 8. Map: every process has a station, every interface a route, cells unique, segments
-   octilinear, colours parse and pass contrast, `labelSide` valid and different from the
-   first station's `label` side.
+   octilinear, colours parse and pass contrast; a `labelSide`, if present, is valid and
+   different from the first station's `label` side.
 9. Warnings (non-fatal): a line whose stations are not connected through same-line
    interfaces (R8).
 10. `src/*.js` and `scripts/check.js` parse (`node --check`).

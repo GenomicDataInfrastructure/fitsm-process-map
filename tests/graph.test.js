@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   stationLines, isInterchange, connectionLine, connectionLabel,
-  stationLabel, interfaceLabel, lineLabelAnchor,
+  stationLabel, interfaceLabel,
 } from "../src/graph.js";
 
 const model = {
@@ -56,8 +56,4 @@ test("labels name lines in words", () => {
   assert.equal(stationLabel("CHM", model), "Change management, CHM, on the Control and Everything lines");
   assert.equal(stationLabel("PM", model), "Problem management, PM, on the Operations, Control and Everything lines");
   assert.equal(interfaceLabel("ISRM-PM", model), "Interface between Incident and service request management and Problem management, Operations line");
-});
-
-test("lineLabelAnchor is the first station plus labelSide", () => {
-  assert.deepEqual(lineLabelAnchor("ctl", model), { x: 5, y: 6, side: "s" });
 });

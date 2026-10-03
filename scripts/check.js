@@ -322,9 +322,12 @@ function checkEdition({ id: ed, dir }) {
     if (!line.name) err("map", item, "missing name");
     if (!Array.isArray(line.stations) || line.stations.length < 2) err("map", item, "a line needs at least two stations");
     for (const s of line.stations || []) if (!codes.has(s)) err("map", item, `process "${s}" does not exist`);
-    if (!SIDES.includes(line.labelSide)) err("map", item, `labelSide "${line.labelSide}" is not n, s, e or w`);
-    const first = stations[(line.stations || [])[0]];
-    if (first && first.label === line.labelSide) err("map", item, `labelSide "${line.labelSide}" is the same side as station ${line.stations[0]}'s label`);
+    // labelSide is optional: line names are shown in the legend, not on the map.
+    if (line.labelSide !== undefined) {
+      if (!SIDES.includes(line.labelSide)) err("map", item, `labelSide "${line.labelSide}" is not n, s, e or w`);
+      const first = stations[(line.stations || [])[0]];
+      if (first && first.label === line.labelSide) err("map", item, `labelSide "${line.labelSide}" is the same side as station ${line.stations[0]}'s label`);
+    }
     if (!PATTERNS.colour.test(line.colour || "")) err("map", item, `colour "${line.colour}" is not #rrggbb`);
     else checkContrast(item, line.colour);
     // 12. Connectivity through same-line connections (warning)

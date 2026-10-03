@@ -16,9 +16,7 @@ SPDX-License-Identifier: CC-BY-4.0
   --note-bg: #fff6e0;
   --note-border: #c98a00;
   --station-stroke: 4;
-  --station-stroke-selected: 7;
   --connection-stroke: 6;
-  --connection-stroke-selected: 10;
 }
 
 * { box-sizing: border-box; }
@@ -82,29 +80,46 @@ a { color: var(--link); }
 
 /* Map */
 .map { overflow-x: auto; }
-.map svg { display: block; width: 100%; min-width: 900px; height: auto; }
-.station-name { font-size: 11px; }
+.map svg { display: block; width: 100%; min-width: 1000px; height: auto; }
 .map a { cursor: pointer; }
 .map a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
 .station-disc { fill: var(--paper); stroke-width: var(--station-stroke); }
 .station-ring { fill: none; }
-.station-label { font-size: 13px; fill: var(--ink); }
-.station-code { font-weight: 700; }
-.line-label {
+/* Station codes get a white halo so they stay legible where a connection runs close by. */
+.station-label {
   font-size: 13px;
   font-weight: 700;
+  fill: var(--ink);
   paint-order: stroke;
   stroke: var(--paper);
   stroke-width: 4px;
   stroke-linejoin: round;
 }
-.connection-hit { fill: none; stroke: transparent; stroke-width: 20; }
+.connection-hit { fill: none; stroke: transparent; stroke-width: 16; }
 .connection-visible { fill: none; stroke-width: var(--connection-stroke); stroke-linejoin: round; stroke-linecap: round; }
-.connection-transfer .connection-visible { stroke-dasharray: var(--transfer-dash, 6 4); }
 
-.selected .station-disc { stroke-width: var(--station-stroke-selected); }
-.selected .connection-visible { stroke-width: var(--connection-stroke-selected); }
+/* Selection: nothing gets heavier. The selected element and what it connects to keep full
+ * strength; everything else fades. A selected station also shows a soft halo. */
+.station-halo { opacity: 0; transition: opacity 0.15s; }
+.selected .station-halo { opacity: 0.18; }
+.connection-halo {
+  fill: none;
+  stroke-width: calc(var(--connection-stroke) * 1px + 12px);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.selected .connection-halo { opacity: 0.18; }
+/* Markers travelling along the selected connection in the direction of its flows. */
+.flow-dot { fill: var(--paper); stroke-width: 2.5; }
+@media (prefers-reduced-motion: reduce) {
+  .flow-animation { display: none; }
+}
+.connections a, .stations a { transition: opacity 0.15s; }
+.has-selection .connections a:not(.selected):not(.related) { opacity: 0.22; }
+.has-selection .stations a:not(.selected):not(.related) { opacity: 0.45; }
 
 /* Legend */
 .legend { margin-top: 0.75rem; font-size: 0.9rem; }
@@ -112,7 +127,7 @@ a { color: var(--link); }
 .legend ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
 .legend li { display: flex; align-items: center; gap: 0.4rem; }
 .swatch { display: inline-block; width: 1.4rem; height: 0.4rem; border-radius: 2px; }
-.swatch-transfer { background: repeating-linear-gradient(90deg, #6b6b6b 0 6px, transparent 6px 10px); }
+.swatch-transfer { background: #8a8a8a; height: 0.25rem; }
 
 /* Detail frame */
 .panel { padding: 0 0.25rem 1rem; }

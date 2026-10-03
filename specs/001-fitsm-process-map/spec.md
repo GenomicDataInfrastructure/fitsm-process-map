@@ -259,10 +259,11 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
 **Map**
 
 - **FR-001**: The site MUST show all 14 FitSM processes as stations on a single map in the style
-  of a public transport map, each labelled with its FitSM code and name. In this style: every
-  segment is horizontal, vertical or at 45°; every station uses the same glyph; connections
-  have no arrowheads; the map scales to the width of its container; and station labels are
-  never shortened or hidden at any size.
+  of a public transport map, each labelled with its FitSM code; the full name is the station's
+  tooltip and spoken name, and the frame shows it when the station is opened. In this style:
+  every segment is horizontal, vertical or at 45°; every station uses the same glyph;
+  connections have no arrowheads; the map scales to the width of its container; and station
+  codes are never hidden at any size.
 - **FR-002**: The map MUST draw one connection between two processes when FitSM-2 names the
   pair in either place it documents process relationships: a process's key-interfaces table,
   or a process's inputs/outputs tables (an output going to the other process, or an input
@@ -271,8 +272,11 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   line is a group of related processes (for example "Service quality", "Operations",
   "Control"), with a name and a colour. A connection between two processes on the same line
   is drawn once in that line's colour. A connection between processes on different lines is
-  drawn once in a neutral "transfer" style: a grey, dashed stroke, so that it differs from
-  every line in shape as well as colour. No interface is drawn twice. Every process MUST belong to at least one line and
+  drawn once in a neutral "transfer" style: a solid grey stroke thinner than the line strokes,
+  so that it differs from every line in width as well as colour. No interface is drawn twice,
+  and no two connections share a segment; where one connection crosses another, one of them
+  yields: it stops short of the other with a short perpendicular tick at each end and resumes
+  beyond it, so each can be followed through the crossing. Every process MUST belong to at least one line and
   MAY belong to several. When two connected processes share more than one line, the line
   listed first in the content wins. A line is never drawn as a separate track between members
   that FitSM does not connect (FR-002). The grouping is not part of FitSM: it MUST be labelled
@@ -282,15 +286,20 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   disc with one coloured ring per line it belongs to, so that the reader sees it belongs to
   several lines.
 - **FR-005**: Stations and connections MUST be clickable. The selected station or connection
-  MUST be highlighted by a thicker stroke (not only a colour change) and marked as current for
-  assistive technology. While a role or activity is shown, its owning process's station stays
+  MUST be highlighted without changing its stroke: it and what it connects to (a station's
+  connections and their far ends; a connection's two stations) keep full strength while every
+  other station and connection fades to a low opacity, the selected station or connection
+  shows a soft halo in its own colour behind it, and the selection is marked as current for
+  assistive technology. Highlighting
+  MUST NOT rely on colour alone. Clicking the selected station or connection again MUST
+  deselect it and return the map to the state with nothing selected (FR-035). While a role or activity is shown, its owning process's station stays
   highlighted; while a record, the general requirements, the not-found view or nothing is
   shown, no station is highlighted.
-- **FR-006**: Lines MUST be distinguishable without relying on colour alone. Two means are
-  required: each line's name is printed on the map next to its first station, and a legend
-  lists every line with its name, a colour sample and the label "study aid". The name is the
-  required means of telling lines apart; the colours themselves need not be distinguishable to
-  colour-blind visitors.
+- **FR-006**: Lines MUST be distinguishable without relying on colour alone. A legend next to
+  the map lists every line with its name, a colour sample and the label "study aid", and the
+  frame names the line in words for every station and connection; no line names are printed
+  on the map itself. The legend and the frame's wording are the required means of telling
+  lines apart; the colours themselves need not be distinguishable to colour-blind visitors.
 - **FR-007**: The map MUST be usable with a keyboard: every station and connection can be
   focused and activated. Tab order is header, map connections, map stations, legend, frame.
   The focus indicator is an outline at least 3 px wide with contrast of at least 3:1 against
@@ -327,7 +336,11 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   direction. When FitSM-2 gives no interface description for the pair (the connection exists
   only because of inputs/outputs), the frame MUST say so in a fixed sentence ("FitSM-2 lists
   these inputs and outputs but gives no interface description") in place of the description.
-  Each direction is shown as its own group; a direction with no flows is omitted.
+  Each direction is shown as its own group; a direction with no flows is omitted. While a
+  connection is selected, small markers MUST travel along it on the map in the direction of
+  each flow it has (two opposite streams when flows exist in both directions), so the
+  direction is visible without reading; the markers are removed on deselect and MUST NOT be
+  shown to a visitor whose browser asks for reduced motion.
 - **FR-011**: When a role is selected, the frame MUST show its name, the typical number of
   people holding it (omitted when FitSM-3 gives none), its process-specific tasks under the
   heading "Tasks specific to <process code>" and its generic tasks under "Tasks common to
@@ -546,6 +559,6 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   from the user's description alone.
 - The map layout (station positions and routes) is hand-arranged, as real transport maps are,
   and stored with the content so that a maintainer can adjust it without touching behaviour.
-- Dark mode, high-contrast mode and reduced-motion preferences are out of scope for this
-  feature: the site has one light colour scheme and no animation, so there is nothing to
-  reduce. They can be added later without changing content.
+- Dark mode and high-contrast mode are out of scope for this feature: the site has one light
+  colour scheme. The only motion is the flow markers on a selected connection (FR-010), and
+  they are suppressed when the browser asks for reduced motion.

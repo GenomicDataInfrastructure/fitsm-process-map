@@ -53,14 +53,18 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
 
 ### US1: Explore a process
 
-- [ ] 1.1 The map shows 14 stations, each with a code and a name. Count them against
-      `content/fitsm-3.0/processes.json`.
+- [ ] 1.1 The map shows 14 stations, each labelled with its code only; hovering a station shows
+      its full name as a tooltip. Count them against `content/fitsm-3.0/processes.json`.
 - [ ] 1.2 Click **ISRM**. The frame shows code, name, objective, requirements (PR9.x), roles,
       records, activities, interfaces and, if any, "Inputs from and outputs to outside the
-      processes". The ISRM station is highlighted (thicker ring, `aria-current`).
+      processes". The ISRM station is highlighted: it keeps full colour with a soft halo,
+      its connections and their far ends stay at full strength, everything else fades, and
+      it carries `aria-current`.
 - [ ] 1.3 Every item in the frame ends with a source line like `FitSM-1 v3.0.1 §PR9.1`.
 - [ ] 1.4 Open http://localhost:8765/#CHM in a new tab. CHM is selected and its frame is open.
 - [ ] 1.5 With ISRM open, click **PM**. The frame now shows PM; the highlight moved.
+- [ ] 1.5a With PM open, click **PM** again. Nothing is selected: the intro view returns, the
+      address has no item, and no station or connection is faded.
 - [ ] 1.6 Click **General requirements** in the header. GR1–GR7 appear with sources; no station
       is highlighted; the address is `#GR`.
 
@@ -69,7 +73,11 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
 - [ ] 2.1 Click the connection between **ISRM** and **PM**. The frame names both processes,
       says which line it is on (or "Transfer between lines"), shows the interface
       description(s), and lists flows with direction (ISRM → PM, PM → ISRM in separate
-      groups). The connection is highlighted. Address is `#ISRM-PM`.
+      groups). The connection is highlighted: it keeps full colour with a soft halo along its
+      length, its two stations stay at full strength, everything else fades, and small
+      markers travel along it in both directions (ISRM–PM has flows both ways; a one-way
+      interface such as SLM–SACM shows markers in one direction only). Address is
+      `#ISRM-PM`.
 - [ ] 2.2 Open an interface with two descriptions. Both show with their sources and the "more
       than one place" note.
 - [ ] 2.3 Open an interface that has flows but no description (find one with
@@ -124,9 +132,11 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
 - [ ] E3 Keyboard only: press Tab from the page top; focus goes header → map connections → map
       stations → legend → frame; every focusable element shows a visible focus ring; Enter
       opens it.
-- [ ] E4 A cross-line connection is dashed and neutral; a same-line connection has the line's
-      colour; every line's name is printed on the map next to its first station; the legend
-      names every line and says it is a study aid.
+- [ ] E4 A cross-line connection is a thin solid grey stroke; where connections cross, one
+      stops short of the other with a tick at each end and resumes beyond it; a same-line
+      connection has the line's
+      colour; no line names appear on the map itself; the legend names every line and says it
+      is a study aid.
 - [ ] E5 Browser devtools, Network tab, reload and click through every view: every request
       goes to `localhost:8765`; none to another host (SC-011).
 - [ ] E6 Devtools, Network, set "Offline" after load: clicking stations and connections still

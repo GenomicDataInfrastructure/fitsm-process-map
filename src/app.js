@@ -47,6 +47,14 @@ async function start() {
   renderLegend(state.model);
   renderFooter(state.model);
   window.addEventListener("hashchange", route);
+  // Clicking the selected station or connection again deselects it.
+  dom.map.addEventListener("click", (event) => {
+    const link = event.target.closest("a[data-hash]");
+    if (!link || link.dataset.hash !== state.current) return;
+    event.preventDefault();
+    history.pushState(null, "", location.pathname);
+    route();
+  });
   route();
 }
 
@@ -150,7 +158,7 @@ function renderLegend(model) {
   const transfer = document.createElement("li");
   const swatch = document.createElement("span");
   swatch.className = "swatch swatch-transfer";
-  transfer.append(swatch, document.createTextNode("Dashed: transfer between lines"));
+  transfer.append(swatch, document.createTextNode("Thin grey: transfer between lines"));
   dom.legend.replaceChildren(...items, transfer);
 }
 

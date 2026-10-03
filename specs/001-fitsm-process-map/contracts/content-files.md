@@ -94,4 +94,4 @@ line's stations are not connected through interfaces. Nothing in `src/` needs to
 | `interfaces[].descriptions` empty | Fixed sentence in place of the description: "FitSM-2 lists these inputs and outputs but gives no interface description." |
 | `processes[].externalFlows` non-empty | Section "Inputs from and outputs to outside the processes" with direction, party, item, source |
 | `interfaces[].note`, any `note` | Box "Not part of FitSM" |
-| `map.json.lines` | On-map line names, legend heading "Lines are a study aid, not part of FitSM", and `map.json.note` |
+| `map.json.lines` | Legend entries (name and colour) under the heading "Lines are a study aid, not part of FitSM", and `map.json.note` |

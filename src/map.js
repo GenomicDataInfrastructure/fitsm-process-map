@@ -4,20 +4,22 @@
 
 /*
  * Draws the subway-style map as inline SVG from map.json and the model
- * (research R3, R10). Connections are drawn first so stations sit on top.
+ * (research R3, R10). Connections are drawn first so stations sit on top; where
+ * a connection crosses one drawn before it, it yields: it stops short of the other
+ * line with a short tick at each end and resumes beyond it, so each line can be
+ * followed through the crossing.
  */
 
-import { stationLines, isInterchange, connectionLine, stationLabel, interfaceLabel, lineLabelAnchor } from "./graph.js";
+import { stationLines, isInterchange, connectionLine, stationLabel, interfaceLabel } from "./graph.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const XLINK_NS = "http://www.w3.org/1999/xlink";
 
-const STATION_RADIUS = 12;
+const STATION_RADIUS = 11;
 const RING_STEP = 5;
-// Grid cells left of / above the first column and row, so edge labels have room.
-const MARGIN_X = 2;
-const MARGIN_Y = 1;
-const LINE_HEIGHT = 14;
+const GAP_HALF = 7;   // half the length of the gap a yielding line leaves at a crossing
+const TICK = 4;       // half the length of the perpendicular tick at each end of the gap
+const DEFAULT_MARGIN = { x: 2, y: 1 };
 
 function el(name, attrs = {}, children = []) {
   const node = document.createElementNS(SVG_NS, name);
@@ -30,41 +32,83 @@ function el(name, attrs = {}, children = []) {
   return node;
 }
 
-/* Label placement relative to a station centre, by side. */
-// Station labels are two lines (code, then name). `y` is the baseline of the first line.
+// Station labels are the process code only, placed on the station's `label` side, `r` px
+// (the station's outer radius, larger for interchanges) from its centre.
 const STATION_LABEL = {
-  n: (x, y, lines) => ({ x, y: y - STATION_RADIUS - 8 - lines * LINE_HEIGHT, anchor: "middle" }),
-  s: (x, y) => ({ x, y: y + STATION_RADIUS + 16, anchor: "middle" }),
-  e: (x, y, lines) => ({ x: x + STATION_RADIUS + 8, y: y + 5 - (lines * LINE_HEIGHT) / 2, anchor: "start" }),
-  w: (x, y, lines) => ({ x: x - STATION_RADIUS - 8, y: y + 5 - (lines * LINE_HEIGHT) / 2, anchor: "end" }),
+  n: (x, y, r) => ({ x, y: y - r - 7, anchor: "middle" }),
+  s: (x, y, r) => ({ x, y: y + r + 16, anchor: "middle" }),
+  e: (x, y, r) => ({ x: x + r + 7, y: y + 5, anchor: "start" }),
+  w: (x, y, r) => ({ x: x - r - 7, y: y + 5, anchor: "end" }),
 };
 
-/* Splits a long process name into two lines at the space nearest its middle. Nothing is
- * shortened; the full name is always shown (FR-001). */
-const WRAP_AT = 22;
-function wrapName(name) {
-  if (name.length <= WRAP_AT) return [name];
-  const middle = name.length / 2;
-  let best = -1;
-  for (let i = name.indexOf(" "); i !== -1; i = name.indexOf(" ", i + 1)) {
-    if (best === -1 || Math.abs(i - middle) < Math.abs(best - middle)) best = i;
-  }
-  return best === -1 ? [name] : [name.slice(0, best), name.slice(best + 1)];
+/* ---------- crossings ---------- */
+
+/* Intersection point of segments p1-p2 and p3-p4 strictly inside both, or null. */
+function intersection(p1, p2, p3, p4) {
+  const d = (p2[0] - p1[0]) * (p4[1] - p3[1]) - (p2[1] - p1[1]) * (p4[0] - p3[0]);
+  if (Math.abs(d) < 1e-9) return null; // parallel or collinear
+  const t = ((p3[0] - p1[0]) * (p4[1] - p3[1]) - (p3[1] - p1[1]) * (p4[0] - p3[0])) / d;
+  const u = ((p3[0] - p1[0]) * (p2[1] - p1[1]) - (p3[1] - p1[1]) * (p2[0] - p1[0])) / d;
+  const eps = 1e-6;
+  if (t <= eps || t >= 1 - eps || u <= eps || u >= 1 - eps) return null;
+  return { t, point: [p1[0] + t * (p2[0] - p1[0]), p1[1] + t * (p2[1] - p1[1])] };
 }
-// Line name labels sit one line further out than a station label on the same side would.
-const LINE_LABEL = {
-  n: (x, y) => ({ x, y: y - STATION_RADIUS - 12 - 2 * LINE_HEIGHT, anchor: "middle" }),
-  s: (x, y) => ({ x, y: y + STATION_RADIUS + 20 + 2 * LINE_HEIGHT, anchor: "middle" }),
-  e: (x, y) => ({ x: x + STATION_RADIUS + 8, y: y + 5, anchor: "start" }),
-  w: (x, y) => ({ x: x - STATION_RADIUS - 8, y: y + 5, anchor: "end" }),
-};
+
+/* Path data for a polyline that yields at every crossing with `others` (arrays of points):
+ * the line stops short of the crossing line, with a short tick at each end drawn parallel
+ * to the crossing line, and resumes on the other side. The crossing line itself stays
+ * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
+function yieldingPath(points, others) {
+  let d = `M${points[0][0]} ${points[0][1]}`;
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1], b = points[i];
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const dir = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+    const gaps = [];
+    for (const other of others) {
+      for (let k = 1; k < other.length; k++) {
+        const p = other[k - 1], q = other[k];
+        const hit = intersection(a, b, p, q);
+        if (!hit) continue;
+        const olen = Math.hypot(q[0] - p[0], q[1] - p[1]);
+        const odir = [(q[0] - p[0]) / olen, (q[1] - p[1]) / olen];
+        const sin = Math.abs(dir[0] * odir[1] - dir[1] * odir[0]);
+        const half = Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
+        if (hit.t * len > half + TICK && (1 - hit.t) * len > half + TICK) gaps.push({ ...hit, odir, half });
+      }
+    }
+    gaps.sort((p, q) => p.t - q.t);
+    let last = -Infinity;
+    for (const gap of gaps) {
+      if (gap.t * len - last < 2 * gap.half + TICK) continue; // merge gaps that are too close
+      const [cx, cy] = gap.point;
+      const [tx, ty] = gap.odir;
+      const from = [cx - dir[0] * gap.half, cy - dir[1] * gap.half];
+      const to = [cx + dir[0] * gap.half, cy + dir[1] * gap.half];
+      d += ` L${from[0]} ${from[1]}`;
+      d += ` M${from[0] + tx * TICK} ${from[1] + ty * TICK} L${from[0] - tx * TICK} ${from[1] - ty * TICK}`;
+      d += ` M${to[0] + tx * TICK} ${to[1] + ty * TICK} L${to[0] - tx * TICK} ${to[1] - ty * TICK}`;
+      d += ` M${to[0]} ${to[1]}`;
+      last = gap.t * len;
+    }
+    d += ` L${b[0]} ${b[1]}`;
+  }
+  return d;
+}
+
+/* ---------- rendering ---------- */
+
+// Kept from the last render so that setSelected can animate the selected connection.
+let rendered = { model: null, routes: new Map() };
 
 export function renderMap(container, model) {
   const { map } = model;
+  rendered = { model, routes: new Map() };
   const unit = map.grid.unit;
-  const width = (map.grid.cols + MARGIN_X + 2) * unit;
-  const height = (map.grid.rows + MARGIN_Y + 1) * unit;
-  const point = (gx, gy) => [(gx + MARGIN_X) * unit, (gy + MARGIN_Y) * unit];
+  const margin = map.grid.margin || DEFAULT_MARGIN;
+  const width = (map.grid.cols + 2 * margin.x) * unit;
+  const height = (map.grid.rows + 2 * margin.y) * unit;
+  const point = (gx, gy) => [(gx + margin.x) * unit, (gy + margin.y) * unit];
 
   const svg = el("svg", {
     viewBox: `0 0 ${width} ${height}`,
@@ -77,16 +121,20 @@ export function renderMap(container, model) {
     el("desc", { id: "map-note" }, [document.createTextNode(map.note)]),
     el("rect", { width, height, fill: map.background }),
   );
-  svg.style.setProperty("--transfer-dash", map.transfer.dash);
 
-  // Connections
+  // Connections: coloured (line) connections first, transfers on top so their hops read.
   const connections = el("g", { class: "connections" });
-  for (const iface of model.interfaces.values()) {
+  const drawn = [];
+  const ordered = [...model.interfaces.values()].sort((a, b) => Number(!!connectionLine(b.id, model)) - Number(!!connectionLine(a.id, model)));
+  for (const iface of ordered) {
     const [a, b] = iface.processes;
     const route = map.routes[iface.id];
     if (!map.stations[a] || !map.stations[b] || !route) continue;
     const points = [point(map.stations[a].x, map.stations[a].y), ...route.map(([x, y]) => point(x, y)), point(map.stations[b].x, map.stations[b].y)];
-    const d = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const d = yieldingPath(points, drawn);
+    const hit = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    drawn.push(points);
+    rendered.routes.set(iface.id, points);
     const line = connectionLine(iface.id, model);
     const link = el("a", {
       href: `#${iface.id}`,
@@ -94,8 +142,16 @@ export function renderMap(container, model) {
       "aria-label": interfaceLabel(iface.id, model),
       class: line ? "connection" : "connection connection-transfer",
     }, [
-      el("path", { class: "connection-hit", d }),
-      el("path", { class: "connection-visible", d, stroke: line ? line.colour : map.transfer.colour }),
+      el("path", { class: "connection-hit", d: hit }),
+      // Soft halo in the connection's own colour, shown only while it is selected.
+      el("path", { class: "connection-halo", d: hit, stroke: line ? line.colour : map.transfer.colour }),
+      el("path", {
+        class: "connection-visible",
+        d,
+        stroke: line ? line.colour : map.transfer.colour,
+        // Inline style, because a stylesheet rule beats a presentation attribute.
+        style: line ? undefined : `stroke-width: ${map.transfer.width}px`,
+      }),
     ]);
     connections.append(link);
   }
@@ -109,6 +165,9 @@ export function renderMap(container, model) {
     const [x, y] = point(pos.x, pos.y);
     const lines = stationLines(code, model);
     const link = el("a", { href: `#${code}`, "data-hash": `#${code}`, "aria-label": stationLabel(code, model) });
+    const outerRadius = STATION_RADIUS + Math.max(0, lines.length - 1) * RING_STEP + 2; // + half the stroke
+    // Soft halo in the station's own line colour, shown only while it is selected.
+    link.append(el("circle", { class: "station-halo", cx: x, cy: y, r: outerRadius + 8, fill: lines[0] ? lines[0].colour : map.transfer.colour }));
     if (isInterchange(code, model)) {
       // One ring per line, outermost first, over a white disc.
       link.append(el("circle", { class: "station-disc", cx: x, cy: y, r: STATION_RADIUS + (lines.length - 1) * RING_STEP, stroke: lines[0].colour }));
@@ -118,37 +177,92 @@ export function renderMap(container, model) {
     } else {
       link.append(el("circle", { class: "station-disc", cx: x, cy: y, r: STATION_RADIUS, stroke: lines[0] ? lines[0].colour : map.transfer.colour }));
     }
-    const nameLines = wrapName(process.name);
-    const label = STATION_LABEL[pos.label](x, y, nameLines.length);
-    const text = el("text", { class: "station-label", x: label.x, y: label.y, "text-anchor": label.anchor, "aria-hidden": "true" }, [
-      el("tspan", { class: "station-code", x: label.x }, [document.createTextNode(code)]),
-      ...nameLines.map((line) => el("tspan", { class: "station-name", x: label.x, dy: LINE_HEIGHT }, [document.createTextNode(line)])),
-    ]);
-    link.append(text);
+    // Only the code is printed on the map; the full name is the link's tooltip and spoken
+    // name, and the frame shows it when the station is opened.
+    const label = STATION_LABEL[pos.label](x, y, outerRadius);
+    link.prepend(el("title", {}, [document.createTextNode(process.name)]));
+    link.append(el("text", { class: "station-label station-code", x: label.x, y: label.y, "text-anchor": label.anchor, "aria-hidden": "true" }, [document.createTextNode(code)]));
     stations.append(link);
   }
   svg.append(stations);
-
-  // Line name labels
-  const labels = el("g", { class: "line-labels", "aria-hidden": "true" });
-  for (const line of map.lines) {
-    const anchor = lineLabelAnchor(line.id, model);
-    const [x, y] = point(anchor.x, anchor.y);
-    const place = LINE_LABEL[anchor.side](x, y);
-    labels.append(el("text", { class: "line-label", x: place.x, y: place.y, "text-anchor": place.anchor, fill: line.colour }, [document.createTextNode(`${line.name} line`)]));
-  }
-  svg.append(labels);
 
   container.replaceChildren(svg);
   return svg;
 }
 
-/* Highlights the station or connection whose hash matches; null clears all. */
+/* Highlights the station or connection whose hash matches; null clears all. Nothing gets
+ * heavier: the selected element and what it connects to keep full strength while everything
+ * else fades (FR-005). A selected station also shows a soft halo. */
 export function setSelected(container, hash) {
+  const svg = container.querySelector("svg");
+  if (!svg) return;
+  const selectedCodes = new Set();
+  if (hash) {
+    const id = hash.slice(1);
+    for (const code of id.split("-")) selectedCodes.add(code);
+  }
   for (const link of container.querySelectorAll("a[data-hash]")) {
+    const own = link.dataset.hash.slice(1);
     const selected = hash !== null && link.dataset.hash === hash;
+    const codes = own.split("-");
+    // A connection is related to a selected station if it touches it; a station is related
+    // to a selected connection if it is one of its ends, or to a selected station if a
+    // connection joins them (handled below once connections are known).
+    const related = !selected && hash !== null && codes.some((c) => selectedCodes.has(c)) && (codes.length === 2 || selectedCodes.size === 2);
     link.classList.toggle("selected", selected);
+    link.classList.toggle("related", related);
     if (selected) link.setAttribute("aria-current", "true");
     else link.removeAttribute("aria-current");
   }
+  // Stations at the far end of a selected station's connections stay at full strength too.
+  if (hash && selectedCodes.size === 1) {
+    const [code] = selectedCodes;
+    for (const conn of container.querySelectorAll(".connections a[data-hash]")) {
+      const ends = conn.dataset.hash.slice(1).split("-");
+      if (!ends.includes(code)) continue;
+      const other = ends.find((c) => c !== code);
+      container.querySelector(`.stations a[data-hash="#${other}"]`)?.classList.add("related");
+    }
+  }
+  svg.classList.toggle("has-selection", hash !== null);
+  animateFlows(svg, hash);
+}
+
+/* ---------- flow animation ---------- */
+
+const DOTS_PER_DIRECTION = 3;
+const DOT_SPEED = 70; // px per second
+
+/* While a connection is selected, small markers travel along it in the direction of each
+ * flow FitSM-2 lists (both ways when flows exist in both directions). Removed on deselect,
+ * and never shown when the visitor prefers reduced motion. */
+function animateFlows(svg, hash) {
+  svg.querySelector(".flow-animation")?.remove();
+  const { model, routes } = rendered;
+  if (!model || !hash) return;
+  const id = hash.slice(1);
+  const iface = model.interfaces.get(id);
+  const points = routes.get(id);
+  if (!iface || !points) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const line = connectionLine(id, model);
+  const colour = line ? line.colour : model.map.transfer.colour;
+  const group = el("g", { class: "flow-animation", "aria-hidden": "true" });
+  const [a] = iface.processes;
+  for (const from of iface.directions.keys()) {
+    const oriented = from === a ? points : [...points].reverse();
+    const d = oriented.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const pathId = `flow-${id}-${from}`;
+    group.append(el("path", { id: pathId, d, fill: "none", stroke: "none" }));
+    const length = oriented.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - oriented[i][0], p[1] - oriented[i][1]), 0);
+    const duration = Math.max(2, length / DOT_SPEED);
+    for (let i = 0; i < DOTS_PER_DIRECTION; i++) {
+      const motion = el("animateMotion", { dur: `${duration.toFixed(2)}s`, repeatCount: "indefinite", begin: `${(-duration * i / DOTS_PER_DIRECTION).toFixed(2)}s` });
+      const mpath = el("mpath", { href: `#${pathId}` });
+      motion.append(mpath);
+      group.append(el("circle", { class: "flow-dot", r: 4, stroke: colour }, [motion]));
+    }
+  }
+  svg.append(group);
 }

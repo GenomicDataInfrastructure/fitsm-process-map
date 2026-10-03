@@ -54,10 +54,3 @@ export function interfaceLabel(interfaceId, model) {
   const [a, b] = model.interfaces.get(interfaceId).processes;
   return `Interface between ${model.processes.get(a).name} and ${model.processes.get(b).name}, ${connectionLabel(interfaceId, model)}`;
 }
-
-/* Grid point and side where the line's name is drawn: beside its first station. */
-export function lineLabelAnchor(lineId, model) {
-  const line = model.map.lines.find((l) => l.id === lineId);
-  const station = model.map.stations[line.stations[0]];
-  return { x: station.x, y: station.y, side: line.labelSide };
-}

@@ -1,92 +1,255 @@
 {
   "note": "The lines group related processes as a study aid. They are not part of FitSM.",
   "background": "#ffffff",
-  "transfer": { "colour": "#6b6b6b", "dash": "6 4" },
-  "grid": { "unit": 60, "cols": 14, "rows": 9 },
+  "transfer": {
+    "colour": "#8a8a8a",
+    "width": 4
+  },
+  "grid": {
+    "unit": 24,
+    "cols": 36,
+    "rows": 26,
+    "margin": {
+      "x": 5,
+      "y": 2
+    }
+  },
   "lines": [
     {
       "id": "agreements",
       "name": "Agreements",
       "colour": "#1565c0",
-      "stations": ["SPM", "SLM", "CRM", "SUPPM"],
-      "labelSide": "w"
+      "stations": [
+        "SPM",
+        "SLM",
+        "CRM",
+        "SUPPM"
+      ]
     },
     {
       "id": "assurance",
       "name": "Assurance",
       "colour": "#2e7d32",
-      "stations": ["CAPM", "SACM", "ISM", "SLM"],
-      "labelSide": "n"
+      "stations": [
+        "CAPM",
+        "SACM",
+        "ISM",
+        "SLM"
+      ]
     },
     {
       "id": "operations",
       "name": "Operations",
       "colour": "#c62828",
-      "stations": ["PM", "ISRM"],
-      "labelSide": "n"
+      "stations": [
+        "PM",
+        "ISRM"
+      ]
     },
     {
       "id": "control",
       "name": "Control",
       "colour": "#6a1b9a",
-      "stations": ["RDM", "CHM", "CONFM"],
-      "labelSide": "e"
+      "stations": [
+        "RDM",
+        "CHM",
+        "CONFM"
+      ]
     },
     {
       "id": "reporting",
       "name": "Reporting and improvement",
       "colour": "#bf360c",
-      "stations": ["CSI", "SRM"],
-      "labelSide": "n"
+      "stations": [
+        "CSI",
+        "SRM"
+      ]
     }
   ],
   "stations": {
-    "SPM":   { "x": 1,  "y": 1, "label": "n" },
-    "SLM":   { "x": 4,  "y": 1, "label": "n" },
-    "CRM":   { "x": 7,  "y": 1, "label": "n" },
-    "SUPPM": { "x": 10, "y": 1, "label": "n" },
-    "SRM":   { "x": 1,  "y": 3, "label": "w" },
-    "SACM":  { "x": 4,  "y": 3, "label": "s" },
-    "CAPM":  { "x": 7,  "y": 3, "label": "s" },
-    "ISM":   { "x": 10, "y": 3, "label": "s" },
-    "CSI":   { "x": 13, "y": 5, "label": "e" },
-    "ISRM":  { "x": 2,  "y": 6, "label": "w" },
-    "PM":    { "x": 5,  "y": 6, "label": "s" },
-    "CONFM": { "x": 4,  "y": 8, "label": "s" },
-    "CHM":   { "x": 7,  "y": 8, "label": "s" },
-    "RDM":   { "x": 10, "y": 8, "label": "s" }
+    "SPM": {
+      "x": 4,
+      "y": 4,
+      "label": "n"
+    },
+    "SLM": {
+      "x": 12,
+      "y": 4,
+      "label": "n"
+    },
+    "CRM": {
+      "x": 20,
+      "y": 4,
+      "label": "n"
+    },
+    "SUPPM": {
+      "x": 28,
+      "y": 4,
+      "label": "n"
+    },
+    "SRM": {
+      "x": 4,
+      "y": 10,
+      "label": "w"
+    },
+    "SACM": {
+      "x": 12,
+      "y": 10,
+      "label": "e"
+    },
+    "CAPM": {
+      "x": 20,
+      "y": 10,
+      "label": "e"
+    },
+    "ISM": {
+      "x": 28,
+      "y": 10,
+      "label": "e"
+    },
+    "ISRM": {
+      "x": 8,
+      "y": 16,
+      "label": "w"
+    },
+    "PM": {
+      "x": 16,
+      "y": 16,
+      "label": "s"
+    },
+    "CSI": {
+      "x": 34,
+      "y": 16,
+      "label": "s"
+    },
+    "CONFM": {
+      "x": 12,
+      "y": 22,
+      "label": "s"
+    },
+    "CHM": {
+      "x": 20,
+      "y": 22,
+      "label": "s"
+    },
+    "RDM": {
+      "x": 28,
+      "y": 22,
+      "label": "s"
+    }
   },
   "routes": {
-    "CRM-SPM":     [[6, 0], [2, 0]],
-    "SPM-SUPPM":   [[2, 0], [9, 0]],
-    "SLM-SPM":     [],
-    "CHM-SPM":     [[6, 9], [0, 9], [0, 2]],
-    "ISRM-SPM":    [[2, 5], [2, 2]],
-    "CRM-SLM":     [],
-    "SLM-SUPPM":   [[5, 0], [9, 0]],
-    "SLM-SRM":     [[2, 3]],
-    "SACM-SLM":    [],
-    "CAPM-SLM":    [[6, 3]],
-    "ISM-SLM":     [[9, 2], [5, 2]],
-    "ISRM-SLM":    [[3, 5], [3, 2]],
-    "SACM-SRM":    [],
-    "CAPM-SRM":    [[6, 4], [2, 4]],
-    "CRM-SRM":     [[6, 2], [2, 2]],
-    "CSI-SRM":     [[2, 5], [1, 4]],
-    "CHM-SACM":    [[6, 7], [6, 6], [4, 4]],
-    "CAPM-CHM":    [],
-    "CHM-ISM":     [[8, 7], [9, 7], [10, 6]],
-    "CHM-CRM":     [[8, 7], [8, 6], [8, 2]],
-    "CRM-CSI":     [[9, 1], [11, 3]],
-    "ISRM-PM":     [],
-    "CONFM-ISRM":  [],
-    "ISRM-RDM":    [[2, 7], [9, 7]],
-    "CHM-ISRM":    [[6, 7], [2, 7]],
-    "CONFM-PM":    [[4, 7]],
-    "CHM-PM":      [],
-    "CHM-CONFM":   [],
-    "CHM-RDM":     [],
-    "CONFM-RDM":   [[5, 9], [9, 9]],
-    "CHM-CSI":     [[8, 7], [12, 7], [13, 6]]
+    "SACM-SLM": [],
+    "SLM-SPM": [],
+    "CRM-SLM": [],
+    "SACM-SRM": [],
+    "ISRM-PM": [],
+    "CHM-CONFM": [],
+    "CHM-RDM": [],
+    "CAPM-CHM": [
+      [26, 16]
+    ],
+    "CRM-SPM": [
+      [18, 6],
+      [6, 6]
+    ],
+    "SLM-SUPPM": [
+      [15, 7],
+      [25, 7]
+    ],
+    "CAPM-SRM": [
+      [18, 12],
+      [6, 12]
+    ],
+    "CONFM-RDM": [
+      [14, 20],
+      [26, 20]
+    ],
+    "CHM-CRM": [
+      [20, 16],
+      [26, 10]
+    ],
+    "SPM-SUPPM": [
+      [2, 4],
+      [2, 1],
+      [24, 1],
+      [27, 4]
+    ],
+    "CSI-SRM": [
+      [31, 16],
+      [23, 8],
+      [6, 8]
+    ],
+    "ISRM-RDM": [
+      [11, 19],
+      [28, 19]
+    ],
+    "CHM-SPM": [
+      [19, 21],
+      [0, 21],
+      [0, 8]
+    ],
+    "ISM-SLM": [
+      [28, 9],
+      [24, 5],
+      [11, 5]
+    ],
+    "CRM-SRM": [
+      [20, 6],
+      [15, 11],
+      [4, 11]
+    ],
+    "CRM-CSI": [
+      [26, 4],
+      [32, 10],
+      [32, 14]
+    ],
+    "CHM-CSI": [
+      [21, 22],
+      [28, 15],
+      [34, 15]
+    ],
+    "ISRM-SPM": [
+      [8, 13],
+      [4, 9]
+    ],
+    "ISRM-SLM": [
+      [4, 12]
+    ],
+    "CHM-SACM": [
+      [19, 21],
+      [19, 15],
+      [12, 15]
+    ],
+    "CHM-ISM": [
+      [21, 21],
+      [21, 17]
+    ],
+    "CHM-ISRM": [
+      [19, 22],
+      [16, 25],
+      [8, 25]
+    ],
+    "SLM-SRM": [
+      [11, 5],
+      [6, 5],
+      [3, 8],
+      [3, 9]
+    ],
+    "CAPM-SLM": [
+      [17, 10],
+      [12, 5]
+    ],
+    "CONFM-ISRM": [
+      [7, 17]
+    ],
+    "CONFM-PM": [
+      [12, 20]
+    ],
+    "CHM-PM": [
+      [21, 21],
+      [18, 18],
+      [18, 16]
+    ]
   }
 }
