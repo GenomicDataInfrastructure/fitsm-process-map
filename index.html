@@ -32,9 +32,11 @@ SPDX-License-Identifier: CC-BY-4.0
         <ul id="legend-list"></ul>
       </aside>
     </div>
-    <section id="panel" class="panel" aria-live="polite" aria-labelledby="panel-title">
+    <section id="panel" class="panel" aria-labelledby="panel-title">
       <h2 id="panel-title">Loading</h2>
     </section>
+    <!-- Announces only the frame's new heading on each selection; the heading itself takes focus. -->
+    <p id="status" class="visually-hidden" aria-live="polite"></p>
   </main>
 
   <footer id="site-footer" class="site-footer">

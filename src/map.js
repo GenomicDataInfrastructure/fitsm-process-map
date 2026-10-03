@@ -44,7 +44,7 @@ const STATION_LABEL = {
 /* ---------- crossings ---------- */
 
 /* Intersection point of segments p1-p2 and p3-p4 strictly inside both, or null. */
-function intersection(p1, p2, p3, p4) {
+export function intersection(p1, p2, p3, p4) {
   const d = (p2[0] - p1[0]) * (p4[1] - p3[1]) - (p2[1] - p1[1]) * (p4[0] - p3[0]);
   if (Math.abs(d) < 1e-9) return null; // parallel or collinear
   const t = ((p3[0] - p1[0]) * (p4[1] - p3[1]) - (p3[1] - p1[1]) * (p4[0] - p3[0])) / d;
@@ -58,7 +58,7 @@ function intersection(p1, p2, p3, p4) {
  * the line stops short of the crossing line, with a short tick at each end drawn parallel
  * to the crossing line, and resumes on the other side. The crossing line itself stays
  * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
-function yieldingPath(points, others) {
+export function yieldingPath(points, others) {
   let d = `M${points[0][0]} ${points[0][1]}`;
   for (let i = 1; i < points.length; i++) {
     const a = points[i - 1], b = points[i];
@@ -78,18 +78,27 @@ function yieldingPath(points, others) {
       }
     }
     gaps.sort((p, q) => p.t - q.t);
-    let last = -Infinity;
+    // Gaps that are too close to draw separately are merged into one longer gap; each end
+    // keeps the tick direction of the crossing line it stops at.
+    const merged = [];
     for (const gap of gaps) {
-      if (gap.t * len - last < 2 * gap.half + TICK) continue; // merge gaps that are too close
-      const [cx, cy] = gap.point;
-      const [tx, ty] = gap.odir;
-      const from = [cx - dir[0] * gap.half, cy - dir[1] * gap.half];
-      const to = [cx + dir[0] * gap.half, cy + dir[1] * gap.half];
+      const start = gap.t * len - gap.half, end = gap.t * len + gap.half;
+      const prev = merged[merged.length - 1];
+      if (prev && start - prev.end < TICK) {
+        prev.end = Math.max(prev.end, end);
+        prev.odirEnd = gap.odir;
+      } else {
+        merged.push({ start, end, odirStart: gap.odir, odirEnd: gap.odir });
+      }
+    }
+    for (const gap of merged) {
+      const from = [a[0] + dir[0] * gap.start, a[1] + dir[1] * gap.start];
+      const to = [a[0] + dir[0] * gap.end, a[1] + dir[1] * gap.end];
+      const [fx, fy] = gap.odirStart, [tx, ty] = gap.odirEnd;
       d += ` L${from[0]} ${from[1]}`;
-      d += ` M${from[0] + tx * TICK} ${from[1] + ty * TICK} L${from[0] - tx * TICK} ${from[1] - ty * TICK}`;
+      d += ` M${from[0] + fx * TICK} ${from[1] + fy * TICK} L${from[0] - fx * TICK} ${from[1] - fy * TICK}`;
       d += ` M${to[0] + tx * TICK} ${to[1] + ty * TICK} L${to[0] - tx * TICK} ${to[1] - ty * TICK}`;
       d += ` M${to[0]} ${to[1]}`;
-      last = gap.t * len;
     }
     d += ` L${b[0]} ${b[1]}`;
   }
@@ -190,25 +199,29 @@ export function renderMap(container, model) {
   return svg;
 }
 
+/* Pure classification of one map element (`own`, "#CODE" or "#A-B") against the selected
+ * hash (null for none): `selected` when they match; `related` for a connection touching the
+ * selected station, or a station at either end of the selected connection. Far-end stations
+ * of a selected station are added by setSelected once the connections are known. */
+export function selectionState(hash, own) {
+  if (hash === null || hash === undefined) return { selected: false, related: false };
+  if (own === hash) return { selected: true, related: false };
+  const selectedCodes = hash.slice(1).split("-");
+  const codes = own.slice(1).split("-");
+  const touches = codes.some((c) => selectedCodes.includes(c));
+  const related = touches && (codes.length === 2 ? selectedCodes.length === 1 : selectedCodes.length === 2);
+  return { selected: false, related };
+}
+
 /* Highlights the station or connection whose hash matches; null clears all. Nothing gets
  * heavier: the selected element and what it connects to keep full strength while everything
  * else fades (FR-005). A selected station also shows a soft halo. */
 export function setSelected(container, hash) {
   const svg = container.querySelector("svg");
   if (!svg) return;
-  const selectedCodes = new Set();
-  if (hash) {
-    const id = hash.slice(1);
-    for (const code of id.split("-")) selectedCodes.add(code);
-  }
+  const selectedCodes = new Set(hash ? hash.slice(1).split("-") : []);
   for (const link of container.querySelectorAll("a[data-hash]")) {
-    const own = link.dataset.hash.slice(1);
-    const selected = hash !== null && link.dataset.hash === hash;
-    const codes = own.split("-");
-    // A connection is related to a selected station if it touches it; a station is related
-    // to a selected connection if it is one of its ends, or to a selected station if a
-    // connection joins them (handled below once connections are known).
-    const related = !selected && hash !== null && codes.some((c) => selectedCodes.has(c)) && (codes.length === 2 || selectedCodes.size === 2);
+    const { selected, related } = selectionState(hash, link.dataset.hash);
     link.classList.toggle("selected", selected);
     link.classList.toggle("related", related);
     if (selected) link.setAttribute("aria-current", "true");

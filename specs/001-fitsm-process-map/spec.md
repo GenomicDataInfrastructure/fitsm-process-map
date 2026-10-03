@@ -227,7 +227,9 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   nothing selected and the frame shows a short "not found" message with the list of valid codes.
 - The screen is narrower than 900 px (phone). The frame moves below the map rather than
   disappearing, and the map's container scrolls horizontally; the page does not pan or zoom
-  the map itself.
+  the map itself. On wider screens the map scales to its column until station codes would
+  drop below 12 px high (about a 760 px map); narrower columns scroll instead of shrinking
+  the codes further.
 - A visitor uses only the keyboard. Every station, connection, role, activity, database and
   record can be reached and opened with the keyboard, and the current focus is visible.
 - A visitor uses a screen reader. Moving through the map reads each station and connection by
@@ -262,8 +264,9 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   of a public transport map, each labelled with its FitSM code; the full name is the station's
   tooltip and spoken name, and the frame shows it when the station is opened. In this style:
   every segment is horizontal, vertical or at 45°; every station uses the same glyph;
-  connections have no arrowheads; the map scales to the width of its container; and station
-  codes are never hidden at any size.
+  connections have no arrowheads; the map scales to the width of its container down to the
+  width at which station codes stay at least 12 px high, below which the container scrolls
+  horizontally; and station codes are never hidden at any size.
 - **FR-002**: The map MUST draw one connection between two processes when FitSM-2 names the
   pair in either place it documents process relationships: a process's key-interfaces table,
   or a process's inputs/outputs tables (an output going to the other process, or an input

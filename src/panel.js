@@ -61,8 +61,9 @@ function interpretation(text) {
   return h("div", { class: "interpretation", role: "note" }, [h("strong", { text: LABELS.interpretation }), document.createTextNode(text)]);
 }
 
+// tabindex -1 lets app.js move focus to the new heading after a selection.
 function heading(text) {
-  return h("h2", { id: "panel-title", text });
+  return h("h2", { id: "panel-title", tabindex: "-1", text });
 }
 
 function section(title, children) {
@@ -190,7 +191,7 @@ const views = {
     const { model } = ctx;
     const [a, b] = iface.processes;
     const out = [
-      h("h2", { id: "panel-title" }, [processLink(a, model), document.createTextNode(" ↔ "), processLink(b, model)]),
+      h("h2", { id: "panel-title", tabindex: "-1" }, [processLink(a, model), document.createTextNode(" ↔ "), processLink(b, model)]),
       h("p", { class: "subtitle", text: capitalise(connectionLabel(iface.id, model)) }),
       backControl(ctx),
     ];

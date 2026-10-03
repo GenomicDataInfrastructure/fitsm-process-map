@@ -66,9 +66,11 @@ than stopping at the first.
 1. **Editions**: `editions.json` parses; `current` is listed; every `path` exists (exit 2
    otherwise).
 2. **Load**: all eight files of the edition exist and parse (exit 2 otherwise).
-3. **Shape**: top-level shape of each file as in [../data-model.md](../data-model.md).
-4. **Ids**: unique per entity; pattern per entity; aliases unique across processes and never
-   equal to a code.
+3. **Shape**: top-level shape of each file as in [../data-model.md](../data-model.md);
+   `map.grid.unit`, `cols` and `rows` are positive integers; every role's `tasks` is an
+   array (it may be empty).
+4. **Ids**: unique per entity; pattern per entity; aliases match `^[A-Z]{2,6}$`, are unique
+   across processes and never equal to a code.
 5. **References**: every cross-reference resolves (data-model Validation summary 3).
 6. **Counts**: 14 processes, 7 general groups, 14 process groups, one group per process.
 7. **Completeness per process**: objective, ≥ 1 requirement, roles of kind owner, manager and

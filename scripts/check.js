@@ -16,6 +16,7 @@
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve, join, basename, dirname } from "node:path";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const FILES = ["edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "map"];
 const ROLE_KINDS = ["owner", "manager", "case-owner", "staff", "specific"];
@@ -128,6 +129,7 @@ function checkEdition({ id: ed, dir }) {
   }
   for (const p of d.processes) {
     for (const a of p.aliases || []) {
+      if (!PATTERNS.code.test(a || "")) err("processes", "aliases", `"${a}" does not match ^[A-Z]{2,6}$`);
       if (codes.has(a)) err("processes", "aliases", `"${a}" is already a process code`);
       else if (aliases.has(a)) err("processes", "aliases", `"${a}" is used by more than one process`);
       else aliases.set(a, p.code);
@@ -202,6 +204,7 @@ function checkEdition({ id: ed, dir }) {
     if (!ROLE_KINDS.includes(r.kind)) err("roles", item, `kind "${r.kind}" is not one of ${ROLE_KINDS.join(", ")}`);
     if (!r.name) err("roles", item, "missing name");
     hasSource("roles", item, r.source);
+    if (!Array.isArray(r.tasks)) err("roles", item, "tasks must be an array (may be empty)");
     for (const [i, t] of (r.tasks || []).entries()) {
       if (!t.text) err("roles", `${item}.tasks[${i}]`, "missing text");
       hasSource("roles", `${item}.tasks[${i}]`, t.source);
@@ -285,10 +288,13 @@ function checkEdition({ id: ed, dir }) {
 
   // 10. Map
   const { grid, stations, routes, lines, transfer, background } = d.map;
+  const positive = (n) => Number.isInteger(n) && n > 0;
+  const gridOk = positive(grid.unit) && positive(grid.cols) && positive(grid.rows);
+  if (!gridOk) err("map", "grid", "unit, cols and rows must be positive integers");
   const cells = new Map();
   for (const [code, s] of Object.entries(stations)) {
     if (!codes.has(code)) err("map", `stations.${code}`, `process "${code}" does not exist`);
-    if (!Number.isInteger(s.x) || !Number.isInteger(s.y) || s.x < 0 || s.y < 0 || s.x > grid.cols || s.y > grid.rows) err("map", `stations.${code}`, "position is outside the grid");
+    if (!Number.isInteger(s.x) || !Number.isInteger(s.y) || s.x < 0 || s.y < 0 || (gridOk && (s.x > grid.cols || s.y > grid.rows))) err("map", `stations.${code}`, "position is outside the grid");
     if (!SIDES.includes(s.label)) err("map", `stations.${code}`, `label "${s.label}" is not n, s, e or w`);
     const cell = `${s.x},${s.y}`;
     if (cells.has(cell)) err("map", `stations.${code}`, `shares cell ${cell} with ${cells.get(cell)}`);
@@ -368,13 +374,15 @@ function checkEdition({ id: ed, dir }) {
 /* ---------- 13. scripts parse ---------- */
 
 function checkScripts() {
+  // Resolved from this script's location, so the check works from any working directory.
+  const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   const files = [];
-  if (existsSync("src")) for (const f of readdirSync("src")) if (f.endsWith(".js")) files.push(join("src", f));
+  if (existsSync(join(root, "src"))) for (const f of readdirSync(join(root, "src"))) if (f.endsWith(".js")) files.push(join("src", f));
   files.push(join("scripts", "check.js"));
   for (const file of files) {
-    if (!existsSync(file)) continue;
+    if (!existsSync(join(root, file))) continue;
     try {
-      execFileSync(process.execPath, ["--check", file], { stdio: "pipe" });
+      execFileSync(process.execPath, ["--check", join(root, file)], { stdio: "pipe" });
     } catch (e) {
       report("error", "", file, "syntax", String(e.stderr || e.message).trim().split("\n").pop());
     }

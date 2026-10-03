@@ -148,8 +148,10 @@ plain links.
 - A selected connection carries moving markers (SVG `animateMotion` along the route, three
   per direction, ~70 px/s) in the direction of each flow; the route is reversed for the
   second direction. Hidden under `prefers-reduced-motion: reduce`.
-- The frame is `<section aria-live="polite" aria-labelledby="panel-title">`, so a new
-  selection announces the new heading. `document.title` follows the selection.
+- The frame is `<section aria-labelledby="panel-title">`; a small visually hidden
+  `aria-live="polite"` status element receives the new heading's text on each selection (so
+  only the heading is announced, not the whole frame) and focus moves to the heading
+  (`tabindex="-1"`) on every route after the first. `document.title` follows the selection.
 - Lines are told apart by name: the legend (name + swatch + "study aid") and the frame's
   wording; nothing on the map relies on reading a line's name. The transfer style is a thinner solid grey stroke, so width
   differs as well as colour. Connections never share a segment; at crossings the later-drawn

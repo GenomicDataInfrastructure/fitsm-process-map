@@ -56,8 +56,9 @@ export function buildModel(files) {
   }
 
   for (const role of files.roles.roles) {
-    model.roles.set(role.id, role);
-    model.processes.get(role.process)?.roles.push(role);
+    const r = { ...role, tasks: role.tasks || [] };
+    model.roles.set(r.id, r);
+    model.processes.get(r.process)?.roles.push(r);
   }
 
   for (const activity of files.activities) {

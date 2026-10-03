@@ -27,3 +27,11 @@ document versions they bring in.
   crossing (a short gap with ticks parallel to the crossing line, which stays unbroken),
   transfers are thin solid grey, stations show only their code (full name as tooltip and in
   the frame), and line names appear in the legend only.
+- Selection by fading: the selected station or connection and what it connects to keep full
+  strength with a soft halo while everything else fades; clicking the selection again
+  deselects it; a selected connection shows moving markers in the direction of each flow
+  FitSM-2 lists (hidden under `prefers-reduced-motion`).
+- After a selection, focus moves to the frame's heading and only that heading is announced
+  to screen readers; the legend's transfer sample takes its colour from the content.
+- Checks for alias format, `map.grid` fields and role `tasks`; `scripts/check.js` works
+  from any working directory; unit tests for the map geometry and selection rules.

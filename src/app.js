@@ -22,6 +22,7 @@ const dom = {
   edition: document.getElementById("edition-label"),
   attribution: document.getElementById("attribution"),
   documents: document.getElementById("documents"),
+  status: document.getElementById("status"),
 };
 
 const state = {
@@ -65,9 +66,10 @@ function route() {
     history.replaceState(null, "", result.hash || location.pathname);
   }
   const hash = result.kind === "unknown" ? location.hash : result.hash;
+  const firstRoute = state.current === null;
   if (hash !== state.current) {
     if (state.skipPush) state.skipPush = false;
-    else if (state.current !== null) state.backStack.push(state.current);
+    else if (!firstRoute) state.backStack.push(state.current);
     state.current = hash;
   }
 
@@ -124,6 +126,12 @@ function route() {
       title = `Not found – ${SITE_TITLE}`;
   }
   document.title = title;
+  // Announce the new heading only (not the whole frame) and move focus to it, so keyboard
+  // and screen-reader users land in the frame after a selection. Not on the first route,
+  // which would steal focus on page load.
+  const headingEl = dom.panel.querySelector("#panel-title");
+  dom.status.textContent = headingEl ? headingEl.textContent : "";
+  if (!firstRoute) headingEl?.focus();
 }
 
 /* The frame's back control: previous hash in this visit, else the item's parent. */
@@ -158,6 +166,7 @@ function renderLegend(model) {
   const transfer = document.createElement("li");
   const swatch = document.createElement("span");
   swatch.className = "swatch swatch-transfer";
+  swatch.style.background = model.map.transfer.colour;
   transfer.append(swatch, document.createTextNode("Thin grey: transfer between lines"));
   dom.legend.replaceChildren(...items, transfer);
 }

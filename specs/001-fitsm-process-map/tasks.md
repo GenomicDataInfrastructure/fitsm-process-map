@@ -324,3 +324,40 @@ code with spec.md, plan.md and tasks.md. Ordered by severity.
 - [X] T058 Make the map scale to its column at viewports of 900 px and wider in styles.css (remove or lower `.map svg { min-width: 1000px }` inside the `@media (min-width: 900px)` block; keep a minimum width with horizontal scrolling only below 900 px) so the map fits a laptop screen without a scrollbar per FR-001 (partial)
 - [X] T059 Validate the newer map fields in scripts/check.js: `transfer.width` is a number between 1 and 10 and less than the line stroke width 6 (message `transfer: width <w> is not a number between 1 and 10 below the line stroke`), and `grid.margin`, if present, is `{ x, y }` with non-negative integers (message `grid.margin: x and y must be non-negative integers`); add fixtures tests/fixtures/broken/bad-transfer-width and tests/fixtures/broken/bad-margin and the matching cases in tests/check.test.js per FR-027 and Constitution VI (partial)
 - [X] T060 Remove the obsolete `transfer.dash` field from every map.json under tests/fixtures/ (replace with `"width": 4`) and add `node_modules/` to .gitignore per the plan's project structure (unrequested)
+
+---
+
+## Phase 10: Convergence
+
+**Purpose**: Remaining work found by `/speckit-converge` on 2026-10-04 after Phase 9. The
+screen-reader pass (T057, T045) stays open as already listed and is not repeated here.
+
+- [X] T061 Reconcile FR-001 with the map's legibility floor: amend specs/001-fitsm-process-map/spec.md FR-001 to read "the map scales to the width of its container down to the width at which station codes stay at least 12 px high, below which the container scrolls horizontally" (and mention the same floor in the Edge Cases bullet on narrow screens), or lower the `min-width` in the `@media (min-width: 900px)` rule of styles.css if a smaller floor is preferred; verify with quickstart E2 at 1024 px and 1500 px per FR-001 (partial)
+
+---
+
+## Phase 11: Convergence
+
+**Purpose**: Remaining work found by `/speckit-converge` on 2026-10-04 after Phase 10 (a local
+code review of src/, scripts/, tests/, styles.css and index.html fed this pass). The
+screen-reader pass (T057, T045) and the final gate (T053) stay open as already listed.
+
+- [X] T062 Fix the related-element rule in `setSelected` of src/map.js so that, when a connection is selected, only its two stations stay at full strength and every other connection (including those touching the same stations) fades: classify with `codes.length === 2 ? selectedCodes.size === 1 : selectedCodes.size === 2` (or equivalent) and verify with quickstart 2.1 on `#ISRM-PM` that ISRM-SLM, ISRM-CHM and PM-CHM are faded per FR-005 (partial)
+- [X] T063 Colour the transfer swatch in `renderLegend` of src/app.js from `model.map.transfer.colour` (as the line swatches already use `line.colour`) and drop the hard-coded `background: #8a8a8a` from `.swatch-transfer` in styles.css, so the legend sample follows map.json per FR-006 and Constitution IV (partial)
+- [X] T064 Validate process aliases in scripts/check.js against `PATTERNS.code` with the error `processes.json: aliases: "<alias>" does not match ^[A-Z]{2,6}$`; add tests/fixtures/broken/bad-alias and the case in tests/check.test.js; document the rule under check-cli rule 4 in specs/001-fitsm-process-map/contracts/check-cli.md per FR-027 and data-model `aliases` (partial)
+- [X] T065 Validate `map.grid` in scripts/check.js: `unit`, `cols` and `rows` must be positive integers (error `map.json: grid: unit, cols and rows must be positive integers`), and the station bounds check must run only when they are valid; add tests/fixtures/broken/bad-grid and the case in tests/check.test.js; list the rule under check-cli rule 3 per FR-027 (partial)
+- [ ] T066 Make a selection announce only the frame's new heading in index.html and src/app.js: remove `aria-live` from `#panel` (keep `aria-labelledby`), add a small visually hidden `aria-live="polite"` status element updated with the heading text on each route, and move focus to `#panel-title` (`tabindex="-1"`) after a map selection; update research.md R9's screen-reader note accordingly and record the result in quickstart E9 per FR-007b (partial)
+- [X] T067 Merge rather than drop over-close crossings in `yieldingPath` of src/map.js: when the next gap starts within `2 * half + TICK` of the previous one, extend the previous gap's end (and its closing tick) to the new gap's end instead of `continue`, so the yielding line never runs unbroken through a second crossing per FR-003 (partial)
+- [X] T068 Require `tasks` to be an array on every role in scripts/check.js (error `roles.json: <id>: tasks must be an array (may be empty)`), matching data-model "Role.tasks: array; may be empty" and the role view in src/panel.js; add tests/fixtures/broken/role-without-tasks and the case in tests/check.test.js per check-cli rule 3 (partial)
+- [X] T069 Resolve the paths that `checkScripts` in scripts/check.js parses (`src/*.js`, `scripts/check.js`) from the script's own location (`dirname(fileURLToPath(import.meta.url))`) rather than the current working directory, so `node scripts/check.js` run from any directory still parses the modules per check-cli rule 13 (partial)
+- [X] T070 Replace the fixed `height: calc(100vh - 3.5rem)` of `.layout` in the `@media (min-width: 900px)` block of styles.css with `flex: 1; min-height: 0` (the body is already a flex column with `min-height: 100vh`) so the map and frame fill the space between header and footer without a second page scrollbar when the header wraps; verify with quickstart E2 at 1024 px and 1500 px per FR-001 (partial)
+
+---
+
+## Phase 12: Convergence
+
+**Purpose**: Remaining work found by `/speckit-converge` on 2026-10-04 after Phase 11. The
+screen-reader pass (T045, T057, T066's quickstart E9 record) and the merge tick (T053) stay
+open as already listed.
+
+- [X] T071 Keep the focus indicator on the frame heading for keyboard users in styles.css: replace `.panel h2:focus { outline: none; }` with `.panel h2:focus:not(:focus-visible) { outline: none; }` so the 3 px ring still shows when focus arrives there after Enter on a station or connection (pointer clicks stay ring-free); verify with quickstart E3 per FR-007 and US1 acceptance "the current focus is visible" (partial)

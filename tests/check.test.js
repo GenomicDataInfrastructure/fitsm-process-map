@@ -43,7 +43,18 @@ const cases = {
   "label-side-clash": 'error   label-side-clash/map.json: lines.one: labelSide "s" is the same side as station AA\'s label',
   "bad-transfer-width": "error   bad-transfer-width/map.json: transfer: width 12 is not a number between 1 and 10 below the line stroke",
   "bad-margin": "error   bad-margin/map.json: grid.margin: x and y must be non-negative integers",
+  "bad-alias": 'error   bad-alias/processes.json: aliases: "isrm" does not match ^[A-Z]{2,6}$',
+  "bad-grid": "error   bad-grid/map.json: grid: unit, cols and rows must be positive integers",
+  "role-without-tasks": "error   role-without-tasks/roles.json: AA.manager: tasks must be an array (may be empty)",
 };
+
+test("the syntax check does not depend on the working directory", () => {
+  const r = spawnSync(process.execPath, [script, "--content", join(root, "tests", "fixtures", "valid")], { cwd: join(root, "content"), encoding: "utf8" });
+  assert.equal(r.status, 0, r.stderr);
+  // 8 source files parsed (src/*.js + scripts/check.js) on top of the fixture's items.
+  assert.match(r.stdout, /\d+ items checked/);
+  assert.ok(!r.stderr.includes("syntax"), r.stderr);
+});
 
 for (const [name, expected] of Object.entries(cases)) {
   test(`broken fixture ${name} fails with the contract message`, () => {
