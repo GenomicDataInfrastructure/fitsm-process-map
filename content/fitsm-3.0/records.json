@@ -1,0 +1,90 @@
+[
+  {
+    "id": "service-portfolio",
+    "name": "Service portfolio",
+    "definition": { "text": "Internal list that details all the services offered by a service provider, including those in preparation, live and discontinued", "source": { "doc": "FitSM-0", "section": "6.69", "page": 18 } },
+    "usedBy": [
+      { "process": "SPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } }
+    ]
+  },
+  {
+    "id": "service-catalogue",
+    "name": "Service catalogue",
+    "definition": { "text": "Customer-facing list of all live services offered along with relevant information about these services", "source": { "doc": "FitSM-0", "section": "6.62", "page": 17 } },
+    "usedBy": [
+      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ]
+  },
+  {
+    "id": "service-level-agreement",
+    "name": "Service level agreement (SLA)",
+    "definition": { "text": "Documented agreement between a customer and service provider that specifies the service to be provided and the service targets that define how it will be provided", "source": { "doc": "FitSM-0", "section": "6.64", "page": 17 } },
+    "usedBy": [
+      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ]
+  },
+  {
+    "id": "operational-level-agreement",
+    "name": "Operational level agreement (OLA)",
+    "definition": { "text": "Documented agreement between a service provider and an internal supplier that specifies the underpinning service(s) or service component(s) to be provided by the internal supplier or federation member, together with the related operational targets", "source": { "doc": "FitSM-0", "section": "6.45", "page": 14 } },
+    "usedBy": [
+      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ]
+  },
+  {
+    "id": "underpinning-agreement",
+    "name": "Underpinning agreement (UA)",
+    "definition": { "text": "Documented agreement between a service provider and an external supplier that specifies the underpinning service(s) or service component(s) to be provided by the supplier, together with the related operational targets", "source": { "doc": "FitSM-0", "section": "6.76", "page": 19 } },
+    "usedBy": [
+      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ]
+  },
+  {
+    "id": "configuration-management-database",
+    "name": "Configuration management database (CMDB)",
+    "definition": { "text": "Store for data about configuration items (CIs)", "source": { "doc": "FitSM-0", "section": "6.16", "page": 11 } },
+    "usedBy": [
+      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } }
+    ]
+  },
+  {
+    "id": "record",
+    "name": "Record",
+    "definition": { "text": "Documentation of an event or of the results of performing a process or activity", "source": { "doc": "FitSM-0", "section": "6.53", "page": 15 } },
+    "usedBy": [
+      { "process": "CAPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "process": "CRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "process": "PM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
+      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
+      { "process": "CHM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    ]
+  },
+  {
+    "id": "report",
+    "name": "Report",
+    "definition": { "text": "A structured record communicating results gathered through measurement, monitoring, assessment, audit or observation", "source": { "doc": "FitSM-0", "section": "6.56", "page": 16 } },
+    "usedBy": [
+      { "process": "SRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
+      { "process": "CAPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "process": "ISM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "process": "CRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
+      { "process": "CHM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "process": "RDM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } }
+    ]
+  },
+  {
+    "id": "request-for-change",
+    "name": "Request for change (RFC)",
+    "definition": { "text": "Documented proposal for a change", "source": { "doc": "FitSM-0", "section": "6.57", "page": 16 } },
+    "usedBy": [
+      { "process": "SPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "process": "SACM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "process": "PM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
+      { "process": "CSI", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } }
+    ]
+  }
+]

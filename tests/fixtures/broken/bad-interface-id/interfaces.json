@@ -1,0 +1,64 @@
+[
+  {
+    "id": "BB-AA",
+    "processes": [
+      "AA",
+      "BB"
+    ],
+    "descriptions": [
+      {
+        "text": "AA and BB work together",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "flows": [
+      {
+        "from": "AA",
+        "to": "BB",
+        "item": "Records",
+        "listedBy": "AA",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      },
+      {
+        "from": "BB",
+        "to": "AA",
+        "item": "Reports",
+        "listedBy": "BB",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "BB-CC",
+    "processes": [
+      "BB",
+      "CC"
+    ],
+    "descriptions": [],
+    "flows": [
+      {
+        "from": "BB",
+        "to": "CC",
+        "item": "Flows only",
+        "listedBy": "BB",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ]
+  }
+]

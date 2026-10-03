@@ -1,0 +1,311 @@
+[
+  { "id": "SPM.S", "process": "SPM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 }, "procedure": [
+    "Define a way to document the service portfolio.",
+    "Define a way to describe / specify a specific service (e.g. service specification template) including the different lifecycle phases that the service may move through (e.g. proposed, planned, production, retired).",
+    "Set up an initial service portfolio (including service specifications) covering at least all live services provided to customers, as far as they are in the scope of the service management system.",
+    "Create a map of the bodies / parties (organisations, federation members) involved in delivering services.",
+    "Identify and describe the role of each party in service provisioning.",
+    "Identify a single contact point for each body / party.",
+    "Define a way to deal with changed demand for services and new service proposals.",
+    "Create a service proposal template (e.g. smaller subset of the service specification template).",
+    "Write down the assessment criteria used to make decisions on proposals for new or changed services."
+  ] },
+  { "id": "SPM.A1", "process": "SPM", "phase": "execution", "name": "Manage demand and service proposals", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 }, "procedure": [
+    "Identify demand for new or changed services",
+    "Create service proposal",
+    "Evaluate service proposal"
+  ] },
+  { "id": "SPM.A2", "process": "SPM", "phase": "execution", "name": "Maintain the service portfolio", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 }, "procedure": [
+    "Add a new service to the service portfolio",
+    "Update service in the service portfolio",
+    "Retire service from the service portfolio"
+  ] },
+  { "id": "SPM.A3", "process": "SPM", "phase": "execution", "name": "Manage services through their lifecycle", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 }, "procedure": [
+    "Design and plan a new or changed service",
+    "Oversee the implementation (of the plan for a new or changed service)"
+  ] },
+
+  { "id": "SLM.S", "process": "SLM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 }, "procedure": [
+    "Define the minimum structure, format and content for service catalogues.",
+    "Create an initial service catalogue based on the information in the service portfolio.",
+    "Define a basic / default SLA valid for all services provided to customers, where no specific / individual SLAs are in place.",
+    "Define templates for individual SLAs, OLAs and UAs.",
+    "Identify the most critical supporting service components and agree OLAs and UAs with internal and external suppliers contributing to delivering services to customers.",
+    "Agree individual SLAs with customers for the most important / critical services.",
+    "Define a standard way to notify customers of SLA violations."
+  ] },
+  { "id": "SLM.A1", "process": "SLM", "phase": "execution", "name": "Maintain service catalogues", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 }, "procedure": [
+    "Create a new service catalogue",
+    "Add, update or remove services from a catalogue",
+    "Retire a service catalogue"
+  ] },
+  { "id": "SLM.A2", "process": "SLM", "phase": "execution", "name": "Maintain SLAs", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 }, "procedure": [
+    "Defined and negotiate / agree a new SLA",
+    "Evaluate SLA fulfilment",
+    "Notify customer of an SLA violation",
+    "Review, update or terminate an SLA"
+  ] },
+  { "id": "SLM.A3", "process": "SLM", "phase": "execution", "name": "Maintain supporting agreements (OLAs and UAs)", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 }, "procedure": [
+    "Define and negotiate / agree a new OLA / UA",
+    "Evaluate OLA / UA fulfilment",
+    "Escalate an OLA / UA violation to the supplier",
+    "Review, update or terminate an OLA / UA"
+  ] },
+
+  { "id": "SRM.S", "process": "SRM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 }, "procedure": [
+    "Create a list of all reports that are currently produced or will be produced on a regular basis.",
+    "Specify every identified report by giving the report a unique name (ID), describing the purpose of the report, identifying its audience / addressee, defining its frequency, outlining the intended contents of the report and defining its format and method of delivery.",
+    "Define templates for reports to standardise / harmonise the report structure and support effective and repeatable reporting."
+  ] },
+  { "id": "SRM.A1", "process": "SRM", "phase": "execution", "name": "Identify reporting requirements", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 }, "procedure": [
+    "Derive targets, events and nonconformities to be reported to customers based on SLAs",
+    "Identify targets, events and nonconformities to be reported to internal stakeholders to support management of the SMS"
+  ] },
+  { "id": "SRM.A2", "process": "SRM", "phase": "execution", "name": "Maintain report specifications", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 }, "procedure": [
+    "Define/specify a new report",
+    "Update a report specification",
+    "Terminate a report"
+  ] },
+  { "id": "SRM.A3", "process": "SRM", "phase": "execution", "name": "Monitor the production and distribution of reports", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 }, "procedure": [
+    "Verify the production and distribution of reports according to specifications",
+    "Initiate follow-up actions in case of inaccurate reporting"
+  ] },
+
+  { "id": "SACM.S", "process": "SACM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 }, "procedure": [
+    "Identify the most critical service availability and continuity requirements based on SLAs and other sources of information.",
+    "Define the structure and format of a (generic) service availability and continuity plan.",
+    "Define an approach to monitor service availability (and continuity) and to record the results on an ongoing basis."
+  ] },
+  { "id": "SACM.A1", "process": "SACM", "phase": "execution", "name": "Identify service availability and continuity requirements", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 }, "procedure": [
+    "Derive availability targets from SLAs",
+    "Identify continuity requirements based on SLAs and business impact analysis"
+  ] },
+  { "id": "SACM.A2", "process": "SACM", "phase": "execution", "name": "Maintain and implement service availability and continuity plans", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 }, "procedure": [
+    "Assess risks related to service availability and continuity",
+    "Create service continuity and availability plans",
+    "Implement preventive measures from plans",
+    "Review, update or terminate service continuity and availability plans"
+  ] },
+  { "id": "SACM.A3", "process": "SACM", "phase": "execution", "name": "Evaluate service availability and continuity", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 }, "procedure": [
+    "Monitor service availability",
+    "Perform service continuity tests for reactive measures from plans"
+  ] },
+
+  { "id": "CAPM.S", "process": "CAPM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 }, "procedure": [
+    "Define the structure and format of a (generic) capacity plan.",
+    "Define an approach to monitor service performance and capacity (including utilisation of resources) and to record the results on an ongoing basis."
+  ] },
+  { "id": "CAPM.A1", "process": "CAPM", "phase": "execution", "name": "Identify service capacity and performance requirements", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 }, "procedure": [
+    "Derive performance targets from SLAs",
+    "Translate performance targets into capacity requirements"
+  ] },
+  { "id": "CAPM.A2", "process": "CAPM", "phase": "execution", "name": "Maintain and implement capacity plans", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 }, "procedure": [
+    "Create capacity plans",
+    "Ensure capacity according to plans",
+    "Review, update or terminate capacity plans"
+  ] },
+  { "id": "CAPM.A3", "process": "CAPM", "phase": "execution", "name": "Evaluate service performance", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 }, "procedure": [
+    "Monitor performance of services and service components",
+    "Monitor capacity including assessment against thresholds",
+    "Respond when capacity thresholds are exceeded"
+  ] },
+
+  { "id": "ISM.S", "process": "ISM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 }, "procedure": [
+    "Define a scheme to classify information assets according to their sensitivity / criticality.",
+    "Define a way to document an inventory of (information) assets.",
+    "Identify, describe and classify the most important information assets.",
+    "Identify the most important links between service components such as information-processing systems / facilities and the information assets identified before.",
+    "Define a method / scheme to identify and assess information security risks.",
+    "Perform an initial risk assessment, based on the identified assets, and focused on the most significant information security risks.",
+    "Define clear information security policies as a basis for effective information security governance.",
+    "Define a way to document information security controls and to monitor their status and progress of implementation.",
+    "Identify and document the most important technical, physical and organisational information security controls in place."
+  ] },
+  { "id": "ISM.A1", "process": "ISM", "phase": "execution", "name": "Identify information security requirements", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 }, "procedure": [
+    "Derive information security requirements from SLAs",
+    "Identify information (assets) to be protected and their needs in terms of confidentiality, integrity and availability"
+  ] },
+  { "id": "ISM.A2", "process": "ISM", "phase": "execution", "name": "Maintain and implement information security controls and policies", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 }, "procedure": [
+    "Assess risks related information security",
+    "Create information security policies and define other controls",
+    "Implement information security controls",
+    "Review, update or terminate information security policies and other controls"
+  ] },
+  { "id": "ISM.A3", "process": "ISM", "phase": "execution", "name": "Evaluate information security", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 }, "procedure": [
+    "Monitor, record and classify information security events",
+    "Identify and handle information security incidents"
+  ] },
+  { "id": "ISM.A4", "process": "ISM", "phase": "execution", "name": "Perform access control", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 }, "procedure": [
+    "Process requests for access rights",
+    "Provide access rights",
+    "Modify or revoke access rights",
+    "Review access rights (at regular intervals)"
+  ] },
+
+  { "id": "CRM.S", "process": "CRM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 }, "procedure": [
+    "Set up an initial customer database, and for each service customer document the most important information including contact information.",
+    "Decide on general communication channels to be used for customer engagement (e.g. ordering, escalation and complaints).",
+    "Define a way to perform and document the results of a service review.",
+    "Define a way to record, respond to and follow-up a customer complaint.",
+    "Define a way to evaluate customer satisfaction on a regular basis, e.g. (online) surveys."
+  ] },
+  { "id": "CRM.A1", "process": "CRM", "phase": "execution", "name": "Maintain the customer database", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 }, "procedure": [
+    "Add a new customer to the customer database (including contact information)",
+    "Update the information on a customer in the customer database",
+    "Remove a customer from the customer database"
+  ] },
+  { "id": "CRM.A2", "process": "CRM", "phase": "execution", "name": "Perform customer service reviews", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 }, "procedure": [
+    "Plan and prepare service reviews with customers",
+    "Perform and record a service review with a customer"
+  ] },
+  { "id": "CRM.A3", "process": "CRM", "phase": "execution", "name": "Handle customer complaints", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 }, "procedure": [
+    "Register, address and close a customer complaint",
+    "Track the implementation status of actions following a customer complaint",
+    "Review all customer complaints and follow-up actions periodically"
+  ] },
+  { "id": "CRM.A4", "process": "CRM", "phase": "execution", "name": "Manage customer satisfaction", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 }, "procedure": [
+    "Plan and implement measures to assess customer satisfaction",
+    "Initiate follow-up actions in response to insufficient customer satisfaction"
+  ] },
+
+  { "id": "SUPPM.S", "process": "SUPPM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 }, "procedure": [
+    "Set up an initial supplier database (covering all internal and external suppliers).",
+    "For each supplier, document the most important information including contact details both on the supplier side as well as on the service provider side (supplier relationship manager).",
+    "Understand which supplier services or service components need to be monitored, and how the monitoring will take place."
+  ] },
+  { "id": "SUPPM.A1", "process": "SUPPM", "phase": "execution", "name": "Maintain the supplier database", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 }, "procedure": [
+    "Add a new supplier to the supplier database (including contact information)",
+    "Update the information on a supplier in the supplier database",
+    "Remove a supplier from the supplier database"
+  ] },
+  { "id": "SUPPM.A2", "process": "SUPPM", "phase": "execution", "name": "Monitor supplier performance", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 }, "procedure": [
+    "Evaluate supplier performance",
+    "Together with the supplier, agree on follow-up actions in response to insufficient supplier performance",
+    "Track the implementation status of agreed follow-up actions with suppliers"
+  ] },
+
+  { "id": "ISRM.S", "process": "ISRM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR9", "page": 29 }, "procedure": [
+    "Set up a tool (e.g. ticket / workflow tool) supporting the recording and handling (including classification, prioritisation, escalation, closure) of reported incidents and service requests.",
+    "Define a standardised and repeatable way (procedure) of recording incidents and service requests that specifies the sources and channels through which incidents and service requests may be raised, the required format of an incident report or service request, and the way in which the incident or service request is recorded in the recording system.",
+    "Define a standardised and repeatable way (procedure) of classifying incidents and service requests that specifies a suitable classification scheme and describes how it should be applied.",
+    "Define a standardised and repeatable way (procedure) of prioritising incidents and service requests that specifies a suitable prioritisation scheme and describes how the priority of an incident or service request should be calculated.",
+    "Define a standardised and repeatable way (procedure) of escalating incidents and service requests that specifies functional and hierarchical escalation paths.",
+    "Define a standardised and repeatable way (procedure) of closing incidents and service requests that specifies how incidents and service requests are closed, including required user communication and confirmation.",
+    "Define the criteria for identifying a major incident, as well as a standardised and repeatable way (procedure) of dealing with major incidents from recording to closure, including a major incident review.",
+    "Identify well-known and recurring incidents, and for each of them describe, where required, the concrete steps to be carried out in response to the respective incident in order to manage it effectively from recording to closure.",
+    "Identify standardised service requests based on service descriptions and SLAs, and for each of them describe, where required, the concrete steps to be carried out in response to the respective service request in order to manage it effectively from recording to closure."
+  ] },
+  { "id": "ISRM.A1", "process": "ISRM", "phase": "execution", "name": "Manage incidents and service requests", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 }, "procedure": [
+    "Register incident or service request",
+    "Classify and prioritise incident or service request including checking against major incident criteria",
+    "Escalate incident or service request as required",
+    "Resolve incident or fulfil service request",
+    "Close incident or service request"
+  ] },
+  { "id": "ISRM.A2", "process": "ISRM", "phase": "execution", "name": "Manage major incidents", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 }, "procedure": [
+    "Identify incident as major incident based on agreed criteria",
+    "Assign a major incident coordinator for the major incident",
+    "Handle major incident with highest priority",
+    "Inform stakeholders and escalate major incident as required",
+    "Resolve major incident",
+    "Perform major incident review and close the major incident"
+  ] },
+  { "id": "ISRM.A3", "process": "ISRM", "phase": "execution", "name": "Manage workflows needed to resolve incidents and fulfil service requests", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 }, "procedure": [
+    "Maintain the step-by-step workflows for well-known and recurring incidents taking into account the KEDB",
+    "Maintain workflows for standardised service requests"
+  ] },
+
+  { "id": "PM.S", "process": "PM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 }, "procedure": [
+    "Define a standardised and repeatable way to register problems, known errors and related workarounds, and set up an initial known error database (KEDB) using a suitable tool or other form of documentation.",
+    "Set up a tool (e.g. ticket / workflow tool) supporting the recording and handling (including classification, prioritisation, escalation, closure) of identified problems.",
+    "Make sure relevant information on incidents, including incident records and reports, and the CMDB are accessible to process staff performing problem identification and investigation.",
+    "Ensure process staff involved in both ISRM and PM are aware of the different goals and perspectives of these processes, even when in practice some activities may overlap or happen almost in parallel."
+  ] },
+  { "id": "PM.A1", "process": "PM", "phase": "execution", "name": "Identify problems", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 }, "procedure": [
+    "Perform regular incident pattern and trend analysis to identify (potential) problems",
+    "Register a problem"
+  ] },
+  { "id": "PM.A2", "process": "PM", "phase": "execution", "name": "Handle problems", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 }, "procedure": [
+    "Classify and prioritise a problem",
+    "Identify the root cause and categorise the problem as a known error",
+    "Identify one or more workarounds where possible",
+    "Assess options for resolution of a problem, and resolve a problem where appropriate",
+    "Close a problem (following resolution or when no longer relevant)"
+  ] },
+  { "id": "PM.A3", "process": "PM", "phase": "execution", "name": "Maintain the KEDB", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 }, "procedure": [
+    "Add a known error (including one or more workarounds) to the KEDB",
+    "Update or deactivate a known error record in the KEDB"
+  ] },
+
+  { "id": "CONFM.S", "process": "CONFM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 }, "procedure": [
+    "Define the scope of the configuration management process and the integrated configuration management database (CMDB).",
+    "Agree the level of detail of configuration information to be collected.",
+    "Identify and define CI types (including their attributes) and relationship types.",
+    "Based on the defined scope, identify all existing sources of configuration information in the environment of the service provider.",
+    "Define the concept for integrating available sources of configuration information and add missing configuration information to the integrated CMDB, including the selection of appropriate supporting technology / tools."
+  ] },
+  { "id": "CONFM.A1", "process": "CONFM", "phase": "execution", "name": "Maintain configuration information", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 }, "procedure": [
+    "Record new CI in the CMDB (create a configuration record)",
+    "Update information on a CI"
+  ] },
+  { "id": "CONFM.A2", "process": "CONFM", "phase": "execution", "name": "Verify configuration information", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 }, "procedure": [
+    "Plan configuration verification",
+    "Perform configuration verification (to identify errors or inconsistencies in configuration information and trigger corrective actions)"
+  ] },
+
+  { "id": "CHM.S", "process": "CHM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 }, "procedure": [
+    "Set up a tool (e.g. ticket / workflow tool) supporting the recording and handling (including classification, evaluation, approval, implementation, post implementation review) of requested and approved changes.",
+    "Define a standardised and repeatable way of recording requests for changes (RFCs) and resulting approved changes that specifies the sources and channels through which RFCs may be raised, the required format of an RFC, and the way in which the RFC is recorded in the recording system.",
+    "Define the criteria for identifying emergency changes, as well as a standardised and repeatable way of dealing with emergency changes from recording to closure, including an emergency change review.",
+    "Identify well-known and recurring changes , and for each of them create a standardised change and describe, where required, the concrete steps to be carried out in order to manage the respective change effectively from recording to closure (including the steps for implementing the change and ensuring adequate traceability and documentation).",
+    "Create a schedule of changes (including those in releases to provide an overview of change implementation)."
+  ] },
+  { "id": "CHM.A1", "process": "CHM", "phase": "execution", "name": "Manage change evaluation and approval", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 }, "procedure": [
+    "Register a change based on a request for change (RFC)",
+    "Classify a change, including checking against major change and emergency change criteria",
+    "Assess a change",
+    "Approve or reject a change (considering special conditions for major or emergency changes)"
+  ] },
+  { "id": "CHM.A2", "process": "CHM", "phase": "execution", "name": "Manage change implementation and review (in connection with RDM where applicable)", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 }, "procedure": [
+    "Plan and schedule a change (including technical and non-technical actions)",
+    "Implement a change",
+    "Perform a post implementation review (considering special conditions for major or emergency changes)",
+    "Close a change"
+  ] },
+
+  { "id": "RDM.S", "process": "RDM", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 }, "procedure": [
+    "Define a standardised and repeatable way of defining and planning releases, based on approved changes and the schedule of changes.",
+    "Define criteria for identifying different types of releases, such as major releases, minor releases or emergency releases.",
+    "Define release and deployment strategies for all CIs under control of the change management process, ensuring the approach for deploying changes to a CI or a set of CIs is understood.",
+    "Define the service components and CIs which the strategy applies to, and under what conditions",
+    "Define the frequency of releases and manner of release for the strategy",
+    "Define the testing to be performed under this strategy",
+    "Define a way to record the results of release and deployment testing and evaluation of acceptance criteria."
+  ] },
+  { "id": "RDM.A1", "process": "RDM", "phase": "execution", "name": "Release planning", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 }, "procedure": [
+    "Build a release, based on the applicable release and deployment strategy",
+    "Test a release"
+  ] },
+  { "id": "RDM.A2", "process": "RDM", "phase": "execution", "name": "Release deployment", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 }, "procedure": [
+    "Plan and perform communication and training for users and support staff",
+    "Prepare deployment of a release",
+    "Deploy a release",
+    "Review a release for success",
+    "Inform stakeholders of the results of the release",
+    "Close a release"
+  ] },
+
+  { "id": "CSI.S", "process": "CSI", "phase": "setup", "name": "Initial process setup", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 }, "procedure": [
+    "Identify all relevant sources of potential suggestions for improvement.",
+    "Define a standardised way to record suggestions for improvements from the identified sources.",
+    "Set up a tool (e.g. ticket / workflow tool) supporting the recording and handling (including prioritisation, evaluation approval) of suggestions for improvement."
+  ] },
+  { "id": "CSI.A1", "process": "CSI", "phase": "execution", "name": "Manage evaluation of improvements", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 }, "procedure": [
+    "Identify and register an opportunity / suggestion for improvement",
+    "Evaluate an opportunity / suggestion for improvement"
+  ] },
+  { "id": "CSI.A2", "process": "CSI", "phase": "execution", "name": "Manage implementation of improvements", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 }, "procedure": [
+    "Initiate an action to address an improvement",
+    "Track the status and progress of improvement actions"
+  ] }
+]

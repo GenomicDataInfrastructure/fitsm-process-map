@@ -1,0 +1,248 @@
+[
+  {
+    "code": "SPM",
+    "name": "Service Portfolio Management",
+    "requirements": "PR1",
+    "objective": { "text": "To maintain the service portfolio and to manage services through their lifecycle", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 } },
+    "inputs": [
+      { "text": "Any information indicating demand for services, including (potential) customer demand and requirements", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 } },
+      { "text": "Understanding of the service provider’s resources, capabilities, limitations and constraints", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 } },
+      { "text": "Information on any existing services (e.g. the current service portfolio)", "source": { "doc": "FitSM-2", "section": "PR1", "page": 11 } }
+    ],
+    "outputs": [
+      { "text": "Complete and up-to-date service portfolio", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "text": "Valid and consistent service specifications", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "text": "Plans for new or changed services (and related requests for changes)", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "SLM",
+    "name": "Service Level Management",
+    "requirements": "PR2",
+    "objective": { "text": "To maintain service catalogues, and to define and evaluate agreements on service quality with customers and suppliers", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } },
+    "inputs": [
+      { "text": "Service portfolio together with service specifications", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } },
+      { "text": "General and specific service level requirements", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date service catalogue covering all information that are relevant for customers", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } },
+      { "text": "Default SLA and individual SLAs with customers", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } },
+      { "text": "Supporting OLAs and UAs, aligned with SLAs", "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "SRM",
+    "name": "Service Reporting Management",
+    "requirements": "PR3",
+    "objective": { "text": "To specify reports on services and processes and ensure they are produced and delivered", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
+    "inputs": [
+      { "text": "Reporting requirements (e.g. from SLAs)", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } }
+    ],
+    "outputs": [
+      { "text": "List of all (agreed) reports", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
+      { "text": "Specification of all reports", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
+      { "text": "Reports", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "SACM",
+    "name": "Service Availability & Continuity Management",
+    "requirements": "PR4",
+    "objective": { "text": "To ensure sufficient service availability and continuity to meet service targets", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+    "inputs": [
+      { "text": "Service availability and continuity requirements (e.g. from SLAs)", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+      { "text": "Risk factors having impact on the capability of delivering services according to agreed availability and continuity targets", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } }
+    ],
+    "outputs": [
+      { "text": "Service availability and continuity plans", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+      { "text": "Service availability data", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+      { "text": "Requests for change", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "CAPM",
+    "name": "Capacity Management",
+    "requirements": "PR5",
+    "objective": { "text": "To ensure sufficient capacity and service performance to meet service targets", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+    "inputs": [
+      { "text": "Service performance and capacity requirements (e.g. from SLAs)", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "text": "Current level of capacities plus information on the past, current and future (predicted) utilisation of resources", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "text": "Information on available resources and constraints", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } }
+    ],
+    "outputs": [
+      { "text": "Capacity plans (reflecting demands, planned upgrades, downgrades and reallocations of resources)", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "text": "Capacity and service performance monitoring plans / concept", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+      { "text": "Capacity and service performance monitoring records / reports", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "ISM",
+    "name": "Information Security Management",
+    "requirements": "PR6",
+    "objective": { "text": "To preserve confidentiality, integrity and availability of information related to managing and delivering services", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 } },
+    "inputs": [
+      { "text": "Information security requirements (from SLAs, legislation, contracts)", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 } },
+      { "text": "Assets to be protected", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 } },
+      { "text": "Relevant risk factors (vulnerabilities, hazards)", "source": { "doc": "FitSM-2", "section": "PR6", "page": 23 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date inventory of information assets", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "text": "Approved information security policies", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "text": "Up-to-date information security risk assessment", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "text": "Documented information security controls", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "text": "Reports on information security events, incidents and follow-up actions", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+      { "text": "Documented information on access rights and their reviews", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "CRM",
+    "name": "Customer Relationship Management",
+    "requirements": "PR7",
+    "objective": { "text": "To establish and maintain good relationships with customers receiving services", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+    "inputs": [
+      { "text": "Information on service customers", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Current service catalogue", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Customer demands and requirements", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Existing SLAs with customers", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Customer complaints", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date database of service customers (customer database)", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Service review reports", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Customer complaints records", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+      { "text": "Customer satisfaction reports", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "SUPPM",
+    "name": "Supplier Relationship Management",
+    "requirements": "PR8",
+    "objective": { "text": "To establish and maintain healthy relationships with internal and external suppliers and to monitor their performance", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+    "inputs": [
+      { "text": "Information on suppliers", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+      { "text": "Information on supplier offerings", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+      { "text": "OLAs with internal suppliers", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+      { "text": "UAs with external suppliers", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date supplier database", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+      { "text": "Supplier evaluation results", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "ISRM",
+    "name": "Incident & Service Request Management",
+    "requirements": "PR9",
+    "objective": { "text": "To restore agreed service operation after the occurrence of an incident and to respond to user service requests", "source": { "doc": "FitSM-2", "section": "PR9", "page": 29 } },
+    "inputs": [
+      { "text": "Incidents reported by users or identified by the service provider", "source": { "doc": "FitSM-2", "section": "PR9", "page": 29 } },
+      { "text": "Service requests raised by users", "source": { "doc": "FitSM-2", "section": "PR9", "page": 29 } },
+      { "text": "Configuration information (CMDB)", "source": { "doc": "FitSM-2", "section": "PR9", "page": 29 } }
+    ],
+    "outputs": [
+      { "text": "Incident records", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "text": "Service request records", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "text": "Major incident review reports", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "text": "Requests for changes raised to trigger the change management process, in order to commence the fulfilment of service requests", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "text": "Up-to-date descriptions of step-by-step workflows for standard incidents and service requests", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
+      { "text": "Regular incident reports", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "PM",
+    "name": "Problem Management",
+    "requirements": "PR10",
+    "objective": { "text": "To identify and investigate problems in order to reduce their impact or prevent them from causing further incidents", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } },
+    "inputs": [
+      { "text": "Statistics on incidents and service requests (for trend analysis)", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } },
+      { "text": "Incident and service request records", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } },
+      { "text": "Other relevant sources of information to identify (new) problems, including change and release records", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } },
+      { "text": "Configuration information (CMDB)", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date KEDB with information (records) on problems, known errors and related workarounds", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
+      { "text": "Requests for changes raised to trigger the change management process, in order to resolve the underlying root cause(s) of identified problems / known errors", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "CONFM",
+    "name": "Configuration Management",
+    "requirements": "PR11",
+    "objective": { "text": "To provide and maintain a logical model of configuration items in support of other service management activities", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
+    "inputs": [
+      { "text": "Relevant information / data on configuration items (CIs) and their relationships", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
+      { "text": "Information on changes to CIs", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } }
+    ],
+    "outputs": [
+      { "text": "Up-to-date logical model of all relevant CIs and their attributes and relationships, reflected by the information / records stored in the configuration management database (CMDB)", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
+      { "text": "Configuration verification reports", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } }
+    ],
+    "externalFlows": [
+      { "direction": "out", "party": "Any", "item": "Configuration information from the CMDB to support process activities", "source": { "doc": "FitSM-2", "section": "PR11", "page": 35 } }
+    ]
+  },
+  {
+    "code": "CHM",
+    "name": "Change Management",
+    "requirements": "PR12",
+    "objective": { "text": "To plan, approve and review changes in a controlled manner to avoid adverse impact on services", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 } },
+    "inputs": [
+      { "text": "Requests for changes (RFCs)", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 } },
+      { "text": "Information on planned releases and deployments", "source": { "doc": "FitSM-2", "section": "PR12", "page": 36 } }
+    ],
+    "outputs": [
+      { "text": "Change records", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "text": "Up-to-date schedule of changes", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "text": "Post implementation review reports", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "text": "Up-to-date list of (pre-defined) standard changes and step-by-step-workflows for handling them", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    ],
+    "externalFlows": [
+      { "direction": "in", "party": "Any", "item": "Request for change to trigger the CHM process", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    ]
+  },
+  {
+    "code": "RDM",
+    "name": "Release & Deployment Management",
+    "requirements": "PR13",
+    "objective": { "text": "To bundle changes into appropriate types of releases and to effectively deploy them", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } },
+    "inputs": [
+      { "text": "Information on approved changes", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } },
+      { "text": "Change schedule", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } },
+      { "text": "Any release and deployment planning constraints or requirements", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } }
+    ],
+    "outputs": [
+      { "text": "Defined and successfully deployed releases", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } },
+      { "text": "Information / reports on the success and failure of releases", "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "CSI",
+    "name": "Continual Service Improvement Management",
+    "requirements": "PR14",
+    "objective": { "text": "To plan, implement and review improvements to services and processes", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } },
+    "inputs": [
+      { "text": "Suggestions for improvements", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } },
+      { "text": "Results from measurements, assessments and audits of the SMS, including: Identified nonconformities as well as deficiencies in effectiveness and efficiency of ITSM processes, and resulting opportunities for improvement; Identified deficiencies in the performance of services or supporting service components, and resulting opportunities for improvement", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } },
+      { "text": "Customer feedback from service reviews, complaints and satisfaction analysis / surveys", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } },
+      { "text": "Other sources of improvements", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } }
+    ],
+    "outputs": [
+      { "text": "Improvements to services or the SMS", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } },
+      { "text": "Requests for changes", "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } }
+    ],
+    "externalFlows": [
+      { "direction": "in", "party": "Any", "item": "Suggestions for improving services and the SMS that require control and coordination through the CSI process", "source": { "doc": "FitSM-2", "section": "PR14", "page": 42 } }
+    ]
+  }
+]

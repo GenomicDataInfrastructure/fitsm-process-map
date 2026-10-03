@@ -1,0 +1,408 @@
+[
+  {
+    "id": "AA.S",
+    "process": "AA",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "AA.A1",
+    "process": "AA",
+    "phase": "execution",
+    "name": "Do AA",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "BB.S",
+    "process": "BB",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "BB.A1",
+    "process": "BB",
+    "phase": "execution",
+    "name": "Do BB",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "CC.S",
+    "process": "CC",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "CC.A1",
+    "process": "CC",
+    "phase": "execution",
+    "name": "Do CC",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "DD.S",
+    "process": "DD",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "DD.A1",
+    "process": "DD",
+    "phase": "execution",
+    "name": "Do DD",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "EE.S",
+    "process": "EE",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "EE.A1",
+    "process": "EE",
+    "phase": "execution",
+    "name": "Do EE",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "FF.S",
+    "process": "FF",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "FF.A1",
+    "process": "FF",
+    "phase": "execution",
+    "name": "Do FF",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "GG.S",
+    "process": "GG",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "GG.A1",
+    "process": "GG",
+    "phase": "execution",
+    "name": "Do GG",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "HH.S",
+    "process": "HH",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "HH.A1",
+    "process": "HH",
+    "phase": "execution",
+    "name": "Do HH",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "II.S",
+    "process": "II",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "II.A1",
+    "process": "II",
+    "phase": "execution",
+    "name": "Do II",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "JJ.S",
+    "process": "JJ",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "JJ.A1",
+    "process": "JJ",
+    "phase": "execution",
+    "name": "Do JJ",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "KK.S",
+    "process": "KK",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "KK.A1",
+    "process": "KK",
+    "phase": "execution",
+    "name": "Do KK",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "LL.S",
+    "process": "LL",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "LL.A1",
+    "process": "LL",
+    "phase": "execution",
+    "name": "Do LL",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "MM.S",
+    "process": "MM",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "MM.A1",
+    "process": "MM",
+    "phase": "execution",
+    "name": "Do MM",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  },
+  {
+    "id": "NN.S",
+    "process": "NN",
+    "phase": "setup",
+    "name": "Initial process setup",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Set it up"
+    ]
+  },
+  {
+    "id": "NN.A1",
+    "process": "NN",
+    "phase": "execution",
+    "name": "Do NN",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "4.1",
+      "page": 5
+    },
+    "procedure": [
+      "Step one",
+      "Step two"
+    ]
+  }
+]

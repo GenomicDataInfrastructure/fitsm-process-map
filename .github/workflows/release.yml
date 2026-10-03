@@ -1,6 +1,6 @@
-# SPDX-FileCopyrightText: 2024 PNED G.I.E.
+# SPDX-FileCopyrightText: 2026 PNED G.I.E.
 #
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CC-BY-4.0
 
 name: Publish release
 
@@ -22,14 +22,18 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Check FitSM data and page script
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 22
+      - name: Check FitSM content, map and scripts
         run: node scripts/check.js
       - name: Package site
         run: |
-          mkdir -p "fitsm-process-map-${GITHUB_REF_NAME}"
-          cp index.html fitsm-data.js README.md "fitsm-process-map-${GITHUB_REF_NAME}/"
-          cp -r LICENSES "fitsm-process-map-${GITHUB_REF_NAME}/"
-          zip -r "fitsm-process-map-${GITHUB_REF_NAME}.zip" "fitsm-process-map-${GITHUB_REF_NAME}"
+          dir="fitsm-process-map-${GITHUB_REF_NAME}"
+          mkdir -p "$dir"
+          cp index.html styles.css README.md CHANGELOG.md "$dir/"
+          cp -r src content LICENSES "$dir/"
+          zip -r "$dir.zip" "$dir"
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}

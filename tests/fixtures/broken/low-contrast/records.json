@@ -1,0 +1,60 @@
+[
+  {
+    "id": "record",
+    "name": "Record",
+    "definition": {
+      "text": "Documentation of an event",
+      "source": {
+        "doc": "FitSM-0",
+        "section": "6.1",
+        "page": 2
+      }
+    },
+    "usedBy": [
+      {
+        "process": "AA",
+        "basis": "output",
+        "derived": true,
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      },
+      {
+        "process": "BB",
+        "basis": "output",
+        "derived": true,
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "report",
+    "name": "Report",
+    "definition": {
+      "text": "A structured record",
+      "source": {
+        "doc": "FitSM-0",
+        "section": "6.1",
+        "page": 2
+      }
+    },
+    "usedBy": [
+      {
+        "process": "CC",
+        "basis": "output",
+        "derived": true,
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ]
+  }
+]

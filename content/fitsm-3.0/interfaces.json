@@ -1,0 +1,284 @@
+[
+  {
+    "id": "CRM-SPM",
+    "processes": ["CRM", "SPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CRM", "to": "SPM", "item": "Identified customer requirements as a factor to be considered to identify demand for new or changed services", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "from": "CRM", "to": "SPM", "item": "Identified customer requirements as a factor to be considered to identify demand for new or changed services", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } }
+    ]
+  },
+  {
+    "id": "SPM-SUPPM",
+    "processes": ["SPM", "SUPPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SUPPM", "to": "SPM", "item": "Information on suppliers as a basis for identifying suppliers involved in the delivery of a given service", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "from": "SPM", "to": "SUPPM", "item": "Information on internal and external suppliers involved in delivering a given service (part of plans for new or changed services) as a basis for the identification of new suppliers", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 13 } },
+      { "from": "SPM", "to": "SUPPM", "item": "Information on internal and external suppliers involved in delivering a given service (part of plans for new or changed services) as a basis for the identification of new suppliers", "listedBy": "SUPPM", "source": { "doc": "FitSM-2", "section": "PR8", "page": 28 } },
+      { "from": "SUPPM", "to": "SPM", "item": "Information on suppliers as a basis for identifying suppliers involved in the delivery of a given service", "listedBy": "SUPPM", "source": { "doc": "FitSM-2", "section": "PR8", "page": 28 } }
+    ]
+  },
+  {
+    "id": "SLM-SPM",
+    "processes": ["SLM", "SPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SPM", "to": "SLM", "item": "Service portfolio together with service specifications as a basis for creating the service catalogue", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+      { "from": "SPM", "to": "SLM", "item": "Service portfolio together with service specifications as a basis for creating the service catalogue", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } }
+    ]
+  },
+  {
+    "id": "CHM-SPM",
+    "processes": ["CHM", "SPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SPM", "to": "CHM", "item": "Requests for changes to trigger changes to configuration items (CIs) as required to implement plans for new or changed services", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 13 } }
+    ]
+  },
+  {
+    "id": "ISRM-SPM",
+    "processes": ["ISRM", "SPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SPM", "to": "ISRM", "item": "Service level agreements (SLAs) containing information on agreed service targets to enable prioritisation of incidents and service requests", "listedBy": "SPM", "source": { "doc": "FitSM-2", "section": "PR1", "page": 13 } }
+    ],
+    "note": "FitSM-2 lists this row under Service Portfolio Management's outputs; the same wording appears under Service Level Management's interface with ISRM."
+  },
+  {
+    "id": "CRM-SLM",
+    "processes": ["CRM", "SLM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CRM", "to": "SLM", "item": "Information on customers and identified customer-specific service level requirements (e.g. based on customer feedback or resulting from service reviews with customers) as a basis for defining SLAs", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "CRM", "item": "Service catalogue for available services that are offered to customers", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 16 } },
+      { "from": "SLM", "to": "CRM", "item": "SLAs reflecting what has been agreed with customers together with service reports to support service reviews with customers", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 16 } },
+      { "from": "SLM", "to": "CRM", "item": "Service catalogue for available services that are offered to customers", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } },
+      { "from": "SLM", "to": "CRM", "item": "SLAs reflecting what has been agreed with customers together with service reports to support service reviews with customers", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } },
+      { "from": "CRM", "to": "SLM", "item": "Information on customers and identified customer-specific service level requirements (e.g. based on customer feedback or resulting from service reviews with customers) as a basis for defining SLAs", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } }
+    ]
+  },
+  {
+    "id": "SLM-SUPPM",
+    "processes": ["SLM", "SUPPM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SUPPM", "to": "SLM", "item": "Information on suppliers as a basis for defining OLAs and UAs", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "SUPPM", "item": "OLAs and UAs together with reports on operational targets to support supplier performance evaluation", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 16 } },
+      { "from": "SLM", "to": "SUPPM", "item": "OLAs and UAs together with reports on operational targets to support supplier performance evaluation", "listedBy": "SUPPM", "source": { "doc": "FitSM-2", "section": "PR8", "page": 28 } },
+      { "from": "SUPPM", "to": "SLM", "item": "Information on suppliers as a basis for new or updated OLAs and UAs", "listedBy": "SUPPM", "source": { "doc": "FitSM-2", "section": "PR8", "page": 28 } }
+    ]
+  },
+  {
+    "id": "SLM-SRM",
+    "processes": ["SLM", "SRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SLM", "to": "SRM", "item": "SLAs with agreed service targets as a basis for identifying service reporting requirements, i.e. understanding the reporting requirements agreed in SLAs", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "SRM", "item": "Data from evaluation of SLAs, OLAs and UAs as a basis for reports", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "SRM", "item": "SLAs with agreed service targets as a basis for identifying service reporting requirements, i.e. understanding the reporting requirements agreed in SLAs", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } },
+      { "from": "SLM", "to": "SRM", "item": "Data from evaluation of SLAs, OLAs and UAs as a basis for reports", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } }
+    ]
+  },
+  {
+    "id": "SACM-SLM",
+    "processes": ["SACM", "SLM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SLM", "to": "SACM", "item": "SLAs with agreed service availability and continuity targets as a basis for identifying overall availability and continuity requirements", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "SACM", "item": "SLAs with agreed service availability and continuity targets as a basis for identifying overall availability and continuity requirements", "listedBy": "SACM", "source": { "doc": "FitSM-2", "section": "PR4", "page": 20 } }
+    ]
+  },
+  {
+    "id": "CAPM-SLM",
+    "processes": ["CAPM", "SLM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SLM", "to": "CAPM", "item": "SLAs with agreed capacity and performance targets as a basis for identifying overall capacity and performance requirements", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 15 } },
+      { "from": "SLM", "to": "CAPM", "item": "SLAs with agreed capacity and performance targets as a basis for identifying overall capacity and performance requirements", "listedBy": "CAPM", "source": { "doc": "FitSM-2", "section": "PR5", "page": 22 } }
+    ]
+  },
+  {
+    "id": "ISM-SLM",
+    "processes": ["ISM", "SLM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SLM", "to": "ISM", "item": "SLAs with agreed information security targets as a basis for identifying overall security requirements", "listedBy": "SLM", "source": { "doc": "FitSM-2", "section": "PR2", "page": 16 } },
+      { "from": "SLM", "to": "ISM", "item": "SLAs with agreed information security targets as a basis for identifying overall security requirements", "listedBy": "ISM", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } }
+    ]
+  },
+  {
+    "id": "ISRM-SLM",
+    "processes": ["ISRM", "SLM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SLM", "to": "ISRM", "item": "SLAs containing information on agreed service targets to enable prioritisation of incidents and service requests", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } }
+    ]
+  },
+  {
+    "id": "SACM-SRM",
+    "processes": ["SACM", "SRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SACM", "to": "SRM", "item": "Service availability data as a basis for reports", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } },
+      { "from": "SACM", "to": "SRM", "item": "Service availability data as a basis for reports", "listedBy": "SACM", "source": { "doc": "FitSM-2", "section": "PR4", "page": 20 } }
+    ]
+  },
+  {
+    "id": "CAPM-SRM",
+    "processes": ["CAPM", "SRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CAPM", "to": "SRM", "item": "Performance and utilisation data as a basis for reports", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } },
+      { "from": "CAPM", "to": "SRM", "item": "Performance and utilisation data as a basis for reports", "listedBy": "CAPM", "source": { "doc": "FitSM-2", "section": "PR5", "page": 22 } }
+    ]
+  },
+  {
+    "id": "CRM-SRM",
+    "processes": ["CRM", "SRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SRM", "to": "CRM", "item": "Relevant reports as a basis for managing customer relationships and customer satisfaction", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } },
+      { "from": "SRM", "to": "CRM", "item": "Relevant reports as a basis for managing customer relationships and customer satisfaction", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } }
+    ]
+  },
+  {
+    "id": "CSI-SRM",
+    "processes": ["CSI", "SRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SRM", "to": "CSI", "item": "Service reports as an information basis related to opportunities for improving services and the SMS", "listedBy": "SRM", "source": { "doc": "FitSM-2", "section": "PR3", "page": 18 } },
+      { "from": "SRM", "to": "CSI", "item": "Service reports as an information basis related to opportunities for improving services and the SMS", "listedBy": "CSI", "source": { "doc": "FitSM-2", "section": "PR14", "page": 42 } }
+    ]
+  },
+  {
+    "id": "CHM-SACM",
+    "processes": ["CHM", "SACM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "SACM", "to": "CHM", "item": "Requests for change addressing required updates or modifications to CIs as a basis for implementing the measures necessary to enable the IT service environment to meet identified availability and continuity requirements", "listedBy": "SACM", "source": { "doc": "FitSM-2", "section": "PR4", "page": 20 } }
+    ]
+  },
+  {
+    "id": "CAPM-CHM",
+    "processes": ["CAPM", "CHM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CAPM", "to": "CHM", "item": "Request for changes addressing required updates or modifications to CIs as a basis for implementing the capacity planning to enable the IT service environment to meet identified capacity and performance requirements", "listedBy": "CAPM", "source": { "doc": "FitSM-2", "section": "PR5", "page": 22 } }
+    ]
+  },
+  {
+    "id": "CHM-ISM",
+    "processes": ["CHM", "ISM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "ISM", "to": "CHM", "item": "Requests for changes addressing required updates or modifications to CIs as a basis for implementing the information security controls as far as they relate to CIs supporting the services", "listedBy": "ISM", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } }
+    ]
+  },
+  {
+    "id": "CHM-CRM",
+    "processes": ["CHM", "CRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CRM", "to": "CHM", "item": "Requests for changes (e.g. to address insufficient customer satisfaction, feedback from service reviews or customer complaints)", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } }
+    ]
+  },
+  {
+    "id": "CRM-CSI",
+    "processes": ["CRM", "CSI"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CRM", "to": "CSI", "item": "Suggestions for improvement (e.g. to address insufficient customer satisfaction, feedback from service reviews or customer complaints)", "listedBy": "CRM", "source": { "doc": "FitSM-2", "section": "PR7", "page": 26 } }
+    ]
+  },
+  {
+    "id": "ISRM-PM",
+    "processes": ["ISRM", "PM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "PM", "to": "ISRM", "item": "Known error database (KEDB) containing information on known errors and related workarounds to support the resolution of incidents caused by known errors", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } },
+      { "from": "ISRM", "to": "PM", "item": "Trend information on incidents, including information from incident tickets and reports, to enable pattern and trend analysis", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } },
+      { "from": "ISRM", "to": "PM", "item": "Trend information on incidents, including information from incident tickets and reports, to enable pattern and trend analysis", "listedBy": "PM", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
+      { "from": "PM", "to": "ISRM", "item": "Known error database (KEDB) containing information on known errors and related workarounds to support the resolution of incidents caused by known errors", "listedBy": "PM", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } }
+    ]
+  },
+  {
+    "id": "CONFM-ISRM",
+    "processes": ["CONFM", "ISRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CONFM", "to": "ISRM", "item": "CMDB containing information on configuration items and their relationships to support the classification, prioritisation, escalation and resolution of incidents and the fulfilment of service requests", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } }
+    ]
+  },
+  {
+    "id": "ISRM-RDM",
+    "processes": ["ISRM", "RDM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "RDM", "to": "ISRM", "item": "Information on planned or recently deployed releases to support incident resolution (e.g. to understand if incidents are potentially related to releases)", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } },
+      { "from": "RDM", "to": "ISRM", "item": "Information on planned or recently deployed releases to support incident resolution (e.g. to understand if incidents are potentially related to releases)", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } }
+    ]
+  },
+  {
+    "id": "CHM-ISRM",
+    "processes": ["CHM", "ISRM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "ISRM", "to": "CHM", "item": "Requests for changes required to resolve incidents or to fulfil service requests", "listedBy": "ISRM", "source": { "doc": "FitSM-2", "section": "PR9", "page": 31 } }
+    ]
+  },
+  {
+    "id": "CONFM-PM",
+    "processes": ["CONFM", "PM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CONFM", "to": "PM", "item": "CMDB containing information on configuration items and their relationships to support the classification, prioritisation and investigation of problems", "listedBy": "PM", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } }
+    ]
+  },
+  {
+    "id": "CHM-PM",
+    "processes": ["CHM", "PM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "PM", "to": "CHM", "item": "Requests for changes to resolve / eliminate problems", "listedBy": "PM", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } }
+    ]
+  },
+  {
+    "id": "CHM-CONFM",
+    "processes": ["CHM", "CONFM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CHM", "to": "CONFM", "item": "Information on the deployment of releases (and the changes to CIs included in the releases) required to update the CMDB and (if necessary) introduce new CI types", "listedBy": "CONFM", "source": { "doc": "FitSM-2", "section": "PR11", "page": 35 } },
+      { "from": "CHM", "to": "CONFM", "item": "Information on planned, approved and / or implemented changes to CIs to be reflected in the CMDB", "listedBy": "CHM", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    ]
+  },
+  {
+    "id": "CHM-RDM",
+    "processes": ["CHM", "RDM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CHM", "to": "RDM", "item": "Approved and planned changes that are ready for deployment to be considered for future / upcoming releases (depending on defined criteria and applicable release and deployment strategies)", "listedBy": "CHM", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "from": "CHM", "to": "RDM", "item": "Change schedule with proposed deployment dates for planned and approved changes / Basis for planning and scheduling releases", "listedBy": "CHM", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+      { "from": "CHM", "to": "RDM", "item": "Approved and planned changes that are ready for deployment to be considered for future / upcoming releases (depending on defined criteria and applicable release and deployment strategies)", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } },
+      { "from": "CHM", "to": "RDM", "item": "Change schedule with proposed deployment dates for planned and approved changes / Basis for planning and scheduling releases", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } },
+      { "from": "RDM", "to": "CHM", "item": "Information on deployed releases (release records) to allow for post implementation review of the bundled changes", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } }
+    ]
+  },
+  {
+    "id": "CONFM-RDM",
+    "processes": ["CONFM", "RDM"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CONFM", "to": "RDM", "item": "Configuration information (CMDB) as a basis for informed decisions in deployment planning", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } },
+      { "from": "RDM", "to": "CONFM", "item": "Information on the deployment of releases (and the changes to CIs included in the releases) required to update the CMDB and (if necessary) introduce new CI types", "listedBy": "RDM", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } }
+    ]
+  },
+  {
+    "id": "CHM-CSI",
+    "processes": ["CHM", "CSI"],
+    "descriptions": [],
+    "flows": [
+      { "from": "CSI", "to": "CHM", "item": "Requests for changes to trigger the change management process, in order to implement improvements (where needed)", "listedBy": "CSI", "source": { "doc": "FitSM-2", "section": "PR14", "page": 42 } }
+    ]
+  }
+]

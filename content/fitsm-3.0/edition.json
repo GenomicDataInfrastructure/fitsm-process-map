@@ -1,0 +1,43 @@
+{
+  "standard": "FitSM",
+  "edition": "3.0",
+  "documents": {
+    "FitSM-0": {
+      "title": "FitSM-0: Overview and vocabulary",
+      "version": "3.0.1",
+      "releaseDate": "2025-06-09",
+      "url": "https://www.fitsm.eu/download/1660/",
+      "licenceStatement": { "page": 1 }
+    },
+    "FitSM-1": {
+      "title": "FitSM-1: Requirements",
+      "version": "3.0.1",
+      "releaseDate": "2024-05-21",
+      "url": "https://www.fitsm.eu/download/1263/",
+      "licenceStatement": { "page": 1 }
+    },
+    "FitSM-2": {
+      "title": "FitSM-2: Process activities and implementation",
+      "version": "3.0.2",
+      "releaseDate": "2025-12-18",
+      "url": "https://www.fitsm.eu/download/1716/",
+      "licenceStatement": { "page": 1 }
+    },
+    "FitSM-3": {
+      "title": "FitSM-3: Role model",
+      "version": "3.0.1",
+      "releaseDate": "2024-05-22",
+      "url": "https://www.fitsm.eu/download/1268/",
+      "licenceStatement": { "page": 1 }
+    }
+  },
+  "downloads": "https://www.fitsm.eu/downloads/",
+  "licence": {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "attribution": "ITEMO e.V.",
+  "externalParties": {
+    "Any": "any process (FitSM-2: “Any”)"
+  }
+}

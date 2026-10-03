@@ -1,0 +1,492 @@
+[
+  {
+    "code": "AA",
+    "name": "Process AA",
+    "requirements": "PR1",
+    "objective": {
+      "text": "Objective of AA",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": [
+      {
+        "direction": "in",
+        "party": "Customers",
+        "item": "Requests",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "aliases": [
+      "isrm"
+    ]
+  },
+  {
+    "code": "BB",
+    "name": "Process BB",
+    "requirements": "PR2",
+    "objective": {
+      "text": "Objective of BB",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "CC",
+    "name": "Process CC",
+    "requirements": "PR3",
+    "objective": {
+      "text": "Objective of CC",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "DD",
+    "name": "Process DD",
+    "requirements": "PR4",
+    "objective": {
+      "text": "Objective of DD",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "EE",
+    "name": "Process EE",
+    "requirements": "PR5",
+    "objective": {
+      "text": "Objective of EE",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "FF",
+    "name": "Process FF",
+    "requirements": "PR6",
+    "objective": {
+      "text": "Objective of FF",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "GG",
+    "name": "Process GG",
+    "requirements": "PR7",
+    "objective": {
+      "text": "Objective of GG",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "HH",
+    "name": "Process HH",
+    "requirements": "PR8",
+    "objective": {
+      "text": "Objective of HH",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "II",
+    "name": "Process II",
+    "requirements": "PR9",
+    "objective": {
+      "text": "Objective of II",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "JJ",
+    "name": "Process JJ",
+    "requirements": "PR10",
+    "objective": {
+      "text": "Objective of JJ",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "KK",
+    "name": "Process KK",
+    "requirements": "PR11",
+    "objective": {
+      "text": "Objective of KK",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "LL",
+    "name": "Process LL",
+    "requirements": "PR12",
+    "objective": {
+      "text": "Objective of LL",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "MM",
+    "name": "Process MM",
+    "requirements": "PR13",
+    "objective": {
+      "text": "Objective of MM",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  },
+  {
+    "code": "NN",
+    "name": "Process NN",
+    "requirements": "PR14",
+    "objective": {
+      "text": "Objective of NN",
+      "source": {
+        "doc": "FitSM-2",
+        "section": "4.1",
+        "page": 5
+      }
+    },
+    "inputs": [
+      {
+        "text": "An input",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A record",
+        "source": {
+          "doc": "FitSM-2",
+          "section": "4.1",
+          "page": 5
+        }
+      }
+    ],
+    "externalFlows": []
+  }
+]
