@@ -8,7 +8,7 @@
  * specs/…/contracts/content-files.md.
  */
 
-import { connectionLabel } from "./graph.js";
+import { connectionLabel, stationLines } from "./graph.js";
 
 export const LABELS = {
   interpretation: "Not part of FitSM",
@@ -105,8 +105,14 @@ const views = {
 
   process(process, ctx) {
     const { model } = ctx;
+    // Which line(s) the station is on, in words (FR-006): the lines are a study aid.
+    const lineNames = stationLines(process.code, model).map((l) => l.name);
+    const onLines = lineNames.length === 0 ? "On no line"
+      : lineNames.length === 1 ? `On the ${lineNames[0]} line`
+        : `On the ${lineNames.slice(0, -1).join(", ")} and ${lineNames[lineNames.length - 1]} lines`;
     const out = [
       heading(`${process.name} (${process.code})`),
+      h("p", { class: "subtitle", text: `${onLines} (study aid, not part of FitSM)` }),
       ...section("Objective", [h("p", { class: "quote", text: process.objective.text }), sourceLine(process.objective.source, model)]),
     ];
 
@@ -234,6 +240,9 @@ const views = {
       : h("p", { class: "fixed-sentence", text: LABELS.noSpecificTasks });
     out.push(...section(`Tasks specific to ${role.process}`, [specific, role.tasks.length ? null : sourceLine(role.source, model)].filter(Boolean)));
 
+    if (role.kind === "staff") {
+      out.push(interpretation(" FitSM-3 defines this as a common role type (§5) that applies in every process; it does not list it per process."));
+    }
     const generic = model.generic[role.kind];
     if (generic && role.kind !== "specific") {
       out.push(...section(`Tasks common to every ${GENERIC_KIND_NAMES[role.kind] || role.kind}`, [

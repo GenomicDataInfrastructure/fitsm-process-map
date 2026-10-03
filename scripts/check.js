@@ -314,6 +314,16 @@ function checkEdition({ id: ed, dir }) {
   if (!PATTERNS.colour.test(background || "")) err("map", "background", `colour "${background}" is not #rrggbb`);
   if (!PATTERNS.colour.test(transfer.colour || "")) err("map", "transfer", `colour "${transfer.colour}" is not #rrggbb`);
   else checkContrast("transfer", transfer.colour);
+  // The transfer stroke must be thinner than the 6 px line stroke (FR-003).
+  if (typeof transfer.width !== "number" || !(transfer.width >= 1 && transfer.width <= 10 && transfer.width < 6)) {
+    err("map", "transfer", `width ${transfer.width} is not a number between 1 and 10 below the line stroke`);
+  }
+  if (grid.margin !== undefined) {
+    const m = grid.margin;
+    if (!isObj(m) || !Number.isInteger(m.x) || !Number.isInteger(m.y) || m.x < 0 || m.y < 0) {
+      err("map", "grid.margin", "x and y must be non-negative integers");
+    }
+  }
   for (const line of lines) {
     const item = `lines.${line.id || "?"}`;
     if (!PATTERNS.slug.test(line.id || "")) err("map", item, "id must be a slug");

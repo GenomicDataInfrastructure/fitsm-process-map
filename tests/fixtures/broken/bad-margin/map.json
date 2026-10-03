@@ -8,7 +8,11 @@
   "grid": {
     "unit": 60,
     "cols": 14,
-    "rows": 6
+    "rows": 6,
+    "margin": {
+      "x": -1,
+      "y": 2
+    }
   },
   "lines": [
     {
@@ -115,7 +119,7 @@
     }
   },
   "routes": {
-    "BB-CC": [],
-    "BB-AA": []
+    "AA-BB": [],
+    "BB-CC": []
   }
 }

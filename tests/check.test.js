@@ -41,6 +41,8 @@ const cases = {
   "non-octilinear": "error   non-octilinear/map.json: routes.AA-BB: segment 1 from (1,1) to (2,3) is not horizontal, vertical or 45°",
   "external-flow-is-process": 'error   external-flow-is-process/processes.json: AA.externalFlows[0]: party "BB" is a process code; move this flow to interfaces.json',
   "label-side-clash": 'error   label-side-clash/map.json: lines.one: labelSide "s" is the same side as station AA\'s label',
+  "bad-transfer-width": "error   bad-transfer-width/map.json: transfer: width 12 is not a number between 1 and 10 below the line stroke",
+  "bad-margin": "error   bad-margin/map.json: grid.margin: x and y must be non-negative integers",
 };
 
 for (const [name, expected] of Object.entries(cases)) {

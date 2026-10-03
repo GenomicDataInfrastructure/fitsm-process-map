@@ -9,6 +9,9 @@
 # Site output assembled in CI for GitHub Pages
 _site/
 
+# The project has no package-managed dependencies; ignore a stray install anyway
+node_modules/
+
 # Release zips built locally
 fitsm-process-map-v*/
 fitsm-process-map-v*.zip

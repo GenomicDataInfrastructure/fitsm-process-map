@@ -3,7 +3,7 @@
   "background": "#ffffff",
   "transfer": {
     "colour": "#6b6b6b",
-    "width": 4
+    "width": 12
   },
   "grid": {
     "unit": 60,
@@ -115,7 +115,7 @@
     }
   },
   "routes": {
-    "BB-CC": [],
-    "BB-AA": []
+    "AA-BB": [],
+    "BB-CC": []
   }
 }

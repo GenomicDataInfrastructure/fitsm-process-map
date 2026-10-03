@@ -309,3 +309,18 @@ Task: "Write content/fitsm-3.0/records.json from FitSM-0 and FitSM-2"    # T024
 - Commit after each task or logical group; every commit must keep `node scripts/check.js`
   and `node --test` green once Phase 2 is done.
 - Stop at any checkpoint to validate the story independently with quickstart.md.
+
+---
+
+## Phase 9: Convergence
+
+**Purpose**: Remaining work found by `/speckit-converge` on 2026-10-04 after comparing the
+code with spec.md, plan.md and tasks.md. Ordered by severity.
+
+- [X] T054 Name the selected station's line(s) in words in the process view of src/panel.js: a subtitle line "On the <Line> line" / "On the <A> and <B> lines" built from `graph.stationLines`, followed by "(study aid, not part of FitSM)", so the frame identifies lines without colour for stations as it already does for connections per FR-006 (missing)
+- [X] T055 Raise the connection hit target in styles.css from `stroke-width: 16` to 24 so every connection meets the 24 × 24 CSS px minimum per FR-033 (partial)
+- [X] T056 Rename the 14 per-process staff roles in content/fitsm-3.0/roles.json from "Process staff member <CODE>" to FitSM-3's exact wording "Process staff member" (keep `source` FitSM-3 §5, no `count`), and make the role view in src/panel.js show the `interpretation` box "FitSM-3 defines this as a common role type (§5) that applies in every process; it does not list it per process." for kind `staff`, so no project wording is presented as FitSM's per Constitution II and FR-018 (partial)
+- [ ] T057 Run quickstart E9 with VoiceOver or NVDA on `#ISRM` and `#ISRM-PM` (map title, every station and connection by name, frame heading announced on selection) and fix anything skipped or misread in src/map.js or src/panel.js; then tick T045 per FR-007b (partial)
+- [X] T058 Make the map scale to its column at viewports of 900 px and wider in styles.css (remove or lower `.map svg { min-width: 1000px }` inside the `@media (min-width: 900px)` block; keep a minimum width with horizontal scrolling only below 900 px) so the map fits a laptop screen without a scrollbar per FR-001 (partial)
+- [X] T059 Validate the newer map fields in scripts/check.js: `transfer.width` is a number between 1 and 10 and less than the line stroke width 6 (message `transfer: width <w> is not a number between 1 and 10 below the line stroke`), and `grid.margin`, if present, is `{ x, y }` with non-negative integers (message `grid.margin: x and y must be non-negative integers`); add fixtures tests/fixtures/broken/bad-transfer-width and tests/fixtures/broken/bad-margin and the matching cases in tests/check.test.js per FR-027 and Constitution VI (partial)
+- [X] T060 Remove the obsolete `transfer.dash` field from every map.json under tests/fixtures/ (replace with `"width": 4`) and add `node_modules/` to .gitignore per the plan's project structure (unrequested)

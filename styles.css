@@ -81,6 +81,11 @@ a { color: var(--link); }
 /* Map */
 .map { overflow-x: auto; }
 .map svg { display: block; width: 100%; min-width: 1000px; height: auto; }
+/* Beside the frame the map scales to its column (FR-001); the minimum width that forces
+ * horizontal scrolling applies only below the breakpoint. */
+@media (min-width: 900px) {
+  .map svg { min-width: 760px; } /* below this the codes become unreadable; scroll instead */
+}
 .map a { cursor: pointer; }
 .map a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
@@ -88,7 +93,7 @@ a { color: var(--link); }
 .station-ring { fill: none; }
 /* Station codes get a white halo so they stay legible where a connection runs close by. */
 .station-label {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   fill: var(--ink);
   paint-order: stroke;
@@ -96,7 +101,7 @@ a { color: var(--link); }
   stroke-width: 4px;
   stroke-linejoin: round;
 }
-.connection-hit { fill: none; stroke: transparent; stroke-width: 16; }
+.connection-hit { fill: none; stroke: transparent; stroke-width: 24; } /* ≥ 24 px target (FR-033) */
 .connection-visible { fill: none; stroke-width: var(--connection-stroke); stroke-linejoin: round; stroke-linecap: round; }
 
 /* Selection: nothing gets heavier. The selected element and what it connects to keep full

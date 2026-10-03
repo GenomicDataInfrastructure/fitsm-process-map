@@ -3,7 +3,7 @@
   "background": "#ffffff",
   "transfer": {
     "colour": "#6b6b6b",
-    "dash": "6 4"
+    "width": 4
   },
   "grid": {
     "unit": 60,

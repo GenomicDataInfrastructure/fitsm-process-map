@@ -2,7 +2,11 @@
   "generic": {
     "owner": {
       "name": "Process owner",
-      "source": { "doc": "FitSM-3", "section": "5", "page": 8 },
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 8
+      },
       "tasks": [
         "Act as the primary contact point for concerns in the context of governing one specific ITSM process.",
         "Define and approve goals and policies in the context of the process according to the overall SMS goals and policies.",
@@ -14,7 +18,11 @@
     },
     "manager": {
       "name": "Process manager",
-      "source": { "doc": "FitSM-3", "section": "5", "page": 8 },
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 8
+      },
       "tasks": [
         "Act as the primary contact point for operational concerns in the context of the process.",
         "Maintain the process definition / description and ensure it is available to relevant persons.",
@@ -29,7 +37,11 @@
     },
     "case-owner": {
       "name": "Case owner",
-      "source": { "doc": "FitSM-3", "section": "5", "page": 9 },
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
       "tasks": [
         "Overall responsibility for one specific case occurring in a process context (e.g. one specific incident to be resolved).",
         "Act as the primary contact point for all concerns in the context of that specific case.",
@@ -40,7 +52,11 @@
     },
     "staff": {
       "name": "Process staff member",
-      "source": { "doc": "FitSM-3", "section": "5", "page": 9 },
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
       "tasks": [
         "Carry out tasks according to the defined / established process and, as applicable, its activities and procedures (e.g. the procedure of prioritizing an incident).",
         "Report to case owners and / or process managers, as appropriate.",
@@ -49,225 +65,1727 @@
     }
   },
   "roles": [
-    { "id": "SPM.owner", "process": "SPM", "kind": "owner", "name": "Process owner SPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.1", "page": 9 }, "tasks": [] },
-    { "id": "SPM.manager", "process": "SPM", "kind": "manager", "name": "Process manager SPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.1", "page": 9 }, "tasks": [
-      { "text": "Maintain the service portfolio.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 9 } },
-      { "text": "Manage updates to the service portfolio.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 9 } },
-      { "text": "Ensure the lifecycle of new or changed services are managed and appropriate plans are created and maintained.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 9 } },
-      { "text": "Review the service portfolio at planned intervals.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } }
-    ] },
-    { "id": "SPM.service-owner", "process": "SPM", "kind": "case-owner", "name": "Case owner: Service owner", "count": "1 per service", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 }, "tasks": [
-      { "text": "Overall responsibility for one specific service that is part of the service portfolio.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Act as the primary contact point for all (process-independent) concerns in the context of that specific service.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Act as an “expert” for the service in both technical and non-technical concerns.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Maintain the core service documentation, such as the service specification / description.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Be kept informed of every event, situation or change connected to the service.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Be involved in tasks significantly related to the service as part of selected ITSM processes, in particular SPM and SLM (see process-level role templates).", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } },
-      { "text": "Report on the service to the SMS owner.", "source": { "doc": "FitSM-3", "section": "6.1", "page": 10 } }
-    ] },
-    { "id": "SPM.staff", "process": "SPM", "kind": "staff", "name": "Process staff member SPM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "SLM.owner", "process": "SLM", "kind": "owner", "name": "Process owner SLM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 }, "tasks": [] },
-    { "id": "SLM.manager", "process": "SLM", "kind": "manager", "name": "Process manager SLM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 }, "tasks": [
-      { "text": "Maintain the service catalogue.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Manage updates to the service catalogue.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Ensure the service catalogue is aligned with the service portfolio.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Negotiate SLAs with customers.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Propose and negotiate OLAs with internal groups or federation members.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Propose and negotiate UAs with external suppliers.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 10 } },
-      { "text": "Ensure that all SLAs, OLAs and UAs are documented in a consistent manner e.g. through maintaining agreement templates.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Approve new or changed SLAs, OLAs and UAs.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Ensure SLAs, OLAs and UAs are aligned to each other.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } }
-    ] },
-    { "id": "SLM.agreement-owner", "process": "SLM", "kind": "case-owner", "name": "Case owner: SLA / OLA / UA owner", "count": "1 per SLA, OLA and UA", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 }, "tasks": [
-      { "text": "Maintain the SLA, OLA or UA under their ownership and ensure it is specified and documented according to relevant specifications.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Evaluate the fulfilment of the SLA, OLA or UA.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Ensure that violations of the targets defined in the SLA, OLA or UA are identified and investigated to prevent future recurrence.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Perform regular reviews of the SLA, OLA or UA.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } },
-      { "text": "Understand new or changed requirements on the SLA, OLA or UA under their ownership, and initiate necessary updates or other follow-up actions.", "source": { "doc": "FitSM-3", "section": "6.2", "page": 11 } }
-    ] },
-    { "id": "SLM.staff", "process": "SLM", "kind": "staff", "name": "Process staff member SLM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "SRM.owner", "process": "SRM", "kind": "owner", "name": "Process owner SRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 }, "tasks": [] },
-    { "id": "SRM.manager", "process": "SRM", "kind": "manager", "name": "Process manager SRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 }, "tasks": [
-      { "text": "Maintain the list of reports.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 } },
-      { "text": "Review report specifications in regular intervals.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 } },
-      { "text": "Monitor the production of accurate reports according to specifications.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 } }
-    ] },
-    { "id": "SRM.report-owner", "process": "SRM", "kind": "case-owner", "name": "Case owner: Report owner", "count": "1 per report", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 }, "tasks": [
-      { "text": "Maintain the report specification for the report under their ownership.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 } },
-      { "text": "Produce and deliver the report according to the specification.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 11 } },
-      { "text": "Ensure that the input / contributions required to produce the report is provided in time.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 12 } },
-      { "text": "Understand new or changed requirements on the report under their ownership and update the report specification accordingly.", "source": { "doc": "FitSM-3", "section": "6.3", "page": 12 } }
-    ] },
-    { "id": "SRM.staff", "process": "SRM", "kind": "staff", "name": "Process staff member SRM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "SACM.owner", "process": "SACM", "kind": "owner", "name": "Process owner SACM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 }, "tasks": [] },
-    { "id": "SACM.manager", "process": "SACM", "kind": "manager", "name": "Process manager SACM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 }, "tasks": [
-      { "text": "Identify service availability and continuity requirements.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Ensure that the input / contributions required to produce service availability and continuity plans are provided by relevant parties.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Produce, maintain and review all service availability and continuity plans regularly.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Ensure that measures to increase service availability and continuity (according to plans) are planned and implemented under the control of the change management process.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Act as a contact point in case of questions regarding service availability and continuity requirements and measures.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } }
-    ] },
-    { "id": "SACM.plan-owner", "process": "SACM", "kind": "case-owner", "name": "Case owner: Availability plan owner / continuity plan owner", "count": "1 per availability plan / continuity plan", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 }, "tasks": [
-      { "text": "Create and maintain the availability or continuity plan under their ownership.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Ensure that relevant stakeholders in the context of the plan are consulted and informed when creating, updating or implementing the plan.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Ensure the plan and any updates to it are approved according by relevant authorities.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 12 } },
-      { "text": "Based on the contents of the final / approved plan, raise requests for changes or trigger the continual service improvement process, as required.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 13 } },
-      { "text": "In case of a continuity plan: Ensure that the needs for testing the plan are identified and tests of preventive or reactive measures are performed regularly.", "source": { "doc": "FitSM-3", "section": "6.4", "page": 13 } }
-    ] },
-    { "id": "SACM.staff", "process": "SACM", "kind": "staff", "name": "Process staff member SACM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "CAPM.owner", "process": "CAPM", "kind": "owner", "name": "Process owner CAPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 }, "tasks": [] },
-    { "id": "CAPM.manager", "process": "CAPM", "kind": "manager", "name": "Process manager CAPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 }, "tasks": [
-      { "text": "Identify service performance and capacity requirements.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Ensure that the input / contributions required to produce capacity plans are provided by relevant parties.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Produce, maintain and review capacity plans regularly.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Ensure that measures to increase service performance and capacity (according to plans) are planned and implemented under the control of the change management process.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Act as a contact point in case of questions regarding service performance and capacity requirements and measures.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } }
-    ] },
-    { "id": "CAPM.capacity-plan-owner", "process": "CAPM", "kind": "case-owner", "name": "Case owner: Capacity plan owner", "count": "1 per capacity plan", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 }, "tasks": [
-      { "text": "Create and maintain the capacity plan under their ownership.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Ensure that relevant stakeholders in the context of the plan are consulted and informed when creating, updating or implementing the plan.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 13 } },
-      { "text": "Ensure the plan and any updates to it are approved according by relevant authorities.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 14 } },
-      { "text": "Based on the contents of the final / approved plan, raise requests for changes or trigger the CSI process, as required.", "source": { "doc": "FitSM-3", "section": "6.5", "page": 14 } }
-    ] },
-    { "id": "CAPM.staff", "process": "CAPM", "kind": "staff", "name": "Process staff member CAPM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "ISM.owner", "process": "ISM", "kind": "owner", "name": "Process owner ISM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 }, "tasks": [] },
-    { "id": "ISM.manager", "process": "ISM", "kind": "manager", "name": "Process manager ISM (Information security manager / officer)", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 }, "tasks": [
-      { "text": "Act as the primary contact of the service provider for all information security-related issues.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } },
-      { "text": "Monitor the status and progress of all activities connected to the process of information security management, in particular, the assessment and treatment of information security risks and handling of information security events and incidents.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } },
-      { "text": "Ensure that information security incidents are detected and classified as such and as quickly as possible handled in an effective way to minimise harm caused by them.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } },
-      { "text": "Ensure that all security-related documentation is maintained and up to date.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } },
-      { "text": "Ensure that security risks and controls are assigned to case owners.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } }
-    ] },
-    { "id": "ISM.security-risk-owner", "process": "ISM", "kind": "case-owner", "name": "Case owner: Security risk owner", "count": "1 per security risk", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 }, "tasks": [
-      { "text": "Maintain and review the specification / documentation of a specific security risk.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } },
-      { "text": "Act as a primary contact point and expert for the risk under their ownership.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 14 } }
-    ] },
-    { "id": "ISM.security-control-owner", "process": "ISM", "kind": "case-owner", "name": "Case owner: Security control owner", "count": "1 per security control", "source": { "doc": "FitSM-3", "section": "6.6", "page": 15 }, "tasks": [
-      { "text": "Maintain and review the specification / documentation of a specific security control.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 15 } },
-      { "text": "Act as a primary contact point and expert for the control under their ownership.", "source": { "doc": "FitSM-3", "section": "6.6", "page": 15 } }
-    ] },
-    { "id": "ISM.staff", "process": "ISM", "kind": "staff", "name": "Process staff member ISM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "CRM.owner", "process": "CRM", "kind": "owner", "name": "Process owner CRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 }, "tasks": [] },
-    { "id": "CRM.manager", "process": "CRM", "kind": "manager", "name": "Process manager CRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 }, "tasks": [
-      { "text": "Maintain the customer database.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Ensure that customer complaints are handled according to the process.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Coordinate customer satisfaction surveys.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Review the results from customer service reviews.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } }
-    ] },
-    { "id": "CRM.customer-relationship-manager", "process": "CRM", "kind": "case-owner", "name": "Case owner: Customer relationship manager (Account manager)", "count": "1 per identified customer", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 }, "tasks": [
-      { "text": "Act as the primary contact point for a specific customer.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Maintain the relationship with that customer by regular communication.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Process formal customer complaints.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } },
-      { "text": "Conduct, moderate and record customer service reviews.", "source": { "doc": "FitSM-3", "section": "6.7", "page": 15 } }
-    ] },
-    { "id": "CRM.staff", "process": "CRM", "kind": "staff", "name": "Process staff member CRM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "SUPPM.owner", "process": "SUPPM", "kind": "owner", "name": "Process owner SUPPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 }, "tasks": [] },
-    { "id": "SUPPM.manager", "process": "SUPPM", "kind": "manager", "name": "Process manager SUPPM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 }, "tasks": [
-      { "text": "Maintain the supplier database.", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 } },
-      { "text": "Ensure that supplier performance is monitored according to the process.", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 } }
-    ] },
-    { "id": "SUPPM.supplier-relationship-manager", "process": "SUPPM", "kind": "case-owner", "name": "Case owner: Supplier relationship manager", "count": "1 per identified supplier", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 }, "tasks": [
-      { "text": "Act as the primary contact point for a specific supplier.", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 } },
-      { "text": "Maintain the relationship with that supplier by regular communication.", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 } },
-      { "text": "Maintain mechanisms for monitoring the performance of the supplier.", "source": { "doc": "FitSM-3", "section": "6.8", "page": 16 } }
-    ] },
-    { "id": "SUPPM.staff", "process": "SUPPM", "kind": "staff", "name": "Process staff member SUPPM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "ISRM.owner", "process": "ISRM", "kind": "owner", "name": "Process owner ISRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.9", "page": 16 }, "tasks": [] },
-    { "id": "ISRM.manager", "process": "ISRM", "kind": "manager", "name": "Process manager ISRM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.9", "page": 16 }, "tasks": [
-      { "text": "Ensure that all incidents and service requests are recorded, and that records are of sufficient quality to enable traceability and long-term analysis.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 16 } },
-      { "text": "Monitor the overall progress of incident resolution and service request fulfilment and identify potential violations of target response and resolution times.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 16 } }
-    ] },
-    { "id": "ISRM.incident-owner", "process": "ISRM", "kind": "case-owner", "name": "Case owner: Incident owner / service request owner", "count": "1 per incident / service request", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 }, "tasks": [
-      { "text": "Coordinate and take over overall responsibility for all activities in the lifecycle of a specific incident or service request.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 } },
-      { "text": "Monitor the progress of incident resolution or request fulfilment taking into account agreed timeframes.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 } },
-      { "text": "Trigger reminders to those involved in incident resolution or request fulfilment and escalate to the process manager as required.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 } },
-      { "text": "In case of a (potential) SLA violation, trigger communication and escalation as defined in the SLM process.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 } },
-      { "text": "Ensure an adequate level of documentation for the specific incident or service request.", "source": { "doc": "FitSM-3", "section": "6.9", "page": 17 } }
-    ] },
-    { "id": "ISRM.staff", "process": "ISRM", "kind": "staff", "name": "Process staff member ISRM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "PM.owner", "process": "PM", "kind": "owner", "name": "Process owner PM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 }, "tasks": [] },
-    { "id": "PM.manager", "process": "PM", "kind": "manager", "name": "Process manager PM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 }, "tasks": [
-      { "text": "Ensure that incident trends are regularly analysed to identify problems.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 } },
-      { "text": "Ensure that identified problems are recorded, and that records are of sufficient quality.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 } },
-      { "text": "Ensure that problems are analysed, information on known errors recorded and problems brought to closure.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 } }
-    ] },
-    { "id": "PM.problem-owner", "process": "PM", "kind": "case-owner", "name": "Case owner: Problem owner", "count": "1 per problem", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 }, "tasks": [
-      { "text": "Coordinate and take over overall responsibility for all activities in the lifecycle of a specific problem, including problem analysis and identification of options to handle the problem.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 17 } },
-      { "text": "Monitor the progress of problem resolution and ensure that the problem is escalated effectively, if required.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 18 } },
-      { "text": "Ensure the information in the KEDB on this problem / known error are up to date, including appropriate descriptions of potential workarounds.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 18 } },
-      { "text": "Communicate the problem / known error and potential workarounds to relevant stakeholders (e.g. ISRM staff and users).", "source": { "doc": "FitSM-3", "section": "6.10", "page": 18 } },
-      { "text": "Depending on the selected option for dealing with the problem / known error, raise requests for changes or trigger the CSI process as required.", "source": { "doc": "FitSM-3", "section": "6.10", "page": 18 } }
-    ] },
-    { "id": "PM.staff", "process": "PM", "kind": "staff", "name": "Process staff member PM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "CONFM.owner", "process": "CONFM", "kind": "owner", "name": "Process owner CONFM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 }, "tasks": [] },
-    { "id": "CONFM.manager", "process": "CONFM", "kind": "manager", "name": "Process manager CONFM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 }, "tasks": [
-      { "text": "Maintain and periodically review the scope and granularity of the CMDB.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } },
-      { "text": "Maintain the definitions of all CI and relationship types.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } },
-      { "text": "Plan regular verifications of the configuration information held in the CMDB.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } },
-      { "text": "Ensure that configuration verifications are conducted and identified nonconformities addressed.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } }
-    ] },
-    { "id": "CONFM.ci-owner", "process": "CONFM", "kind": "case-owner", "name": "Case owner: CI owner", "count": "1 per CI", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 }, "tasks": [
-      { "text": "Ensure that the information on a specific CI in the CMDB is accurate and up to date.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } },
-      { "text": "Collaborate with the process manager and other CI owners to ensure that all information on the relationships from / to a specific CI are accurate and up to date.", "source": { "doc": "FitSM-3", "section": "6.11", "page": 18 } }
-    ] },
-    { "id": "CONFM.staff", "process": "CONFM", "kind": "staff", "name": "Process staff member CONFM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "CHM.owner", "process": "CHM", "kind": "owner", "name": "Process owner CHM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 }, "tasks": [] },
-    { "id": "CHM.manager", "process": "CHM", "kind": "manager", "name": "Process manager CHM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 }, "tasks": [
-      { "text": "Plan, schedule, prepare and moderate change advisory board (CAB) meetings.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Maintain the list and descriptions of standard changes, together with relevant technical experts.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Ensure that all requests for changes are processed effectively, and in a timely manner.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Monitor the overall progress of change evaluation, approval and implementation.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Review the change records in regular intervals, to identify trends or nonconformities or poor documentation / traceability.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } }
-    ] },
-    { "id": "CHM.change-owner", "process": "CHM", "kind": "case-owner", "name": "Case owner: Change owner", "count": "1 per change", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 }, "tasks": [
-      { "text": "Control and coordinate all activities in the lifecycle of a specific change.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Monitor the progress of change evaluation and implementation for this change.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "Ensure that the change record is complete and up to date at any time from recording the request for change to completion of the post implementation review.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } },
-      { "text": "As applicable, communicate with the Release owner of the release containing this change.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 19 } }
-    ] },
-    { "id": "CHM.cab", "process": "CHM", "kind": "specific", "name": "Change advisory board (CAB)", "count": "1 board for a certain number of changes", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 }, "tasks": [
-      { "text": "Evaluate non-standard changes, taking into account at least: Benefits; Risks; Potential impact; Technical feasibility; Effort / cost.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 } },
-      { "text": "Decide on the approval of non-standard changes, based on the evaluation results.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 } },
-      { "text": "Decide which changes can be considered pre-approved in the future.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 } },
-      { "text": "Important notes: The CAB should be composed of (all) relevant stakeholders of the changes that are currently subject to evaluation and approval.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 } },
-      { "text": "Important notes: CAB meetings should take place at regular intervals, although the specific composition of the CAB may / will vary.", "source": { "doc": "FitSM-3", "section": "6.12", "page": 20 } }
-    ] },
-    { "id": "CHM.staff", "process": "CHM", "kind": "staff", "name": "Process staff member CHM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "RDM.owner", "process": "RDM", "kind": "owner", "name": "Process owner RDM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 }, "tasks": [] },
-    { "id": "RDM.manager", "process": "RDM", "kind": "manager", "name": "Process manager RDM", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 }, "tasks": [
-      { "text": "Maintain the overall release planning, including release cycles.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 } },
-      { "text": "Manage the release and deployment strategies defined for the SMS.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 } },
-      { "text": "Apply the release and deployment strategies to defined groups of components, as appropriate.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 } },
-      { "text": "Review deployed releases for success.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 20 } }
-    ] },
-    { "id": "RDM.release-owner", "process": "RDM", "kind": "case-owner", "name": "Case owner: Release owner", "count": "1 per release", "source": { "doc": "FitSM-3", "section": "6.13", "page": 21 }, "tasks": [
-      { "text": "Identify the appropriate release and deployment strategy for a specific release.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 21 } },
-      { "text": "Control and coordinate the activities in the lifecycle of a specific release, including planning, building, testing and deploying.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 21 } },
-      { "text": "Ensure that the required documentation of the release (including release plans) is complete and of adequate quality.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 21 } },
-      { "text": "Act as a single point of contact for the release for all stakeholders of this release, including the change manager, affected change owners, developers, problem manager and customer representatives.", "source": { "doc": "FitSM-3", "section": "6.13", "page": 21 } }
-    ] },
-    { "id": "RDM.staff", "process": "RDM", "kind": "staff", "name": "Process staff member RDM", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] },
-
-    { "id": "CSI.owner", "process": "CSI", "kind": "owner", "name": "Process owner CSI", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 }, "tasks": [] },
-    { "id": "CSI.manager", "process": "CSI", "kind": "manager", "name": "Process manager CSI", "count": "1 in total", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 }, "tasks": [
-      { "text": "Review the status and progress of ongoing improvements in regular intervals.", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 } }
-    ] },
-    { "id": "CSI.improvement-owner", "process": "CSI", "kind": "case-owner", "name": "Case owner: Improvement owner", "count": "1 per improvement", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 }, "tasks": [
-      { "text": "Maintain the improvement under their ownership.", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 } },
-      { "text": "Coordinate the activities to implement the improvement.", "source": { "doc": "FitSM-3", "section": "6.14", "page": 21 } }
-    ] },
-    { "id": "CSI.staff", "process": "CSI", "kind": "staff", "name": "Process staff member CSI", "source": { "doc": "FitSM-3", "section": "5", "page": 9 }, "tasks": [] }
+    {
+      "id": "SPM.owner",
+      "process": "SPM",
+      "kind": "owner",
+      "name": "Process owner SPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "SPM.manager",
+      "process": "SPM",
+      "kind": "manager",
+      "name": "Process manager SPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 9
+      },
+      "tasks": [
+        {
+          "text": "Maintain the service portfolio.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 9
+          }
+        },
+        {
+          "text": "Manage updates to the service portfolio.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 9
+          }
+        },
+        {
+          "text": "Ensure the lifecycle of new or changed services are managed and appropriate plans are created and maintained.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 9
+          }
+        },
+        {
+          "text": "Review the service portfolio at planned intervals.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "SPM.service-owner",
+      "process": "SPM",
+      "kind": "case-owner",
+      "name": "Case owner: Service owner",
+      "count": "1 per service",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.1",
+        "page": 10
+      },
+      "tasks": [
+        {
+          "text": "Overall responsibility for one specific service that is part of the service portfolio.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Act as the primary contact point for all (process-independent) concerns in the context of that specific service.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Act as an “expert” for the service in both technical and non-technical concerns.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Maintain the core service documentation, such as the service specification / description.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Be kept informed of every event, situation or change connected to the service.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Be involved in tasks significantly related to the service as part of selected ITSM processes, in particular SPM and SLM (see process-level role templates).",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        },
+        {
+          "text": "Report on the service to the SMS owner.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.1",
+            "page": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "SPM.staff",
+      "process": "SPM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "SLM.owner",
+      "process": "SLM",
+      "kind": "owner",
+      "name": "Process owner SLM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.2",
+        "page": 10
+      },
+      "tasks": []
+    },
+    {
+      "id": "SLM.manager",
+      "process": "SLM",
+      "kind": "manager",
+      "name": "Process manager SLM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.2",
+        "page": 10
+      },
+      "tasks": [
+        {
+          "text": "Maintain the service catalogue.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Manage updates to the service catalogue.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Ensure the service catalogue is aligned with the service portfolio.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Negotiate SLAs with customers.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Propose and negotiate OLAs with internal groups or federation members.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Propose and negotiate UAs with external suppliers.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 10
+          }
+        },
+        {
+          "text": "Ensure that all SLAs, OLAs and UAs are documented in a consistent manner e.g. through maintaining agreement templates.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Approve new or changed SLAs, OLAs and UAs.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Ensure SLAs, OLAs and UAs are aligned to each other.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        }
+      ]
+    },
+    {
+      "id": "SLM.agreement-owner",
+      "process": "SLM",
+      "kind": "case-owner",
+      "name": "Case owner: SLA / OLA / UA owner",
+      "count": "1 per SLA, OLA and UA",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.2",
+        "page": 11
+      },
+      "tasks": [
+        {
+          "text": "Maintain the SLA, OLA or UA under their ownership and ensure it is specified and documented according to relevant specifications.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Evaluate the fulfilment of the SLA, OLA or UA.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Ensure that violations of the targets defined in the SLA, OLA or UA are identified and investigated to prevent future recurrence.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Perform regular reviews of the SLA, OLA or UA.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        },
+        {
+          "text": "Understand new or changed requirements on the SLA, OLA or UA under their ownership, and initiate necessary updates or other follow-up actions.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.2",
+            "page": 11
+          }
+        }
+      ]
+    },
+    {
+      "id": "SLM.staff",
+      "process": "SLM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "SRM.owner",
+      "process": "SRM",
+      "kind": "owner",
+      "name": "Process owner SRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.3",
+        "page": 11
+      },
+      "tasks": []
+    },
+    {
+      "id": "SRM.manager",
+      "process": "SRM",
+      "kind": "manager",
+      "name": "Process manager SRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.3",
+        "page": 11
+      },
+      "tasks": [
+        {
+          "text": "Maintain the list of reports.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 11
+          }
+        },
+        {
+          "text": "Review report specifications in regular intervals.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 11
+          }
+        },
+        {
+          "text": "Monitor the production of accurate reports according to specifications.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 11
+          }
+        }
+      ]
+    },
+    {
+      "id": "SRM.report-owner",
+      "process": "SRM",
+      "kind": "case-owner",
+      "name": "Case owner: Report owner",
+      "count": "1 per report",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.3",
+        "page": 11
+      },
+      "tasks": [
+        {
+          "text": "Maintain the report specification for the report under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 11
+          }
+        },
+        {
+          "text": "Produce and deliver the report according to the specification.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 11
+          }
+        },
+        {
+          "text": "Ensure that the input / contributions required to produce the report is provided in time.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 12
+          }
+        },
+        {
+          "text": "Understand new or changed requirements on the report under their ownership and update the report specification accordingly.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.3",
+            "page": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "SRM.staff",
+      "process": "SRM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "SACM.owner",
+      "process": "SACM",
+      "kind": "owner",
+      "name": "Process owner SACM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.4",
+        "page": 12
+      },
+      "tasks": []
+    },
+    {
+      "id": "SACM.manager",
+      "process": "SACM",
+      "kind": "manager",
+      "name": "Process manager SACM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.4",
+        "page": 12
+      },
+      "tasks": [
+        {
+          "text": "Identify service availability and continuity requirements.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Ensure that the input / contributions required to produce service availability and continuity plans are provided by relevant parties.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Produce, maintain and review all service availability and continuity plans regularly.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Ensure that measures to increase service availability and continuity (according to plans) are planned and implemented under the control of the change management process.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Act as a contact point in case of questions regarding service availability and continuity requirements and measures.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "SACM.plan-owner",
+      "process": "SACM",
+      "kind": "case-owner",
+      "name": "Case owner: Availability plan owner / continuity plan owner",
+      "count": "1 per availability plan / continuity plan",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.4",
+        "page": 12
+      },
+      "tasks": [
+        {
+          "text": "Create and maintain the availability or continuity plan under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Ensure that relevant stakeholders in the context of the plan are consulted and informed when creating, updating or implementing the plan.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Ensure the plan and any updates to it are approved according by relevant authorities.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 12
+          }
+        },
+        {
+          "text": "Based on the contents of the final / approved plan, raise requests for changes or trigger the continual service improvement process, as required.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 13
+          }
+        },
+        {
+          "text": "In case of a continuity plan: Ensure that the needs for testing the plan are identified and tests of preventive or reactive measures are performed regularly.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.4",
+            "page": 13
+          }
+        }
+      ]
+    },
+    {
+      "id": "SACM.staff",
+      "process": "SACM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "CAPM.owner",
+      "process": "CAPM",
+      "kind": "owner",
+      "name": "Process owner CAPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.5",
+        "page": 13
+      },
+      "tasks": []
+    },
+    {
+      "id": "CAPM.manager",
+      "process": "CAPM",
+      "kind": "manager",
+      "name": "Process manager CAPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.5",
+        "page": 13
+      },
+      "tasks": [
+        {
+          "text": "Identify service performance and capacity requirements.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Ensure that the input / contributions required to produce capacity plans are provided by relevant parties.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Produce, maintain and review capacity plans regularly.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Ensure that measures to increase service performance and capacity (according to plans) are planned and implemented under the control of the change management process.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Act as a contact point in case of questions regarding service performance and capacity requirements and measures.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        }
+      ]
+    },
+    {
+      "id": "CAPM.capacity-plan-owner",
+      "process": "CAPM",
+      "kind": "case-owner",
+      "name": "Case owner: Capacity plan owner",
+      "count": "1 per capacity plan",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.5",
+        "page": 13
+      },
+      "tasks": [
+        {
+          "text": "Create and maintain the capacity plan under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Ensure that relevant stakeholders in the context of the plan are consulted and informed when creating, updating or implementing the plan.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 13
+          }
+        },
+        {
+          "text": "Ensure the plan and any updates to it are approved according by relevant authorities.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 14
+          }
+        },
+        {
+          "text": "Based on the contents of the final / approved plan, raise requests for changes or trigger the CSI process, as required.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.5",
+            "page": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "CAPM.staff",
+      "process": "CAPM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "ISM.owner",
+      "process": "ISM",
+      "kind": "owner",
+      "name": "Process owner ISM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.6",
+        "page": 14
+      },
+      "tasks": []
+    },
+    {
+      "id": "ISM.manager",
+      "process": "ISM",
+      "kind": "manager",
+      "name": "Process manager ISM (Information security manager / officer)",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.6",
+        "page": 14
+      },
+      "tasks": [
+        {
+          "text": "Act as the primary contact of the service provider for all information security-related issues.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        },
+        {
+          "text": "Monitor the status and progress of all activities connected to the process of information security management, in particular, the assessment and treatment of information security risks and handling of information security events and incidents.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        },
+        {
+          "text": "Ensure that information security incidents are detected and classified as such and as quickly as possible handled in an effective way to minimise harm caused by them.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        },
+        {
+          "text": "Ensure that all security-related documentation is maintained and up to date.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        },
+        {
+          "text": "Ensure that security risks and controls are assigned to case owners.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "ISM.security-risk-owner",
+      "process": "ISM",
+      "kind": "case-owner",
+      "name": "Case owner: Security risk owner",
+      "count": "1 per security risk",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.6",
+        "page": 14
+      },
+      "tasks": [
+        {
+          "text": "Maintain and review the specification / documentation of a specific security risk.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        },
+        {
+          "text": "Act as a primary contact point and expert for the risk under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "ISM.security-control-owner",
+      "process": "ISM",
+      "kind": "case-owner",
+      "name": "Case owner: Security control owner",
+      "count": "1 per security control",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.6",
+        "page": 15
+      },
+      "tasks": [
+        {
+          "text": "Maintain and review the specification / documentation of a specific security control.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 15
+          }
+        },
+        {
+          "text": "Act as a primary contact point and expert for the control under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.6",
+            "page": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "ISM.staff",
+      "process": "ISM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "CRM.owner",
+      "process": "CRM",
+      "kind": "owner",
+      "name": "Process owner CRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.7",
+        "page": 15
+      },
+      "tasks": []
+    },
+    {
+      "id": "CRM.manager",
+      "process": "CRM",
+      "kind": "manager",
+      "name": "Process manager CRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.7",
+        "page": 15
+      },
+      "tasks": [
+        {
+          "text": "Maintain the customer database.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Ensure that customer complaints are handled according to the process.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Coordinate customer satisfaction surveys.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Review the results from customer service reviews.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "CRM.customer-relationship-manager",
+      "process": "CRM",
+      "kind": "case-owner",
+      "name": "Case owner: Customer relationship manager (Account manager)",
+      "count": "1 per identified customer",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.7",
+        "page": 15
+      },
+      "tasks": [
+        {
+          "text": "Act as the primary contact point for a specific customer.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Maintain the relationship with that customer by regular communication.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Process formal customer complaints.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        },
+        {
+          "text": "Conduct, moderate and record customer service reviews.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.7",
+            "page": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "CRM.staff",
+      "process": "CRM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "SUPPM.owner",
+      "process": "SUPPM",
+      "kind": "owner",
+      "name": "Process owner SUPPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.8",
+        "page": 16
+      },
+      "tasks": []
+    },
+    {
+      "id": "SUPPM.manager",
+      "process": "SUPPM",
+      "kind": "manager",
+      "name": "Process manager SUPPM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.8",
+        "page": 16
+      },
+      "tasks": [
+        {
+          "text": "Maintain the supplier database.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.8",
+            "page": 16
+          }
+        },
+        {
+          "text": "Ensure that supplier performance is monitored according to the process.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.8",
+            "page": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "SUPPM.supplier-relationship-manager",
+      "process": "SUPPM",
+      "kind": "case-owner",
+      "name": "Case owner: Supplier relationship manager",
+      "count": "1 per identified supplier",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.8",
+        "page": 16
+      },
+      "tasks": [
+        {
+          "text": "Act as the primary contact point for a specific supplier.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.8",
+            "page": 16
+          }
+        },
+        {
+          "text": "Maintain the relationship with that supplier by regular communication.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.8",
+            "page": 16
+          }
+        },
+        {
+          "text": "Maintain mechanisms for monitoring the performance of the supplier.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.8",
+            "page": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "SUPPM.staff",
+      "process": "SUPPM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "ISRM.owner",
+      "process": "ISRM",
+      "kind": "owner",
+      "name": "Process owner ISRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.9",
+        "page": 16
+      },
+      "tasks": []
+    },
+    {
+      "id": "ISRM.manager",
+      "process": "ISRM",
+      "kind": "manager",
+      "name": "Process manager ISRM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.9",
+        "page": 16
+      },
+      "tasks": [
+        {
+          "text": "Ensure that all incidents and service requests are recorded, and that records are of sufficient quality to enable traceability and long-term analysis.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 16
+          }
+        },
+        {
+          "text": "Monitor the overall progress of incident resolution and service request fulfilment and identify potential violations of target response and resolution times.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "ISRM.incident-owner",
+      "process": "ISRM",
+      "kind": "case-owner",
+      "name": "Case owner: Incident owner / service request owner",
+      "count": "1 per incident / service request",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.9",
+        "page": 17
+      },
+      "tasks": [
+        {
+          "text": "Coordinate and take over overall responsibility for all activities in the lifecycle of a specific incident or service request.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 17
+          }
+        },
+        {
+          "text": "Monitor the progress of incident resolution or request fulfilment taking into account agreed timeframes.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 17
+          }
+        },
+        {
+          "text": "Trigger reminders to those involved in incident resolution or request fulfilment and escalate to the process manager as required.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 17
+          }
+        },
+        {
+          "text": "In case of a (potential) SLA violation, trigger communication and escalation as defined in the SLM process.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 17
+          }
+        },
+        {
+          "text": "Ensure an adequate level of documentation for the specific incident or service request.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.9",
+            "page": 17
+          }
+        }
+      ]
+    },
+    {
+      "id": "ISRM.staff",
+      "process": "ISRM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "PM.owner",
+      "process": "PM",
+      "kind": "owner",
+      "name": "Process owner PM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.10",
+        "page": 17
+      },
+      "tasks": []
+    },
+    {
+      "id": "PM.manager",
+      "process": "PM",
+      "kind": "manager",
+      "name": "Process manager PM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.10",
+        "page": 17
+      },
+      "tasks": [
+        {
+          "text": "Ensure that incident trends are regularly analysed to identify problems.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 17
+          }
+        },
+        {
+          "text": "Ensure that identified problems are recorded, and that records are of sufficient quality.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 17
+          }
+        },
+        {
+          "text": "Ensure that problems are analysed, information on known errors recorded and problems brought to closure.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 17
+          }
+        }
+      ]
+    },
+    {
+      "id": "PM.problem-owner",
+      "process": "PM",
+      "kind": "case-owner",
+      "name": "Case owner: Problem owner",
+      "count": "1 per problem",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.10",
+        "page": 17
+      },
+      "tasks": [
+        {
+          "text": "Coordinate and take over overall responsibility for all activities in the lifecycle of a specific problem, including problem analysis and identification of options to handle the problem.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 17
+          }
+        },
+        {
+          "text": "Monitor the progress of problem resolution and ensure that the problem is escalated effectively, if required.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 18
+          }
+        },
+        {
+          "text": "Ensure the information in the KEDB on this problem / known error are up to date, including appropriate descriptions of potential workarounds.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 18
+          }
+        },
+        {
+          "text": "Communicate the problem / known error and potential workarounds to relevant stakeholders (e.g. ISRM staff and users).",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 18
+          }
+        },
+        {
+          "text": "Depending on the selected option for dealing with the problem / known error, raise requests for changes or trigger the CSI process as required.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.10",
+            "page": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "PM.staff",
+      "process": "PM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "CONFM.owner",
+      "process": "CONFM",
+      "kind": "owner",
+      "name": "Process owner CONFM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.11",
+        "page": 18
+      },
+      "tasks": []
+    },
+    {
+      "id": "CONFM.manager",
+      "process": "CONFM",
+      "kind": "manager",
+      "name": "Process manager CONFM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.11",
+        "page": 18
+      },
+      "tasks": [
+        {
+          "text": "Maintain and periodically review the scope and granularity of the CMDB.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        },
+        {
+          "text": "Maintain the definitions of all CI and relationship types.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        },
+        {
+          "text": "Plan regular verifications of the configuration information held in the CMDB.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        },
+        {
+          "text": "Ensure that configuration verifications are conducted and identified nonconformities addressed.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "CONFM.ci-owner",
+      "process": "CONFM",
+      "kind": "case-owner",
+      "name": "Case owner: CI owner",
+      "count": "1 per CI",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.11",
+        "page": 18
+      },
+      "tasks": [
+        {
+          "text": "Ensure that the information on a specific CI in the CMDB is accurate and up to date.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        },
+        {
+          "text": "Collaborate with the process manager and other CI owners to ensure that all information on the relationships from / to a specific CI are accurate and up to date.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.11",
+            "page": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "CONFM.staff",
+      "process": "CONFM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "CHM.owner",
+      "process": "CHM",
+      "kind": "owner",
+      "name": "Process owner CHM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.12",
+        "page": 19
+      },
+      "tasks": []
+    },
+    {
+      "id": "CHM.manager",
+      "process": "CHM",
+      "kind": "manager",
+      "name": "Process manager CHM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.12",
+        "page": 19
+      },
+      "tasks": [
+        {
+          "text": "Plan, schedule, prepare and moderate change advisory board (CAB) meetings.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Maintain the list and descriptions of standard changes, together with relevant technical experts.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Ensure that all requests for changes are processed effectively, and in a timely manner.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Monitor the overall progress of change evaluation, approval and implementation.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Review the change records in regular intervals, to identify trends or nonconformities or poor documentation / traceability.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        }
+      ]
+    },
+    {
+      "id": "CHM.change-owner",
+      "process": "CHM",
+      "kind": "case-owner",
+      "name": "Case owner: Change owner",
+      "count": "1 per change",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.12",
+        "page": 19
+      },
+      "tasks": [
+        {
+          "text": "Control and coordinate all activities in the lifecycle of a specific change.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Monitor the progress of change evaluation and implementation for this change.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "Ensure that the change record is complete and up to date at any time from recording the request for change to completion of the post implementation review.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        },
+        {
+          "text": "As applicable, communicate with the Release owner of the release containing this change.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 19
+          }
+        }
+      ]
+    },
+    {
+      "id": "CHM.cab",
+      "process": "CHM",
+      "kind": "specific",
+      "name": "Change advisory board (CAB)",
+      "count": "1 board for a certain number of changes",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.12",
+        "page": 20
+      },
+      "tasks": [
+        {
+          "text": "Evaluate non-standard changes, taking into account at least: Benefits; Risks; Potential impact; Technical feasibility; Effort / cost.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 20
+          }
+        },
+        {
+          "text": "Decide on the approval of non-standard changes, based on the evaluation results.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 20
+          }
+        },
+        {
+          "text": "Decide which changes can be considered pre-approved in the future.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 20
+          }
+        },
+        {
+          "text": "Important notes: The CAB should be composed of (all) relevant stakeholders of the changes that are currently subject to evaluation and approval.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 20
+          }
+        },
+        {
+          "text": "Important notes: CAB meetings should take place at regular intervals, although the specific composition of the CAB may / will vary.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.12",
+            "page": 20
+          }
+        }
+      ]
+    },
+    {
+      "id": "CHM.staff",
+      "process": "CHM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "RDM.owner",
+      "process": "RDM",
+      "kind": "owner",
+      "name": "Process owner RDM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.13",
+        "page": 20
+      },
+      "tasks": []
+    },
+    {
+      "id": "RDM.manager",
+      "process": "RDM",
+      "kind": "manager",
+      "name": "Process manager RDM",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.13",
+        "page": 20
+      },
+      "tasks": [
+        {
+          "text": "Maintain the overall release planning, including release cycles.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 20
+          }
+        },
+        {
+          "text": "Manage the release and deployment strategies defined for the SMS.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 20
+          }
+        },
+        {
+          "text": "Apply the release and deployment strategies to defined groups of components, as appropriate.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 20
+          }
+        },
+        {
+          "text": "Review deployed releases for success.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 20
+          }
+        }
+      ]
+    },
+    {
+      "id": "RDM.release-owner",
+      "process": "RDM",
+      "kind": "case-owner",
+      "name": "Case owner: Release owner",
+      "count": "1 per release",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.13",
+        "page": 21
+      },
+      "tasks": [
+        {
+          "text": "Identify the appropriate release and deployment strategy for a specific release.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 21
+          }
+        },
+        {
+          "text": "Control and coordinate the activities in the lifecycle of a specific release, including planning, building, testing and deploying.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 21
+          }
+        },
+        {
+          "text": "Ensure that the required documentation of the release (including release plans) is complete and of adequate quality.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 21
+          }
+        },
+        {
+          "text": "Act as a single point of contact for the release for all stakeholders of this release, including the change manager, affected change owners, developers, problem manager and customer representatives.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.13",
+            "page": 21
+          }
+        }
+      ]
+    },
+    {
+      "id": "RDM.staff",
+      "process": "RDM",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    },
+    {
+      "id": "CSI.owner",
+      "process": "CSI",
+      "kind": "owner",
+      "name": "Process owner CSI",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.14",
+        "page": 21
+      },
+      "tasks": []
+    },
+    {
+      "id": "CSI.manager",
+      "process": "CSI",
+      "kind": "manager",
+      "name": "Process manager CSI",
+      "count": "1 in total",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.14",
+        "page": 21
+      },
+      "tasks": [
+        {
+          "text": "Review the status and progress of ongoing improvements in regular intervals.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.14",
+            "page": 21
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSI.improvement-owner",
+      "process": "CSI",
+      "kind": "case-owner",
+      "name": "Case owner: Improvement owner",
+      "count": "1 per improvement",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "6.14",
+        "page": 21
+      },
+      "tasks": [
+        {
+          "text": "Maintain the improvement under their ownership.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.14",
+            "page": 21
+          }
+        },
+        {
+          "text": "Coordinate the activities to implement the improvement.",
+          "source": {
+            "doc": "FitSM-3",
+            "section": "6.14",
+            "page": 21
+          }
+        }
+      ]
+    },
+    {
+      "id": "CSI.staff",
+      "process": "CSI",
+      "kind": "staff",
+      "name": "Process staff member",
+      "source": {
+        "doc": "FitSM-3",
+        "section": "5",
+        "page": 9
+      },
+      "tasks": []
+    }
   ]
 }
