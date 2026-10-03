@@ -13,7 +13,6 @@
 import { stationLines, isInterchange, connectionLine, stationLabel, interfaceLabel } from "./graph.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const XLINK_NS = "http://www.w3.org/1999/xlink";
 
 const STATION_RADIUS = 11;
 const RING_STEP = 5;
@@ -25,7 +24,6 @@ function el(name, attrs = {}, children = []) {
   const node = document.createElementNS(SVG_NS, name);
   for (const [key, value] of Object.entries(attrs)) {
     if (value === undefined || value === null) continue;
-    if (key === "href") node.setAttributeNS(XLINK_NS, "href", value);
     node.setAttribute(key, value);
   }
   for (const child of children) node.append(child);
@@ -48,6 +46,14 @@ function unitVector(p, q) {
   return [(q[0] - p[0]) / len, (q[1] - p[1]) / len];
 }
 
+/* Parameter (0..1, exclusive) of point v along segment p-q when v lies strictly inside it, else null. */
+function alongSegment(v, p, q) {
+  const cross = (q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]);
+  const dot = (v[0] - p[0]) * (q[0] - p[0]) + (v[1] - p[1]) * (q[1] - p[1]);
+  const l2 = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2;
+  return Math.abs(cross) < 1e-6 && dot > 1e-6 && dot < l2 - 1e-6 ? dot / l2 : null;
+}
+
 /* Intersection point of segments p1-p2 and p3-p4 strictly inside both, or null. */
 export function intersection(p1, p2, p3, p4) {
   const d = (p2[0] - p1[0]) * (p4[1] - p3[1]) - (p2[1] - p1[1]) * (p4[0] - p3[0]);
@@ -65,16 +71,14 @@ export function intersection(p1, p2, p3, p4) {
  * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
 export function yieldingPath(points, others) {
   let d = `M${points[0][0]} ${points[0][1]}`;
-  // Direction of the other line that an interior vertex lies on, or null (a bend sitting
-  // exactly on another line is a crossing neither adjacent segment sees as interior).
+  // A bend sitting exactly on a line is a crossing that `intersection` never reports (it is
+  // an end point of a segment on one side), so vertices are tested separately, both ways:
+  // this route's own bends against the other lines, and the other lines' bends against
+  // this route's segments.
   const vertexHit = (v) => {
     for (const other of others) {
       for (let k = 1; k < other.length; k++) {
-        const p = other[k - 1], q = other[k];
-        const cross = (q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]);
-        const dot = (v[0] - p[0]) * (q[0] - p[0]) + (v[1] - p[1]) * (q[1] - p[1]);
-        const l2 = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2;
-        if (Math.abs(cross) < 1e-6 && dot > 1e-6 && dot < l2 - 1e-6) return unitVector(p, q);
+        if (alongSegment(v, other[k - 1], other[k]) !== null) return unitVector(other[k - 1], other[k]);
       }
     }
     return null;
@@ -90,23 +94,32 @@ export function yieldingPath(points, others) {
       return Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
     };
     // Gaps around a vertex on another line: the end of this segment, the start of the next.
+    // A segment too short for both becomes one gap, with its ticks at the middle.
     const endHit = i < points.length - 1 ? vertexHit(b) : null;
-    const lo = resume ? halfFor(resume) : 0;
-    const hi = len - (endHit ? halfFor(endHit) : 0);
+    let lo = resume ? halfFor(resume) : 0;
+    let hi = len - (endHit ? halfFor(endHit) : 0);
+    const squeezed = lo >= hi;
+    if (squeezed) lo = hi = len / 2;
     if (resume) {
       const start = [a[0] + dir[0] * lo, a[1] + dir[1] * lo];
       d += tick(start, resume) + ` M${start[0]} ${start[1]}`;
       resume = null;
     }
     const gaps = [];
+    const consider = (t, odir) => {
+      const half = halfFor(odir);
+      if (t * len > lo + half + TICK && t * len < hi - half - TICK) gaps.push({ t, odir, half });
+    };
     for (const other of others) {
       for (let k = 1; k < other.length; k++) {
         const p = other[k - 1], q = other[k];
         const hit = intersection(a, b, p, q);
-        if (!hit) continue;
-        const odir = unitVector(p, q);
-        const half = halfFor(odir);
-        if (hit.t * len > lo + half + TICK && hit.t * len < hi - half - TICK) gaps.push({ ...hit, odir, half });
+        if (hit) consider(hit.t, unitVector(p, q));
+        // The other line's bend lying on this segment; the tick follows its incoming side.
+        if (k < other.length - 1) {
+          const t = alongSegment(q, a, b);
+          if (t !== null) consider(t, unitVector(p, q));
+        }
       }
     }
     gaps.sort((p, q) => p.t - q.t);
@@ -130,7 +143,8 @@ export function yieldingPath(points, others) {
     }
     if (endHit) {
       const stop = [a[0] + dir[0] * hi, a[1] + dir[1] * hi];
-      d += ` L${stop[0]} ${stop[1]}` + tick(stop, endHit);
+      if (!squeezed) d += ` L${stop[0]} ${stop[1]}`;
+      d += tick(stop, endHit);
       resume = endHit;
     } else {
       d += ` L${b[0]} ${b[1]}`;

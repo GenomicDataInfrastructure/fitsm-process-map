@@ -40,8 +40,9 @@ Matching is case-sensitive except for `CODE`, which is upper-cased before lookup
   Clicking changes `location.hash`; `app.js` listens to `hashchange` and renders. There is no
   other way to change the selection, so the address always matches the view (FR-023).
 - A redirect uses `history.replaceState`, so the browser back button skips it.
-- The frame's back control (FR-015) pops `app.js`'s in-memory stack of visited hashes. When
-  the stack is empty: role or activity → its process; interface or record → `#` (nothing).
+- The frame's back control (FR-015) calls `history.back()` when the previous history entry
+  belongs to this page (`app.js` tags every entry with its depth in `history.state`). At the
+  page's first entry: role or activity → its process; interface or record → `#` (nothing).
 - The hash is read once on load (User Story 1, scenario 4) and on every `hashchange`.
 
 ## Router API (`src/router.js`, pure)

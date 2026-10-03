@@ -44,6 +44,21 @@ test("yieldingPath cuts a gap around a bend that lies on another line", () => {
   assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]]).startsWith("M0 0 L50 0 "), true);
 });
 
+test("yieldingPath cuts a gap where another line's bend lies on this segment", () => {
+  // The other line turns at (50,0), which is in the middle of this straight segment.
+  const through = yieldingPath([[0, 0], [100, 0]], [[[50, -50], [50, 0], [100, -50]]]);
+  assert.equal(through, "M0 0 L43 0 M43 4 L43 -4 M57 4 L57 -4 M57 0 L100 0");
+});
+
+test("yieldingPath turns a segment too short for two vertex gaps into one gap", () => {
+  // Segment (30,0)-(40,0) is 10 px long; both ends sit on other lines (a vertical one and a
+  // diagonal one), whose half-gaps add up to more than that.
+  const d = yieldingPath([[0, 0], [30, 0], [40, 0], [40, 50]], [[[30, -50], [30, 50]], [[20, -20], [60, 20]]]);
+  assert.ok(!d.includes("M37 0"), d);            // no resume point beyond the stop point
+  assert.match(d, /M35 4 L35 -4/, "both ticks sit at the middle of the short segment");
+  assert.match(d, / L40 50$/);
+});
+
 test("selectionState: nothing selected", () => {
   assert.deepEqual(selectionState(null, "#ISRM"), { selected: false, related: false });
   assert.deepEqual(selectionState(null, "#ISRM-PM"), { selected: false, related: false });

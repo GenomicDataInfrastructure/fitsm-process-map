@@ -167,8 +167,9 @@ const views = {
 
     if (process.externalFlows.length) {
       out.push(...section(LABELS.externalFlows, [
+        // A party token the edition explains (edition.json `externalParties`) is shown as explained.
         h("ul", {}, process.externalFlows.map((f) => h("li", {}, [
-          h("span", { class: "quote", text: `${f.direction === "in" ? "From" : "To"} ${f.party === "Any" ? "any process (FitSM-2: “Any”)" : f.party}: ${f.item}` }),
+          h("span", { class: "quote", text: `${f.direction === "in" ? "From" : "To"} ${model.edition.externalParties?.[f.party] || f.party}: ${f.item}` }),
           sourceLine(f.source, model),
         ]))),
       ]));

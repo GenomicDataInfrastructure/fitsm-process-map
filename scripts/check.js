@@ -18,6 +18,7 @@ import { resolve, join, basename, dirname } from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FILES = ["edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "map"];
 const ROLE_KINDS = ["owner", "manager", "case-owner", "staff", "specific"];
 const SIDES = ["n", "s", "e", "w"];
@@ -330,8 +331,8 @@ function checkEdition({ id: ed, dir }) {
   if (!PATTERNS.colour.test(background || "")) err("map", "background", `colour "${background}" is not #rrggbb`);
   if (!PATTERNS.colour.test(transfer.colour || "")) err("map", "transfer", `colour "${transfer.colour}" is not #rrggbb`);
   else checkContrast("transfer", transfer.colour);
-  // The transfer stroke must be thinner than the 6 px line stroke (FR-003).
-  if (typeof transfer.width !== "number" || !(transfer.width >= 1 && transfer.width <= 10 && transfer.width < 6)) {
+  // The transfer stroke must be thinner than the line stroke the stylesheet draws (FR-003).
+  if (typeof transfer.width !== "number" || !(transfer.width >= 1 && transfer.width <= 10 && transfer.width < lineStrokeWidth())) {
     err("map", "transfer", `width ${transfer.width} is not a number between 1 and 10 below the line stroke`);
   }
   if (grid.margin !== undefined) {
@@ -385,14 +386,13 @@ function checkEdition({ id: ed, dir }) {
 
 function checkScripts() {
   // Resolved from this script's location, so the check works from any working directory.
-  const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   const files = [];
-  if (existsSync(join(root, "src"))) for (const f of readdirSync(join(root, "src"))) if (f.endsWith(".js")) files.push(join("src", f));
+  if (existsSync(join(ROOT, "src"))) for (const f of readdirSync(join(ROOT, "src"))) if (f.endsWith(".js")) files.push(join("src", f));
   files.push(join("scripts", "check.js"));
   for (const file of files) {
-    if (!existsSync(join(root, file))) continue;
+    if (!existsSync(join(ROOT, file))) continue;
     try {
-      execFileSync(process.execPath, ["--check", join(root, file)], { stdio: "pipe" });
+      execFileSync(process.execPath, ["--check", join(ROOT, file)], { stdio: "pipe" });
     } catch (e) {
       report("error", "", file, "syntax", String(e.stderr || e.message).trim().split("\n").pop());
     }
@@ -401,6 +401,14 @@ function checkScripts() {
 }
 
 /* ---------- helpers ---------- */
+
+/* Line stroke width in px, read from styles.css (`--connection-stroke`) so the stylesheet
+ * stays the single source; 6 if the stylesheet is missing or no longer declares it. */
+function lineStrokeWidth() {
+  const css = join(ROOT, "styles.css");
+  const found = existsSync(css) ? readFileSync(css, "utf8").match(/--connection-stroke:\s*(\d+(?:\.\d+)?)/) : null;
+  return found ? Number(found[1]) : 6;
+}
 
 function isObj(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);

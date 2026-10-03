@@ -124,8 +124,9 @@ members are not all reachable from each other through same-line connections.
 
 **Decision**: Every selectable item has a hash (grammar in
 [contracts/url-hash.md](contracts/url-hash.md)). Clicking anything sets `location.hash`; a
-`hashchange` listener renders the frame and updates the map highlight. The frame's back control
-pops an in-memory stack of visited hashes; when empty it goes to the item's parent.
+`hashchange` listener renders the frame and updates the map highlight. Every history entry is
+tagged with its depth (`history.state.depth`), so the frame's back control is `history.back()`
+while there is a previous entry of this page; at the first entry it goes to the item's parent.
 
 **Rationale**: Hash routing needs no server configuration on GitHub Pages and lets stations be
 plain links.

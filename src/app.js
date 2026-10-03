@@ -5,7 +5,8 @@
 /*
  * Entry point: load the content, draw the map, and route on the address hash
  * (research R9). Every selection is a hash change, so the browser's back button
- * works; the frame's own back control pops an in-memory stack.
+ * works; each history entry is tagged with its depth so the frame's own back control
+ * can step back through the browser history when there is somewhere to go.
  */
 
 import { loadContent } from "./content.js";
@@ -28,8 +29,7 @@ const dom = {
 const state = {
   model: null,
   current: null,      // canonical hash of the current view; null before the first route
-  backStack: [],      // hashes visited before the current one
-  skipPush: false,    // set while the frame's back control navigates
+  depth: null,        // this entry's position among the page's own history entries
 };
 
 const ctx = { get model() { return state.model; }, goBack, panel: dom.panel };
@@ -54,7 +54,7 @@ async function start() {
     const link = event.target.closest("a[data-hash]");
     if (!link || link.dataset.hash !== state.current) return;
     event.preventDefault();
-    history.pushState(null, "", location.pathname + location.search);
+    history.pushState({ depth: state.depth + 1 }, "", location.pathname + location.search);
     route();
   });
   route();
@@ -64,17 +64,20 @@ function route() {
   const model = state.model;
   const result = canonical(parse(location.hash), model);
   if (result.redirect) {
-    history.replaceState(null, "", result.hash || location.pathname + location.search);
+    history.replaceState(history.state, "", result.hash || location.pathname + location.search);
   }
   const hash = result.kind === "unknown" ? location.hash : result.hash;
   const firstRoute = state.current === null;
-  if (hash !== state.current) {
-    if (state.skipPush) state.skipPush = false;
-    // Arriving at the previous view (typically the browser's Back button) is a step back.
-    else if (state.backStack[state.backStack.length - 1] === hash) state.backStack.pop();
-    else if (!firstRoute) state.backStack.push(state.current);
-    state.current = hash;
+  // Every history entry of this page carries its depth, so the frame's back control knows
+  // whether history.back() stays on the page. An entry without one was just created by the
+  // browser for a hash link: tag it one deeper than the entry it came from.
+  if (history.state && Number.isInteger(history.state.depth)) {
+    state.depth = history.state.depth;
+  } else {
+    state.depth = firstRoute ? 0 : state.depth + 1;
+    history.replaceState({ depth: state.depth }, "", location.href);
   }
+  state.current = hash;
 
   let title = SITE_TITLE;
   switch (result.kind) {
@@ -142,20 +145,18 @@ function announceHeading(moveFocus) {
   else dom.status.textContent = headingEl ? headingEl.textContent : "";
 }
 
-/* The frame's back control: previous hash in this visit, else the item's parent. */
+/* The frame's back control: the previous entry of this visit, else the item's parent. */
 function goBack() {
-  let target;
-  if (state.backStack.length) {
-    target = state.backStack.pop();
-  } else {
-    const parsed = parse(state.current);
-    if (parsed.kind === "role") target = format("process", state.model.roles.get(parsed.id).process);
-    else if (parsed.kind === "activity") target = format("process", state.model.activities.get(parsed.id).process);
-    else target = "";
+  if (state.depth > 0) {
+    history.back(); // the entry below is this page's own; the hash change re-routes
+    return;
   }
-  state.skipPush = true;
+  const parsed = parse(state.current);
+  let target = "";
+  if (parsed.kind === "role") target = format("process", state.model.roles.get(parsed.id).process);
+  else if (parsed.kind === "activity") target = format("process", state.model.activities.get(parsed.id).process);
   if (target === "") {
-    history.pushState(null, "", location.pathname + location.search);
+    history.pushState({ depth: state.depth + 1 }, "", location.pathname + location.search);
     route();
   } else {
     location.hash = target;

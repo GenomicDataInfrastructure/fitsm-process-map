@@ -68,6 +68,7 @@ Exactly one edition is shown (Clarification 3); any number may be present (const
 | `downloads` | string | URL of the official download page |
 | `licence` | object | `{ "name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/" }` |
 | `attribution` | string | `"ITEMO e.V."` |
+| `externalParties` | object | Optional; maps a `party` token of `externalFlows` to the wording the frame shows for it, e.g. `{ "Any": "any process (FitSM-2: “Any”)" }`; other tokens are shown as printed |
 
 ### Process (`processes.json`, array)
 
@@ -263,4 +264,4 @@ several lines, the first line in file order colours the connection.
 ## State
 
 There is no mutable state. The only runtime state is the current hash (selection) and the
-in-memory back stack (R9).
+depth tag each history entry carries for the frame's back control (R9).

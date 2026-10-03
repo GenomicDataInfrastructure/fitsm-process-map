@@ -36,5 +36,8 @@
     "name": "CC BY 4.0",
     "url": "https://creativecommons.org/licenses/by/4.0/"
   },
-  "attribution": "ITEMO e.V."
+  "attribution": "ITEMO e.V.",
+  "externalParties": {
+    "Any": "any process (FitSM-2: “Any”)"
+  }
 }
