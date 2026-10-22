@@ -179,6 +179,25 @@ export function renderMap(container, model) {
     el("rect", { width, height, fill: map.background }),
   );
 
+  // Halves of the map, drawn as shaded bands across the full width with their name in the
+  // corner given by the zone's `label`. A band touching the top or bottom of the grid runs
+  // into the margin.
+  const zones = el("g", { class: "zones", "aria-hidden": "true" });
+  for (const zone of map.zones || []) {
+    const top = zone.top <= 0 ? 0 : point(0, zone.top)[1];
+    const bottom = zone.bottom >= map.grid.rows ? height : point(0, zone.bottom)[1];
+    zones.append(
+      el("rect", { class: "zone", x: 0, y: top, width, height: bottom - top, fill: zone.fill }),
+      el("text", {
+        class: "zone-label",
+        x: zone.label.endsWith("w") ? 12 : width - 12,
+        y: zone.label.startsWith("n") ? top + 22 : bottom - 12,
+        "text-anchor": zone.label.endsWith("w") ? "start" : "end",
+      }, [document.createTextNode(zone.name)]),
+    );
+  }
+  svg.append(zones);
+
   // Connections: coloured (line) connections first, transfers on top so their hops read.
   const connections = el("g", { class: "connections" });
   const drawn = [];

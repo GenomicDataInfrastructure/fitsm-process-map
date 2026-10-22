@@ -139,6 +139,15 @@ Edit `lines` in `map.json` only. Membership, names, colours and label sides are 
 change; the checks verify that every process is on a line, that colours pass contrast, and
 warn when a line's stations are not connected through interfaces.
 
+### Changing the halves
+
+The map is split into two halves, Plan & Deliver and Operate & Control, drawn as shaded bands
+behind the lines. They are defined under `zones` in `map.json`: each has a name, a fill
+colour, the grid rows it covers (`top` and `bottom`), the corner its name sits in (`label`:
+`nw`, `ne`, `sw` or `se`) and its stations. The checks verify that
+every listed station sits inside its band, that no station is in two halves, that bands do
+not overlap, and that line colours keep 3:1 contrast against each fill.
+
 ## CI/CD
 
 | Workflow | Trigger | What it does |

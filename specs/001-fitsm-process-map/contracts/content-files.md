@@ -35,7 +35,7 @@ parallel, from the same origin:
 | `activities.json` | array of Activity | Activities with procedure steps |
 | `records.json` | array of Record | Records with FitSM-0 definitions and derived usage |
 | `interfaces.json` | array of Interface | One per connected process pair (descriptions and/or flows) |
-| `map.json` | object | Lines with name-label sides, station grid positions, route waypoints, styles |
+| `map.json` | object | Halves (`zones`, optional), lines with name-label sides, station grid positions, route waypoints, styles |
 
 If `editions.json` or any edition file fails to load or parse, the page shows a single error
 message in the frame naming the file (`Could not load content/<edition>/<file>`), and draws
@@ -94,4 +94,5 @@ line's stations are not connected through interfaces. Nothing in `src/` needs to
 | `interfaces[].descriptions` empty | Fixed sentence in place of the description: "FitSM-2 lists these inputs and outputs but gives no interface description." |
 | `processes[].externalFlows` non-empty | Section "Inputs from and outputs to outside the processes" with direction, party, item, source |
 | `interfaces[].note`, any `note` | Box "Not part of FitSM" |
-| `map.json.lines` | Legend entries (name and colour) under the heading "Lines are a study aid, not part of FitSM", and `map.json.note` |
+| `map.json.zones` | Shaded bands on the map with their names; legend entries under the heading "Halves and lines are a study aid, not part of FitSM"; the half named in the station's spoken name and frame subtitle |
+| `map.json.lines` | Legend entries (name and colour) under the heading "Halves and lines are a study aid, not part of FitSM", and `map.json.note` |

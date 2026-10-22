@@ -15,6 +15,9 @@ document versions they bring in.
 
 ### Added
 
+- The map shows its two halves, Plan & Deliver and Operate & Control, as shaded bands
+  (`zones` in `map.json`, checked by `scripts/check.js`), named in the legend, in each
+  station's spoken name and in its frame subtitle, and labelled as a study aid.
 - Initial process map of FitSM 3.0: FitSM-0 Overview and vocabulary v3.0.1, FitSM-1
   Requirements v3.0.1, FitSM-2 Process activities and implementation v3.0.2, FitSM-3 Role
   model v3.0.1 (all ITEMO e.V., CC BY 4.0). 14 processes, 17 general and 65 process

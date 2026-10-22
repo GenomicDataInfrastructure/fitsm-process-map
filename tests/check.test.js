@@ -48,6 +48,7 @@ const cases = {
   "bad-grid": "error   bad-grid/map.json: grid: unit, cols and rows must be positive integers",
   "role-without-tasks": "error   role-without-tasks/roles.json: AA.manager: tasks must be an array (may be empty)",
   "bad-waypoint": "error   bad-waypoint/map.json: routes.AA-BB: waypoint 0 is not a grid point [x, y] within the grid",
+  "zone-misplaced": "error   zone-misplaced/map.json: zones.top: station HH at row 4 is not inside rows 0-3",
 };
 
 test("the syntax check does not depend on the working directory", () => {

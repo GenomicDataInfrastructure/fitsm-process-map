@@ -8,7 +8,7 @@
  * specs/…/contracts/content-files.md.
  */
 
-import { connectionLabel, stationLines } from "./graph.js";
+import { connectionLabel, stationLines, stationZone } from "./graph.js";
 
 export const LABELS = {
   interpretation: "Not part of FitSM",
@@ -106,14 +106,15 @@ const views = {
 
   process(process, ctx) {
     const { model } = ctx;
-    // Which line(s) the station is on, in words (FR-006): the lines are a study aid.
+    // Which half and line(s) the station is in, in words (FR-006): both are a study aid.
+    const zone = stationZone(process.code, model);
     const lineNames = stationLines(process.code, model).map((l) => l.name);
     const onLines = lineNames.length === 0 ? "On no line"
       : lineNames.length === 1 ? `On the ${lineNames[0]} line`
         : `On the ${lineNames.slice(0, -1).join(", ")} and ${lineNames[lineNames.length - 1]} lines`;
     const out = [
       heading(`${process.name} (${process.code})`),
-      h("p", { class: "subtitle", text: `${onLines} (study aid, not part of FitSM)` }),
+      h("p", { class: "subtitle", text: `${zone ? `In ${zone.name}. ` : ""}${onLines} (study aid, not part of FitSM)` }),
       ...section("Objective", [h("p", { class: "quote", text: process.objective.text }), sourceLine(process.objective.source, model)]),
     ];
 

@@ -1,5 +1,5 @@
 {
-  "note": "The lines group related processes as a study aid. They are not part of FitSM.",
+  "note": "The lines and the two halves group related processes as a study aid. They are not part of FitSM.",
   "background": "#ffffff",
   "transfer": {
     "colour": "#8a8a8a",
@@ -14,6 +14,26 @@
       "y": 2
     }
   },
+  "zones": [
+    {
+      "id": "plan-deliver",
+      "name": "Plan & Deliver",
+      "fill": "#eef3f9",
+      "top": 0,
+      "bottom": 13,
+      "label": "nw",
+      "stations": ["SPM", "SLM", "CRM", "SUPPM", "SRM", "SACM", "CAPM", "ISM"]
+    },
+    {
+      "id": "operate-control",
+      "name": "Operate & Control",
+      "fill": "#f7f3ea",
+      "top": 13,
+      "bottom": 26,
+      "label": "sw",
+      "stations": ["ISRM", "PM", "CSI", "CONFM", "CHM", "RDM"]
+    }
+  ],
   "lines": [
     {
       "id": "agreements",

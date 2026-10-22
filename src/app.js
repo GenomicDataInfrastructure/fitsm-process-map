@@ -164,6 +164,14 @@ function goBack() {
 }
 
 function renderLegend(model) {
+  const zones = (model.map.zones || []).map((zone) => {
+    const li = document.createElement("li");
+    const swatch = document.createElement("span");
+    swatch.className = "swatch swatch-zone";
+    swatch.style.background = zone.fill;
+    li.append(swatch, document.createTextNode(`${zone.name} half`));
+    return li;
+  });
   const items = model.map.lines.map((line) => {
     const li = document.createElement("li");
     const swatch = document.createElement("span");
@@ -177,7 +185,7 @@ function renderLegend(model) {
   swatch.className = "swatch swatch-transfer";
   swatch.style.background = model.map.transfer.colour;
   transfer.append(swatch, document.createTextNode("Thin grey: transfer between lines"));
-  dom.legend.replaceChildren(...items, transfer);
+  dom.legend.replaceChildren(...zones, ...items, transfer);
 }
 
 function renderFooter(model) {

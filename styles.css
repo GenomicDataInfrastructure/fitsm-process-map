@@ -92,6 +92,14 @@ a { color: var(--link); }
 
 .station-disc { fill: var(--paper); stroke-width: var(--station-stroke); }
 .station-ring { fill: none; }
+/* Names of the map's halves, set small and muted so they read as background. */
+.zone-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--ink-muted);
+}
 /* Station codes get a white halo so they stay legible where a connection runs close by. */
 .station-label {
   font-size: 15px;
@@ -134,6 +142,7 @@ a { color: var(--link); }
 .legend li { display: flex; align-items: center; gap: 0.4rem; }
 .swatch { display: inline-block; width: 1.4rem; height: 0.4rem; border-radius: 2px; }
 .swatch-transfer { height: 0.25rem; } /* colour comes from map.json's transfer.colour */
+.swatch-zone { height: 0.9rem; border: 1px solid var(--rule); } /* colour comes from map.json's zone fill */
 
 /* Detail frame */
 .panel { padding: 0 0.25rem 1rem; }

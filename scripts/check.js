@@ -288,7 +288,7 @@ function checkEdition({ id: ed, dir }) {
   }
 
   // 10. Map
-  const { grid, stations, routes, lines, transfer, background } = d.map;
+  const { grid, stations, routes, lines, transfer, background, zones = [] } = d.map;
   const positive = (n) => Number.isInteger(n) && n > 0;
   const gridOk = positive(grid.unit) && positive(grid.cols) && positive(grid.rows);
   if (!gridOk) err("map", "grid", "unit, cols and rows must be positive integers");
@@ -373,12 +373,46 @@ function checkEdition({ id: ed, dir }) {
     }
     itemsChecked++;
   }
+  // 13. Halves (optional): bands of whole rows, each station in at most one, placed inside it.
+  const zoneIds = new Set();
+  const zoneOf = new Map();
+  if (!Array.isArray(zones)) err("map", "zones", "must be an array");
+  for (const zone of Array.isArray(zones) ? zones : []) {
+    const item = `zones.${zone.id || "?"}`;
+    if (!PATTERNS.slug.test(zone.id || "")) err("map", item, "id must be a slug");
+    if (zoneIds.has(zone.id)) err("map", item, "duplicate zone id");
+    zoneIds.add(zone.id);
+    if (!zone.name) err("map", item, "missing name");
+    if (!PATTERNS.colour.test(zone.fill || "")) err("map", item, `fill "${zone.fill}" is not #rrggbb`);
+    if (!["nw", "ne", "sw", "se"].includes(zone.label)) err("map", item, `label "${zone.label}" is not nw, ne, sw or se`);
+    const rowsOk = Number.isInteger(zone.top) && Number.isInteger(zone.bottom) && zone.top >= 0 && zone.top < zone.bottom && (!gridOk || zone.bottom <= grid.rows);
+    if (!rowsOk) err("map", item, "top and bottom must be integer rows with 0 <= top < bottom <= rows");
+    for (const other of zones) {
+      if (other === zone || !rowsOk) continue;
+      if (zone.top < other.bottom && other.top < zone.bottom && zone.id < other.id) err("map", item, `overlaps zone "${other.id}"`);
+    }
+    for (const s of Array.isArray(zone.stations) ? zone.stations : []) {
+      if (!codes.has(s)) err("map", item, `process "${s}" does not exist`);
+      if (zoneOf.has(s)) err("map", item, `station ${s} is also in zone "${zoneOf.get(s)}"`);
+      zoneOf.set(s, zone.id);
+      const pos = stations[s];
+      if (pos && rowsOk && !(pos.y > zone.top && pos.y < zone.bottom)) err("map", item, `station ${s} at row ${pos.y} is not inside rows ${zone.top}-${zone.bottom}`);
+    }
+    if (!Array.isArray(zone.stations)) err("map", item, "stations must be an array");
+  }
   itemsChecked += d.processes.length;
 
+  // Line and transfer colours sit on the background and on every zone fill.
   function checkContrast(item, colour) {
-    if (!PATTERNS.colour.test(background || "")) return;
-    const ratio = contrast(colour, background);
-    if (ratio < 3) err("map", item, `colour ${colour} has contrast ${ratio.toFixed(1)}:1 against background (needs 3:1)`);
+    if (PATTERNS.colour.test(background || "")) {
+      const ratio = contrast(colour, background);
+      if (ratio < 3) err("map", item, `colour ${colour} has contrast ${ratio.toFixed(1)}:1 against background (needs 3:1)`);
+    }
+    for (const zone of Array.isArray(zones) ? zones : []) {
+      if (!PATTERNS.colour.test(zone.fill || "")) continue;
+      const ratio = contrast(colour, zone.fill);
+      if (ratio < 3) err("map", item, `colour ${colour} has contrast ${ratio.toFixed(1)}:1 against zone "${zone.id}" (needs 3:1)`);
+    }
   }
 }
 
