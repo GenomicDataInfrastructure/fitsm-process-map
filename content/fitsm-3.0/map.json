@@ -59,7 +59,7 @@
     {
       "id": "reporting",
       "name": "Reporting and improvement",
-      "colour": "#bf360c",
+      "colour": "#e06000",
       "stations": [
         "CSI",
         "SRM"

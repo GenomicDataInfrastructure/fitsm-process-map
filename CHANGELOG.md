@@ -35,3 +35,8 @@ document versions they bring in.
   to screen readers; the legend's transfer sample takes its colour from the content.
 - Checks for alias format, `map.grid` fields and role `tasks`; `scripts/check.js` works
   from any working directory; unit tests for the map geometry and selection rules.
+
+### Changed
+
+- The Reporting and improvement line is orange (`#e06000`, was `#bf360c`) so it can be told
+  apart from the red Operations line.
