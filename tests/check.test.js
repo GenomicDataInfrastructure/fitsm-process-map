@@ -54,7 +54,7 @@ const cases = {
 
 test("the layout metrics are printed before the summary, and listed with --layout", () => {
   const r = run("--content", "tests/fixtures/valid");
-  assert.match(r.out, /^layout  valid\/map\.json: 0 crossings, 0 shared segments, 0 close parallels$/m);
+  assert.match(r.out, /^layout  valid\/map\.json: 0 crossing points \(0 crossings between pairs\), 0 shared segments \(0 transfer merges, 0 within a line, 0 mixed\), 0 close parallels$/m);
   const real = run("--layout");
   assert.match(real.out, /^  crossing  [A-Z]+-[A-Z]+ x [A-Z]+-[A-Z]+ at \(\d+,\d+\)$/m);
   assert.equal(run("--quiet").out, "");

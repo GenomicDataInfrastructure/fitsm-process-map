@@ -101,11 +101,18 @@ file could not be read. A line whose processes are not all connected through tha
 warning and does not fail the run. Options: `--content <dir>` checks one edition directory;
 `--editions <file>` names a different editions file; `--quiet` prints findings only.
 
-For each edition the script also prints a layout line, for example
-`layout  fitsm-3.0/map.json: 58 crossings, 10 shared segments, 28 close parallels`. It counts
-the points where two connections cross, the stretches where two connections lie on top of
-each other, and the parallel stretches at most one grid unit apart. The line is for
-information only and never fails the run. Add `--layout` to list each one with its grid
+For each edition the script also prints a layout line, for example:
+
+```text
+layout  fitsm-3.0/map.json: 15 crossing points (34 crossings between pairs), 40 shared segments (37 transfer merges, 3 within a line, 0 mixed), 7 close parallels
+```
+
+*Crossing points* are the places on the map where lines cross; a trunk of several
+connections crossing a line is one crossing point but one crossing per pair. *Shared
+segments* are stretches where two connections lie on top of each other: transfers merged
+into a trunk, two connections of the same line, or a mixed pair (such as a transfer over a
+coloured line), which is usually worth avoiding. *Close parallels* are parallel stretches at
+most one grid unit apart. The line is for information only and never fails the run. Add `--layout` to list each one with its grid
 coordinates, which helps when re-routing connections in `map.json`.
 
 ```bash

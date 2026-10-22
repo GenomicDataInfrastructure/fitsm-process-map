@@ -417,10 +417,14 @@ function checkEdition({ id: ed, dir }) {
   // 14. Layout metrics (informational): how often routes cross, overlap or run close together.
   const metrics = layoutMetrics(d.map);
   const at = (p) => `(${p.join(",")})`;
-  layoutLines.push(`layout  ${ed}/map.json: ${metrics.crossings.length} crossings, ${metrics.shared.length} shared segments, ${metrics.close.length} close parallels`);
+  const kinds = { merge: 0, line: 0, mixed: 0 };
+  for (const s of metrics.shared) kinds[s.kind]++;
+  layoutLines.push(`layout  ${ed}/map.json: ${metrics.crossingPoints} crossing points (${metrics.crossings.length} crossings between pairs), ` +
+    `${metrics.shared.length} shared segments (${kinds.merge} transfer merges, ${kinds.line} within a line, ${kinds.mixed} mixed), ` +
+    `${metrics.close.length} close parallels`);
   if (opts.layout) {
     for (const c of metrics.crossings) layoutLines.push(`  crossing  ${c.a} x ${c.b} at ${at(c.at)}`);
-    for (const s of metrics.shared) layoutLines.push(`  shared    ${s.a} = ${s.b} from ${at(s.from)} to ${at(s.to)}`);
+    for (const s of metrics.shared) layoutLines.push(`  shared    ${s.a} = ${s.b} from ${at(s.from)} to ${at(s.to)} (${s.kind})`);
     for (const c of metrics.close) layoutLines.push(`  close     ${c.a} ~ ${c.b} from ${at(c.from)} to ${at(c.to)}, ${c.distance} apart`);
   }
 

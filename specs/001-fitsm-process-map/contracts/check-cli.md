@@ -36,7 +36,7 @@ and then the summary:
 ```text
 error   <edition>/<file>: <item id or path>: <message>
 warning <edition>/<file>: <item id or path>: <message>
-layout  <edition>/map.json: <C> crossings, <S> shared segments, <P> close parallels
+layout  <edition>/map.json: <X> crossing points (<C> crossings between pairs), <S> shared segments (<M> transfer merges, <L> within a line, <Q> mixed), <P> close parallels
 <N> errors, <M> warnings, <K> items checked across <E> edition(s)
 ```
 
@@ -45,7 +45,7 @@ coordinates:
 
 ```text
   crossing  SACM-SLM x CRM-SPM at (12,6)
-  shared    SACM-SLM = CAPM-SLM from (12,5) to (12,4)
+  shared    SACM-SLM = CAPM-SLM from (20,6) to (20,4) (line)
   close     CONFM-RDM ~ ISRM-RDM from (14,20) to (26,20), 1 apart
 ```
 
@@ -109,7 +109,10 @@ than stopping at the first.
 14. **Layout metrics** (informational, never an error or warning; `scripts/layout.js`): for
     every pair of routes, in grid units: *crossings*, the distinct points where they meet
     other than a station both end at; *shared segments*, stretches where they lie on top of
-    each other; *close parallels*, parallel stretches at most 1 grid unit apart.
+    each other, classed as *transfer merges* (two transfers on one trunk), *within a line*
+    (two connections of the same line) or *mixed* (any other pair, such as a transfer over a
+    line); *close parallels*, parallel stretches at most 1 grid unit apart. *Crossing points*
+    counts the distinct points among all crossings, so a trunk crossing a line counts once.
 15. **Scripts parse** (once, not per edition): `node --check` on every file in `src/` and on
     `scripts/check.js` and `scripts/layout.js`.
 
