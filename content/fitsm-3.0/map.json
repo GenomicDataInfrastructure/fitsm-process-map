@@ -158,6 +158,7 @@
       "label": "s"
     }
   },
+  "drawFirst": ["CONFM-ISRM", "CONFM-PM"],
   "routes": {
     "SACM-SLM": [
       [16, 10],

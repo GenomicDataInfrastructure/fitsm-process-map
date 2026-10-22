@@ -101,6 +101,7 @@ than stopping at the first.
     transfer colour ≥ 3:1 against `background`.
 12. **Line connectivity** (warning): members of each line reachable from each other through
     same-line connections.
+    `map.drawFirst`, if present, is an array of interface ids, each listed once.
 13. **Halves** (`map.zones`, optional): ids are unique slugs; each has a name, a `#rrggbb`
     fill, integer rows `0 <= top < bottom <= rows` and a `label` corner `nw`, `ne`, `sw` or
     `se`; bands do not overlap; each listed station exists, is in one half only and sits

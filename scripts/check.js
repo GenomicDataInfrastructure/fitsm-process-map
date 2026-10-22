@@ -377,6 +377,14 @@ function checkEdition({ id: ed, dir }) {
     }
     itemsChecked++;
   }
+  // Transfers to draw first (optional): interface ids, each once.
+  const drawFirst = d.map.drawFirst ?? [];
+  if (!Array.isArray(drawFirst)) err("map", "drawFirst", "must be an array of interface ids");
+  else for (const [k, id] of drawFirst.entries()) {
+    if (!interfaceIds.has(id)) err("map", "drawFirst", `"${id}" is not an interface`);
+    else if (drawFirst.indexOf(id) !== k) err("map", "drawFirst", `"${id}" is listed twice`);
+  }
+
   // 13. Halves (optional): bands of whole rows, each station in at most one, placed inside it.
   const zoneIds = new Set();
   const zoneOf = new Map();

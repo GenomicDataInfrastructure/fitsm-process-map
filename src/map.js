@@ -255,9 +255,13 @@ export function renderMap(container, model) {
   if (SHOW_GRID || new URLSearchParams(location.search).has("grid")) svg.append(gridOverlay(map.grid, point));
 
   // Connections: coloured (line) connections first, transfers on top so their hops read.
+  // A connection drawn later yields where it crosses one drawn earlier; map.drawFirst lists
+  // transfers to draw before the others, so that the others yield to them.
   const connections = el("g", { class: "connections" });
   const drawn = [];
-  const ordered = [...model.interfaces.values()].sort((a, b) => Number(!!connectionLine(b.id, model)) - Number(!!connectionLine(a.id, model)));
+  const first = map.drawFirst || [];
+  const rank = (iface) => (connectionLine(iface.id, model) ? -1 : first.includes(iface.id) ? first.indexOf(iface.id) : first.length);
+  const ordered = [...model.interfaces.values()].sort((a, b) => rank(a) - rank(b));
   for (const iface of ordered) {
     const [a, b] = iface.processes;
     const route = map.routes[iface.id];

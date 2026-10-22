@@ -149,6 +149,13 @@ Edit `lines` in `map.json` only. Membership, names, colours and label sides are 
 change; the checks verify that every process is on a line, that colours pass contrast, and
 warn when a line's stations are not connected through interfaces.
 
+### Choosing which line breaks at a crossing
+
+Where two connections cross, the one drawn later breaks with a short gap. Coloured lines are
+drawn first; transfers follow in the order of `interfaces.json`. To keep a transfer unbroken
+where it crosses other transfers, list its id under `drawFirst` in `map.json`; listed
+transfers are drawn before all other transfers, in the listed order.
+
 ### Changing the halves
 
 The map is split into two halves, Plan & Deliver and Operate & Control, drawn as shaded bands
