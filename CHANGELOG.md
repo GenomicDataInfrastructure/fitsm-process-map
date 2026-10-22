@@ -18,6 +18,9 @@ document versions they bring in.
 - The map shows its two halves, Plan & Deliver and Operate & Control, as shaded bands
   (`zones` in `map.json`, checked by `scripts/check.js`), named in the legend, in each
   station's spoken name and in its frame subtitle, and labelled as a study aid.
+- Clicking a stretch of the map where several connections run together selects all of them
+  (`#A-B,C-D`): the frame lists each one's description and flows, and the map highlights and
+  animates each.
 - `scripts/check.js` prints layout metrics for each edition's map (crossings, shared
   segments, close parallels); `--layout` lists each one with its grid coordinates.
 - Initial process map of FitSM 3.0: FitSM-0 Overview and vocabulary v3.0.1, FitSM-1

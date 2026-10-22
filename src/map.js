@@ -319,17 +319,60 @@ export function renderMap(container, model) {
 }
 
 /* Pure classification of one map element (`own`, "#CODE" or "#A-B") against the selected
- * hash (null for none): `selected` when they match; `related` for a connection touching the
- * selected station, or a station at either end of the selected connection. Far-end stations
- * of a selected station are added by setSelected once the connections are known. */
+ * hash (null for none; "#A-B,C-D" for several connections): `selected` when it is one of
+ * the selected items; `related` for a connection touching the selected station, or a
+ * station at either end of a selected connection. Far-end stations of a selected station
+ * are added by setSelected once the connections are known. */
 export function selectionState(hash, own) {
   if (hash === null || hash === undefined) return { selected: false, related: false };
-  if (own === hash) return { selected: true, related: false };
-  const selectedCodes = hash.slice(1).split("-");
+  const items = hash.slice(1).split(",");
+  if (items.includes(own.slice(1))) return { selected: true, related: false };
   const codes = own.slice(1).split("-");
-  const touches = codes.some((c) => selectedCodes.includes(c));
-  const related = touches && (codes.length === 2 ? selectedCodes.length === 1 : selectedCodes.length === 2);
+  const related = items.some((item) => {
+    const selectedCodes = item.split("-");
+    const touches = codes.some((c) => selectedCodes.includes(c));
+    return touches && (codes.length === 2 ? selectedCodes.length === 1 : selectedCodes.length === 2);
+  });
   return { selected: false, related };
+}
+
+/* ---------- connections under a point ---------- */
+
+/* Closest point to `p` on the polyline `points`, with the direction of that segment. */
+function closestOnPolyline(p, points) {
+  let best = null;
+  for (let k = 1; k < points.length; k++) {
+    const a = points[k - 1], b = points[k];
+    const l2 = (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2;
+    const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * (b[0] - a[0]) + (p[1] - a[1]) * (b[1] - a[1])) / l2));
+    const q = [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+    const dist = Math.hypot(p[0] - q[0], p[1] - q[1]);
+    if (!best || dist < best.dist) best = { point: q, dist, dir: unitVector(a, b) };
+  }
+  return best;
+}
+
+/* Ids of every route running along the clicked route `id` at `p` (map coordinates): the
+ * point on `id` nearest `p`, and every route that passes through that point in the same
+ * direction. A route merely crossing there is not included. Sorted; `id` alone when it
+ * shares nothing there. */
+export function connectionsThrough(routes, id, p) {
+  const own = closestOnPolyline(p, routes.get(id));
+  const ids = [];
+  for (const [other, points] of routes) {
+    const near = closestOnPolyline(own.point, points);
+    if (other === id || (near.dist < 0.5 && parallel(near.dir, own.dir))) ids.push(other);
+  }
+  return ids.sort();
+}
+
+/* The connection ids under a click on connection `id` at client coordinates (x, y). */
+export function connectionsAt(container, id, x, y) {
+  const svg = container.querySelector("svg");
+  const ctm = svg?.getScreenCTM();
+  if (!ctm || !rendered.routes.has(id)) return [id];
+  const p = new DOMPoint(x, y).matrixTransform(ctm.inverse());
+  return connectionsThrough(rendered.routes, id, [p.x, p.y]);
 }
 
 /* Highlights the station or connection whose hash matches; null clears all. Nothing gets
@@ -347,7 +390,7 @@ export function setSelected(container, hash) {
     else link.removeAttribute("aria-current");
   }
   // Stations at the far end of a selected station's connections stay at full strength too.
-  if (hash && selectedCodes.size === 1) {
+  if (hash && selectedCodes.size === 1 && !hash.includes(",")) {
     const [code] = selectedCodes;
     for (const conn of container.querySelectorAll(".connections a[data-hash]")) {
       const ends = conn.dataset.hash.slice(1).split("-");
@@ -365,22 +408,26 @@ export function setSelected(container, hash) {
 const DOTS_PER_DIRECTION = 3;
 const DOT_SPEED = 70; // px per second
 
-/* While a connection is selected, small markers travel along it in the direction of each
+/* While connections are selected, small markers travel along each in the direction of each
  * flow FitSM-2 lists (both ways when flows exist in both directions). Removed on deselect,
  * and never shown when the visitor prefers reduced motion. */
 function animateFlows(svg, hash) {
   svg.querySelector(".flow-animation")?.remove();
-  const { model, routes } = rendered;
+  const { model } = rendered;
   if (!model || !hash) return;
-  const id = hash.slice(1);
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const group = el("g", { class: "flow-animation", "aria-hidden": "true" });
+  for (const id of hash.slice(1).split(",")) addFlows(group, id);
+  if (group.childNodes.length) svg.append(group);
+}
+
+function addFlows(group, id) {
+  const { model, routes } = rendered;
   const iface = model.interfaces.get(id);
   const points = routes.get(id);
   if (!iface || !points) return;
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
   const line = connectionLine(id, model);
   const colour = line ? line.colour : model.map.transfer.colour;
-  const group = el("g", { class: "flow-animation", "aria-hidden": "true" });
   const [a] = iface.processes;
   for (const from of iface.directions.keys()) {
     const oriented = from === a ? points : [...points].reverse();
@@ -396,5 +443,4 @@ function animateFlows(svg, hash) {
       group.append(el("circle", { class: "flow-dot", r: 4, stroke: colour }, [motion]));
     }
   }
-  svg.append(group);
 }

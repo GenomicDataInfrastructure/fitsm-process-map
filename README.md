@@ -25,13 +25,15 @@ says about it, with a reference to the FitSM document and section for every item
 | --- | --- |
 | A process (station) | Its objective, requirements (FitSM-1), roles, databases and records, activities, interfaces, and inputs/outputs exchanged with parties outside the processes |
 | A connection | FitSM's description of the interface and the inputs and outputs exchanged in each direction |
+| A stretch where several connections run together | All of those connections, each with its description and flows, and each highlighted on the map |
 | A role | Its tasks (FitSM-3), split into tasks specific to the process and tasks common to every role of that kind |
 | An activity | Its procedure, as the ordered steps from FitSM-2 |
 | A database or record | Its FitSM-0 definition and the processes that use it |
 | **General requirements** (header) | FitSM-1's general requirements GR1–GR7 |
 
 Any view can be opened directly by link, for example `…/fitsm-process-map/#ISRM` for a
-process, `#ISRM-PM` for an interface or `#GR` for the general requirements.
+process, `#ISRM-PM` for an interface, `#CHM-ISRM,CONFM-ISRM` for several interfaces or `#GR`
+for the general requirements.
 
 The coloured lines group related processes as a study aid. They are not part of FitSM, and
 the page says so wherever they appear. Everything else on the page is FitSM's own text, with

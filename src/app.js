@@ -11,7 +11,7 @@
 
 import { loadContent } from "./content.js";
 import { parse, canonical, format } from "./router.js";
-import { renderMap, setSelected } from "./map.js";
+import { renderMap, setSelected, connectionsAt } from "./map.js";
 import { render } from "./panel.js";
 
 const SITE_TITLE = "FitSM Process Map";
@@ -49,13 +49,25 @@ async function start() {
   renderLegend(state.model);
   renderFooter(state.model);
   window.addEventListener("hashchange", route);
-  // Clicking the selected station or connection again deselects it.
+  // A pointer click on a connection selects every connection drawn along that stretch
+  // (a keyboard Enter has no position and selects the focused one). Clicking the current
+  // selection again deselects it.
   dom.map.addEventListener("click", (event) => {
     const link = event.target.closest("a[data-hash]");
-    if (!link || link.dataset.hash !== state.current) return;
+    if (!link) return;
+    let target = link.dataset.hash;
+    if (event.detail > 0 && link.closest(".connections")) {
+      const ids = connectionsAt(dom.map, target.slice(1), event.clientX, event.clientY);
+      if (ids.length > 1) target = format("interfaces", ids);
+    }
+    if (target === link.dataset.hash && target !== state.current) return; // the link's own navigation
     event.preventDefault();
-    history.pushState({ depth: state.depth + 1 }, "", location.pathname + location.search);
-    route();
+    if (target === state.current) {
+      history.pushState({ depth: state.depth + 1 }, "", location.pathname + location.search);
+      route();
+    } else {
+      location.hash = target;
+    }
   });
   route();
 }
@@ -103,6 +115,12 @@ function route() {
       setSelected(dom.map, `#${result.id}`);
       const [a, b] = iface.processes;
       title = `${a} ↔ ${b} – ${SITE_TITLE}`;
+      break;
+    }
+    case "interfaces": {
+      render("interfaces", result.ids.map((id) => model.interfaces.get(id)), ctx);
+      setSelected(dom.map, result.hash);
+      title = `${result.ids.length} connections – ${SITE_TITLE}`;
       break;
     }
     case "role": {

@@ -9,6 +9,7 @@
  *   "#GR"                 general requirements
  *   "#ISRM"               process (code, case-insensitive)
  *   "#ISRM-PM"            interface (codes in alphabetical order)
+ *   "#CHM-PM,CHM-SACM"    several interfaces at once (ids sorted, comma-separated)
  *   "#role/ISRM.manager"  role, "#activity/ISRM.A1" activity, "#record/incident-record" record
  *
  * Pure: no DOM access. `canonical` needs the content model for aliases and lookups.
@@ -25,6 +26,10 @@ export function parse(hash) {
   if (prefixed) return { kind: prefixed[1], id: prefixed[2], raw };
   const upper = raw.toUpperCase();
   if (upper === "GR") return { kind: "general", raw };
+  if (upper.includes(",")) {
+    const ids = upper.split(",");
+    return ids.every((id) => PAIR.test(id)) ? { kind: "interfaces", ids, raw } : { kind: "unknown", raw };
+  }
   if (PAIR.test(upper)) return { kind: "interface", id: upper, raw };
   if (CODE.test(upper)) return { kind: "process", id: upper, raw };
   return { kind: "unknown", raw };
@@ -39,6 +44,8 @@ export function format(kind, id) {
     case "process":
     case "interface":
       return `#${id}`;
+    case "interfaces":
+      return `#${id.join(",")}`;
     case "role":
     case "activity":
     case "record":
@@ -52,6 +59,15 @@ export function format(kind, id) {
 function resolveCode(code, model) {
   if (model.processes.has(code)) return code;
   return model.aliases.get(code) || null;
+}
+
+/* "A-B" with codes or aliases in either order to the interface id, or null. */
+function interfaceId(pair, model) {
+  const [, a, b] = pair.match(PAIR);
+  const codes = [resolveCode(a, model), resolveCode(b, model)];
+  if (codes.includes(null) || codes[0] === codes[1]) return null;
+  const id = codes.sort().join("-");
+  return model.interfaces.has(id) ? id : null;
 }
 
 /*
@@ -73,13 +89,18 @@ export function canonical(parsed, model) {
       return { kind: "process", id: code, hash, redirect: hash !== `#${parsed.raw}` };
     }
     case "interface": {
-      const [, a, b] = parsed.id.match(PAIR);
-      const codes = [resolveCode(a, model), resolveCode(b, model)];
-      if (codes.includes(null) || codes[0] === codes[1]) return unknown;
-      const id = codes.sort().join("-");
-      if (!model.interfaces.has(id)) return unknown;
+      const id = interfaceId(parsed.id, model);
+      if (!id) return unknown;
       const hash = format("interface", id);
       return { kind: "interface", id, hash, redirect: hash !== `#${parsed.raw}` };
+    }
+    case "interfaces": {
+      const ids = parsed.ids.map((id) => interfaceId(id, model));
+      if (ids.includes(null)) return unknown;
+      const unique = [...new Set(ids)].sort();
+      if (unique.length === 1) return { kind: "interface", id: unique[0], hash: format("interface", unique[0]), redirect: true };
+      const hash = format("interfaces", unique);
+      return { kind: "interfaces", ids: unique, hash, redirect: hash !== `#${parsed.raw}` };
     }
     case "role":
     case "activity":

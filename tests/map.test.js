@@ -4,7 +4,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { intersection, yieldingPath, selectionState } from "../src/map.js";
+import { intersection, yieldingPath, selectionState, connectionsThrough } from "../src/map.js";
 
 test("intersection finds crossings strictly inside both segments", () => {
   const hit = intersection([0, 0], [10, 10], [0, 10], [10, 0]);
@@ -116,4 +116,25 @@ test("selectionState: a connection is selected", () => {
   assert.deepEqual(selectionState("#ISRM-PM", "#ISRM-SLM"), { selected: false, related: false }, "sibling connections fade");
   assert.deepEqual(selectionState("#ISRM-PM", "#CHM-PM"), { selected: false, related: false });
   assert.deepEqual(selectionState("#ISRM-PM", "#SLM"), { selected: false, related: false });
+});
+
+test("selectionState: several connections are selected", () => {
+  const hash = "#CHM-ISRM,CONFM-ISRM";
+  assert.deepEqual(selectionState(hash, "#CHM-ISRM"), { selected: true, related: false });
+  assert.deepEqual(selectionState(hash, "#CONFM-ISRM"), { selected: true, related: false });
+  assert.deepEqual(selectionState(hash, "#CONFM"), { selected: false, related: true }, "an end of one of them");
+  assert.deepEqual(selectionState(hash, "#CHM-PM"), { selected: false, related: false });
+  assert.deepEqual(selectionState(hash, "#PM"), { selected: false, related: false });
+});
+
+test("connectionsThrough finds the routes sharing the clicked stretch, not those crossing it", () => {
+  const routes = new Map([
+    ["AA-BB", [[0, 0], [100, 0]]],
+    ["AA-CC", [[0, 0], [50, 0], [100, 50]]],   // shares the first half, then branches off
+    ["DD-EE", [[30, -50], [30, 50]]],          // crosses at x = 30
+    ["FF-GG", [[0, 40], [100, 40]]],           // elsewhere
+  ]);
+  assert.deepEqual(connectionsThrough(routes, "AA-BB", [30, 3]), ["AA-BB", "AA-CC"], "on the shared stretch, even at a crossing");
+  assert.deepEqual(connectionsThrough(routes, "AA-BB", [80, -2]), ["AA-BB"], "past the branch");
+  assert.deepEqual(connectionsThrough(routes, "FF-GG", [10, 40]), ["FF-GG"]);
 });
