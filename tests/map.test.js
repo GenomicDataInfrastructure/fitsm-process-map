@@ -44,6 +44,25 @@ test("yieldingPath cuts a gap around a bend that lies on another line", () => {
   assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]]).startsWith("M0 0 L50 0 "), true);
 });
 
+test("yieldingPath leaves no gap where a route branches off a shared stretch", () => {
+  const trunk = [[0, 0], [100, 0]];
+  // This route runs along the trunk to x = 50, then turns away: a junction, not a crossing.
+  const branch = yieldingPath([[0, 0], [50, 0], [100, 50]], [trunk], 0);
+  assert.equal(branch, "M0 0 L50 0 L100 50");
+  // The trunk does not yield where the branch leaves it.
+  assert.equal(yieldingPath(trunk, [[[0, 0], [50, 0], [100, 50]]], 0), "M0 0 L100 0");
+});
+
+test("yieldingPath on a shared stretch skips a crossing an earlier line already yielded to", () => {
+  const cross = [[50, -50], [50, 50]];
+  const trunk = [[0, 0], [100, 0]];
+  // The crossing line was drawn after the first trunk line, so it already has a gap there;
+  // a second line on the same stretch stays unbroken too.
+  assert.equal(yieldingPath(trunk, [trunk, cross]), "M0 0 L100 0");
+  // Drawn before the trunk, the crossing line is unbroken, so the trunk yields as usual.
+  assert.equal(yieldingPath(trunk, [cross, trunk]), "M0 0 L43 0 M43 4 L43 -4 M57 4 L57 -4 M57 0 L100 0");
+});
+
 test("yieldingPath cuts a gap where another line's bend lies on this segment", () => {
   // The other line turns at (50,0), which is in the middle of this straight segment.
   const through = yieldingPath([[0, 0], [100, 0]], [[[50, -50], [50, 0], [100, -50]]]);

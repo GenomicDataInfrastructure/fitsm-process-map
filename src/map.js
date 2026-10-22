@@ -46,6 +46,15 @@ function unitVector(p, q) {
   return [(q[0] - p[0]) / len, (q[1] - p[1]) / len];
 }
 
+function pointEquals(p, q) {
+  return Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-6;
+}
+
+/* True when two unit vectors point along the same line (either way). */
+function parallel(u, v) {
+  return Math.abs(u[0] * v[1] - u[1] * v[0]) < 1e-6;
+}
+
 /* Parameter (0..1, exclusive) of point v along segment p-q when v lies strictly inside it, else null. */
 function alongSegment(v, p, q) {
   const cross = (q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]);
@@ -74,11 +83,16 @@ export function yieldingPath(points, others) {
   // A bend sitting exactly on a line is a crossing that `intersection` never reports (it is
   // an end point of a segment on one side), so vertices are tested separately, both ways:
   // this route's own bends against the other lines, and the other lines' bends against
-  // this route's segments.
-  const vertexHit = (v) => {
+  // this route's segments. Where the two run along the same stretch on one side of the bend,
+  // the bend is a junction (one route branching off a shared trunk), not a crossing.
+  const vertexHit = (i) => {
+    const v = points[i];
+    const own = [unitVector(points[i - 1], v), unitVector(v, points[i + 1])];
     for (const other of others) {
       for (let k = 1; k < other.length; k++) {
-        if (alongSegment(v, other[k - 1], other[k]) !== null) return unitVector(other[k - 1], other[k]);
+        if (alongSegment(v, other[k - 1], other[k]) === null) continue;
+        const odir = unitVector(other[k - 1], other[k]);
+        if (!own.some((u) => parallel(u, odir))) return odir;
       }
     }
     return null;
@@ -95,7 +109,7 @@ export function yieldingPath(points, others) {
     };
     // Gaps around a vertex on another line: the end of this segment, the start of the next.
     // A segment too short for both becomes one gap, with its ticks at the middle.
-    const endHit = i < points.length - 1 ? vertexHit(b) : null;
+    const endHit = i < points.length - 1 ? vertexHit(i) : null;
     let lo = resume ? halfFor(resume) : 0;
     let hi = len - (endHit ? halfFor(endHit) : 0);
     const squeezed = lo >= hi;
@@ -110,15 +124,25 @@ export function yieldingPath(points, others) {
       const half = halfFor(odir);
       if (t * len > lo + half + TICK && t * len < hi - half - TICK) gaps.push({ t, odir, half });
     };
-    for (const other of others) {
+    // On a stretch shared with an earlier line, a crossing that already yielded to that line
+    // shows its gap there; yielding again would break both lines.
+    const shown = (t, ci) => {
+      const x = [a[0] + dir[0] * t * len, a[1] + dir[1] * t * len];
+      return others.slice(0, ci).some((line) => line.some((p, k) => k > 0 && parallel(unitVector(line[k - 1], p), dir) &&
+        (alongSegment(x, line[k - 1], p) !== null || pointEquals(x, p) || pointEquals(x, line[k - 1])) &&
+        Math.abs((p[0] - a[0]) * dir[1] - (p[1] - a[1]) * dir[0]) < 1e-6));
+    };
+    for (const [ci, other] of others.entries()) {
       for (let k = 1; k < other.length; k++) {
         const p = other[k - 1], q = other[k];
         const hit = intersection(a, b, p, q);
-        if (hit) consider(hit.t, unitVector(p, q));
+        if (hit && !shown(hit.t, ci)) consider(hit.t, unitVector(p, q));
         // The other line's bend lying on this segment; the tick follows its incoming side.
+        // A bend where the other line joins or leaves this segment is a junction: no gap.
         if (k < other.length - 1) {
           const t = alongSegment(q, a, b);
-          if (t !== null) consider(t, unitVector(p, q));
+          const joins = parallel(unitVector(p, q), dir) || parallel(unitVector(q, other[k + 1]), dir);
+          if (t !== null && !joins && !shown(t, ci)) consider(t, unitVector(p, q));
         }
       }
     }
