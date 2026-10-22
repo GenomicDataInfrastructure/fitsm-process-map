@@ -206,6 +206,19 @@ Study aid, not FitSM content (FR-003).
 Rules: every process appears in at least one line (error); when two connected processes share
 several lines, the first line in file order colours the connection.
 
+### Half (`map.json` `zones`)
+
+Study aid, not FitSM content (FR-036). Optional.
+
+| Field | Type | Rule |
+|---|---|---|
+| `id` | string | slug; unique |
+| `name` | string | Shown on the map, in the legend and in the frame |
+| `fill` | string | `#rrggbb`; every line colour and the transfer colour keep contrast ≥ 3:1 against it |
+| `top`, `bottom` | integer | Grid rows the band covers, `0 <= top < bottom <= rows`; bands do not overlap; a band at the grid's edge extends into the margin |
+| `label` | enum | Corner for the name: `nw`, `ne`, `sw` or `se` |
+| `stations` | string[] | Process codes in this half; each exists, is in one half only and sits strictly inside the rows |
+
 ### Map layout (`map.json`)
 
 ```json
@@ -227,6 +240,12 @@ several lines, the first line in file order colours the connection.
 | `routes` | One entry per interface id; waypoints are grid points; empty array = straight segment; each consecutive pair must be horizontal, vertical or 45° |
 | `transfer` | Style for cross-line connections: `colour` (contrast ≥ 3:1) and `width` in px, thinner than line strokes; drawn solid |
 | `grid.margin` | Optional `{ x, y }` in grid cells added around the grid for edge labels (default 2 and 1) |
+| `zones` | Optional; the halves (see Half) |
+| `drawFirst` | Optional array of interface ids, each once: transfers drawn before the other transfers, so that those yield where they cross them (FR-003) |
+
+Routes MAY share stretches: transfers with transfers (a trunk) and connections of one line
+with each other. A transfer sharing a stretch with a line's connection, or two lines sharing a
+stretch, is reported by the checks as a *mixed* shared segment (FR-037).
 
 ## Derived values (computed by `content.js` / `graph.js`, never stored)
 

@@ -87,6 +87,11 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
 - [ ] 2.4 In the interface frame, click the **PM** name. The PM process frame opens.
 - [ ] 2.5 Type `#PM-ISRM` in the address bar. It redirects to `#ISRM-PM` and the browser back
       button does not return to `#PM-ISRM`.
+- [ ] 2.6 Click the grey trunk just above **CHM**, where several transfers run together. The
+      frame says how many connections run there and lists each with its description, flows
+      and a link to its own view; the map highlights all of them, each with its markers. The
+      address lists them, for example `#CAPM-CHM,CHM-CRM,…`. Tab to one of those connections
+      and press Enter instead: only that connection opens.
 
 ### US3: Roles and activities
 
@@ -133,7 +138,9 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
       stations → legend → frame; every focusable element shows a visible focus ring; Enter
       opens it.
 - [ ] E4 A cross-line connection is a thin solid grey stroke; where connections cross, one
-      stops short of the other with a tick at each end and resumes beyond it; a same-line
+      stops short of the other with a tick at each end and resumes beyond it; where a grey
+      connection leaves a shared trunk it curves away with no gap; no grey stroke runs along
+      a coloured one; the two halves are shaded with their names; a same-line
       connection has the line's
       colour; no line names appear on the map itself; the legend names every line and says it
       is a study aid.

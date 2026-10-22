@@ -49,6 +49,25 @@
   "transfer"); the map has a short spoken description; a new selection is announced when the
   frame updates; the legend is readable text.
 
+### Session 2026-10-22 (map layout)
+
+- Q: May two connections be drawn along the same stretch of the map? → A: Transfers may run
+  together as a shared trunk and branch off where their routes part, like tracks at a junction;
+  two connections of the same line may also share a stretch. A transfer never runs along a
+  coloured line, and two lines of different colours never share a stretch.
+- Q: What does a click on a stretch shared by several connections open? → A: All of them: the
+  frame lists each connection's description and flows with a link to its own view, and the map
+  highlights and animates each. A keyboard selection, which has no position, opens the focused
+  connection alone.
+- Q: How are bends drawn? → A: As curves, so that a branch peels off a trunk smoothly instead of
+  meeting it at a corner that looks like half a crossing. A curve next to a crossing is made
+  tighter, down to a sharp corner, so the crossing's gap always fits.
+- Q: Which connection breaks where two cross? → A: The one drawn later. Lines are drawn before
+  transfers; the map content may name transfers to draw first, so that the others break where
+  they cross them.
+- Q: Should the map show FitSM's split into Plan & Deliver and Operate & Control? → A: Yes, as
+  two shaded halves with their names, labelled as a study aid like the lines.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Explore a process from the map (Priority: P1)
@@ -114,6 +133,9 @@ cites the source.
    visitor opens the connection, **Then** each direction is shown separately and clearly.
 4. **Given** a relationship is shown in the frame, **When** the visitor clicks either process
    name in the frame, **Then** that process's detail opens (User Story 1).
+5. **Given** several transfers run together along a stretch of the map, **When** the visitor
+   clicks that stretch, **Then** the frame lists every connection running there, each with its
+   description and flows and a link to its own view, and the map highlights all of them.
 
 ---
 
@@ -208,7 +230,10 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
 - A process has interfaces with many other processes. The map must still be readable, which
   means: no station label overlaps another label or a stroke; no segment passes through a
   station it does not end at; parallel segments between the same two stations do not overlap.
-  Routes may bend, and a station shared by several lines is drawn as an interchange.
+  Routes may bend, and a station shared by several lines is drawn as an interchange. Transfers
+  leaving a busy station may run together as a trunk and branch off later (FR-003).
+- Several connections run along the same stretch. A click there selects all of them (FR-005);
+  each can still be opened on its own from the frame or with the keyboard.
 - Two processes have interfaces in both directions. The connection is one clickable element,
   and the frame separates the two directions.
 - Two connected processes are on different lines. The connection is drawn once, in the neutral
@@ -276,10 +301,16 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   "Control"), with a name and a colour. A connection between two processes on the same line
   is drawn once in that line's colour. A connection between processes on different lines is
   drawn once in a neutral "transfer" style: a solid grey stroke thinner than the line strokes,
-  so that it differs from every line in width as well as colour. No interface is drawn twice,
-  and no two connections share a segment; where one connection crosses another, one of them
-  yields: it stops short of the other with a short perpendicular tick at each end and resumes
-  beyond it, so each can be followed through the crossing. Every process MUST belong to at least one line and
+  so that it differs from every line in width as well as colour. No interface is drawn twice.
+  Transfers MAY run together along a shared stretch (a trunk) and branch off where their routes
+  part, and connections of the same line MAY share a stretch; a transfer MUST NOT run along a
+  line's connection, and connections of two different lines MUST NOT share a stretch. Where a
+  connection joins or leaves a shared stretch it curves smoothly, with no gap. Where one
+  connection crosses another, the one drawn later yields: it stops short of the other with a
+  short perpendicular tick at each end and resumes beyond it, so each can be followed through
+  the crossing. Lines are drawn before transfers; the map content MAY name transfers to draw
+  before the other transfers. Bends are drawn as curves, tightened (down to a sharp corner) where
+  a crossing's gap needs the room. Every process MUST belong to at least one line and
   MAY belong to several. When two connected processes share more than one line, the line
   listed first in the content wins. A line is never drawn as a separate track between members
   that FitSM does not connect (FR-002). The grouping is not part of FitSM: it MUST be labelled
@@ -295,7 +326,11 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   shows a soft halo in its own colour behind it, and the selection is marked as current for
   assistive technology. Highlighting
   MUST NOT rely on colour alone. Clicking the selected station or connection again MUST
-  deselect it and return the map to the state with nothing selected (FR-035). While a role or activity is shown, its owning process's station stays
+  deselect it and return the map to the state with nothing selected (FR-035). A pointer click
+  on a stretch where several connections run together MUST select all of them: the frame lists
+  each with its description and flows and a link to its own view, and each is highlighted and
+  animated on the map; the selection has its own address (`#A-B,C-D`). A keyboard selection
+  opens the focused connection alone. While a role or activity is shown, its owning process's station stays
   highlighted; while a record, the general requirements, the not-found view or nothing is
   shown, no station is highlighted.
 - **FR-006**: Lines MUST be distinguishable without relying on colour alone. A legend next to
@@ -415,7 +450,8 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
 - **FR-027**: Automated checks MUST verify that every reference between items resolves, that
   every process has at least an objective, requirements, roles and activities, that every
   connection joins two known processes and has a drawable route, that every process belongs
-  to at least one line, and that every item has a source reference. All of these are errors
+  to at least one line, that every process listed in a half (FR-036) sits inside it, and that
+  every item has a source reference. All of these are errors
   and fail the checks with a message that names the offending item. One finding is a warning
   that does not fail the checks: a line whose member processes are not all connected to each
   other through that line's own connections.
@@ -456,6 +492,18 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
 - **FR-035**: When nothing is selected (the address has no item), the frame MUST show an intro
   view: what the map shows, how to use it (click a station or a connection; use the keyboard),
   and the edition line. No station is highlighted.
+- **FR-036**: The map MUST show its two halves, Plan & Deliver and Operate & Control, as shaded
+  bands behind the lines, each with its name. Each process belongs to at most one half, which
+  the legend, the station's spoken name and the process view's subtitle name in words. The
+  halves are a study aid like the lines (FR-003): labelled as not part of FitSM, and defined in
+  the map content so a maintainer can change them without touching behaviour.
+- **FR-037**: The automated checks MUST report, for information only, how readable the map
+  layout is: the crossing points on the map, the stretches where connections share a segment
+  (split into transfer merges, stretches within one line, and mixed pairs), and the parallel
+  stretches at most one grid cell apart. These never fail the checks.
+- **FR-038**: For maintainers, the map MAY draw the grid that stations and bends sit on, with
+  row and column numbers. It is off unless switched on in the page code or by adding `?grid`
+  to the address.
 
 ### Key Entities
 
@@ -496,6 +544,8 @@ to fitsm.eu. Open the repository and find the licence file and per-file licence 
   lines are neutral. When members share more than one line, the line listed first applies.
   The grouping is a study aid, not part of FitSM, and is labelled as interpretation wherever
   it is shown.
+- **Half**: Plan & Deliver or Operate & Control: a band of the map with a name and the
+  processes in it. A study aid like the lines, labelled as such.
 - **Source reference**: The FitSM document, version and section (or identifier) an item comes
   from. Attached to every content item.
 

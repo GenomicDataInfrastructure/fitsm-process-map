@@ -35,7 +35,7 @@ parallel, from the same origin:
 | `activities.json` | array of Activity | Activities with procedure steps |
 | `records.json` | array of Record | Records with FitSM-0 definitions and derived usage |
 | `interfaces.json` | array of Interface | One per connected process pair (descriptions and/or flows) |
-| `map.json` | object | Halves (`zones`, optional), lines with name-label sides, station grid positions, route waypoints, styles |
+| `map.json` | object | Halves (`zones`, optional), lines with name-label sides, station grid positions, route waypoints (routes may share stretches), transfers to draw first (`drawFirst`, optional), styles |
 
 If `editions.json` or any edition file fails to load or parse, the page shows a single error
 message in the frame naming the file (`Could not load content/<edition>/<file>`), and draws
@@ -84,6 +84,15 @@ a later release; either way it remains in version control.
 Edit `map.json.lines` only. Membership, names, colours and label sides are free to change; the
 checks verify that every process is on a line, that colours pass contrast, and warn when a
 line's stations are not connected through interfaces. Nothing in `src/` needs to change.
+
+## Routing connections (map layout)
+
+Edit `map.json.routes` (and, to choose which transfer breaks at a crossing, `drawFirst`).
+Transfers leaving the same station may share waypoints and run as one trunk, and connections
+of one line may share a stretch; a transfer should not run along a line's connection. Run
+`node scripts/check.js --layout` and compare the layout line before and after: fewer crossing
+points and close parallels and no *mixed* shared segments is better. Open the page with
+`?grid` to see the grid coordinates. Nothing in `src/` needs to change.
 
 ## What the page does with interpretation and fixed sentences
 

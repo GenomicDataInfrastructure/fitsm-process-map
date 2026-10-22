@@ -140,9 +140,11 @@ content/
     ├── interfaces.json  # One entry per connected process pair: descriptions + flows
     └── map.json         # Lines (study aid), station grid positions, route waypoints
 scripts/
-└── check.js             # Consistency and contrast checks (contracts/check-cli.md)
+├── check.js             # Consistency and contrast checks (contracts/check-cli.md)
+└── layout.js            # Pure: layout metrics for map.json (crossings, shared segments,
+                         #   close parallels), reported by check.js
 tests/
-├── content.test.js, graph.test.js, router.test.js, check.test.js
+├── content.test.js, graph.test.js, router.test.js, check.test.js, map.test.js, layout.test.js
 └── fixtures/            # valid/ and broken/<case>/ content directories for check.test.js
 .github/
 ├── workflows/test.yml, main.yml, release.yml   # rewritten from the existing files

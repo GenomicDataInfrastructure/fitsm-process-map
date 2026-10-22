@@ -21,8 +21,13 @@ document versions they bring in.
 - Clicking a stretch of the map where several connections run together selects all of them
   (`#A-B,C-D`): the frame lists each one's description and flows, and the map highlights and
   animates each.
-- `scripts/check.js` prints layout metrics for each edition's map (crossings, shared
-  segments, close parallels); `--layout` lists each one with its grid coordinates.
+- `scripts/check.js` prints layout metrics for each edition's map (crossing points,
+  shared segments by kind, close parallels); `--layout` lists each one with its grid
+  coordinates.
+- `drawFirst` in `map.json` names transfers to draw before the others, so the others break
+  where they cross them.
+- A grid overlay for maintainers, off by default: `SHOW_GRID` in `src/map.js` or `?grid` in
+  the address.
 - Initial process map of FitSM 3.0: FitSM-0 Overview and vocabulary v3.0.1, FitSM-1
   Requirements v3.0.1, FitSM-2 Process activities and implementation v3.0.2, FitSM-3 Role
   model v3.0.1 (all ITEMO e.V., CC BY 4.0). 14 processes, 17 general and 65 process
@@ -48,3 +53,10 @@ document versions they bring in.
 
 - The Reporting and improvement line is orange (`#e06000`, was `#bf360c`) so it can be told
   apart from the red Operations line.
+- A new map layout: CRM and SLM swap places so the Agreements row is straight and the
+  Assurance line forks below SLM; transfers leaving CHM, ISRM and CONFM run together as
+  trunks and branch off; the Reporting line runs below the Assurance fork on row 14; no
+  transfer runs along a coloured line. Crossing points on the map fall from 51 to 13 and
+  close parallels from 28 to 5.
+- Route bends are drawn as curves, so a branch leaves a trunk smoothly; a curve next to a
+  crossing is tightened, down to a sharp corner, so the crossing's gap fits.
