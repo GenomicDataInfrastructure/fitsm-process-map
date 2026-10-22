@@ -53,6 +53,16 @@ test("yieldingPath draws a bend as a curve, shortened where the segments are sho
   assert.equal(yieldingPath([[0, 0], [50, 0], [100, 0]], [], 20), "M0 0 L50 0 L100 0");
 });
 
+test("yieldingPath tightens a curve, down to a sharp corner, to make room for a nearby gap", () => {
+  // A vertical line crosses 20 px before the bend at (100,0). A full 30 px curve would cover
+  // the crossing; the gap (7 px each side plus a 4 px tick) leaves room for a 8.5 px curve.
+  const near = yieldingPath([[0, 0], [100, 0], [100, 100]], [[[80, -50], [80, 50]]], 30);
+  assert.match(near, /M87 0 L91\.5 0 Q100 0 100 8\.5 /, near);
+  // Closer still, the bend turns sharp.
+  const sharp = yieldingPath([[0, 0], [100, 0], [100, 100]], [[[88.5, -50], [88.5, 50]]], 30);
+  assert.match(sharp, /L100 0 L100 100$/, sharp);
+});
+
 test("yieldingPath leaves no gap where a route branches off a shared stretch", () => {
   const trunk = [[0, 0], [100, 0]];
   // This route runs along the trunk to x = 50, then turns away: a junction, not a crossing.

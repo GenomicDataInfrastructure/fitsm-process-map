@@ -102,18 +102,11 @@ export function yieldingPath(points, others, radius = CORNER_RADIUS) {
   };
   const last = points.length - 1;
   const hits = points.map((_, i) => (i > 0 && i < last ? vertexHit(i) : null));
-  // How far before and after each bend the curve starts and ends; 0 for a bend on another line.
-  const corners = points.map((v, i) => {
-    if (i === 0 || i === last || hits[i]) return 0;
-    const lenIn = Math.hypot(v[0] - points[i - 1][0], v[1] - points[i - 1][1]);
-    const lenOut = Math.hypot(points[i + 1][0] - v[0], points[i + 1][1] - v[1]);
-    const [u, w] = [unitVector(points[i - 1], v), unitVector(v, points[i + 1])];
-    const turn = Math.acos(Math.max(-1, Math.min(1, u[0] * w[0] + u[1] * w[1])));
-    return Math.round(Math.min(radius * Math.tan(turn / 2), lenIn / 2, lenOut / 2) * 1e6) / 1e6;
-  });
   const tick = ([x, y], [tx, ty]) => ` M${x + tx * TICK} ${y + ty * TICK} L${x - tx * TICK} ${y - ty * TICK}`;
-  let resume = null; // direction of the line the previous segment stopped short of at its end vertex
-  for (let i = 1; i < points.length; i++) {
+
+  // First pass: every crossing on every segment, as { t, odir, half }.
+  const segments = [null];
+  for (let i = 1; i <= last; i++) {
     const a = points[i - 1], b = points[i];
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
     const dir = unitVector(a, b);
@@ -121,6 +114,49 @@ export function yieldingPath(points, others, radius = CORNER_RADIUS) {
       const sin = Math.abs(dir[0] * odir[1] - dir[1] * odir[0]);
       return Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
     };
+    // On a stretch shared with an earlier line, a crossing that already yielded to that line
+    // shows its gap there; yielding again would break both lines.
+    const shown = (t, ci) => {
+      const x = [a[0] + dir[0] * t * len, a[1] + dir[1] * t * len];
+      return others.slice(0, ci).some((line) => line.some((p, k) => k > 0 && parallel(unitVector(line[k - 1], p), dir) &&
+        (alongSegment(x, line[k - 1], p) !== null || pointEquals(x, p) || pointEquals(x, line[k - 1])) &&
+        Math.abs((p[0] - a[0]) * dir[1] - (p[1] - a[1]) * dir[0]) < 1e-6));
+    };
+    const crossings = [];
+    const add = (t, odir) => crossings.push({ t, odir, half: halfFor(odir) });
+    for (const [ci, other] of others.entries()) {
+      for (let k = 1; k < other.length; k++) {
+        const p = other[k - 1], q = other[k];
+        const hit = intersection(a, b, p, q);
+        if (hit && !shown(hit.t, ci)) add(hit.t, unitVector(p, q));
+        // The other line's bend lying on this segment; the tick follows its incoming side.
+        // A bend where the other line joins or leaves this segment is a junction: no gap.
+        if (k < other.length - 1) {
+          const t = alongSegment(q, a, b);
+          const joins = parallel(unitVector(p, q), dir) || parallel(unitVector(q, other[k + 1]), dir);
+          if (t !== null && !joins && !shown(t, ci)) add(t, unitVector(p, q));
+        }
+      }
+    }
+    segments.push({ a, b, len, dir, halfFor, crossings });
+  }
+
+  // How far before and after each bend the curve starts and ends: 0 for a bend on another
+  // line, and never so far that it leaves no room for the gap of a crossing next to it (the
+  // bend turns sharp if it has to).
+  const corners = points.map((v, i) => {
+    if (i === 0 || i === last || hits[i]) return 0;
+    const into = segments[i], out = segments[i + 1];
+    const turn = Math.acos(Math.max(-1, Math.min(1, into.dir[0] * out.dir[0] + into.dir[1] * out.dir[1])));
+    let size = Math.min(radius * Math.tan(turn / 2), into.len / 2, out.len / 2);
+    for (const g of into.crossings) size = Math.min(size, into.len - g.t * into.len - g.half - TICK - 0.5);
+    for (const g of out.crossings) size = Math.min(size, g.t * out.len - g.half - TICK - 0.5);
+    return Math.max(0, Math.round(size * 1e6) / 1e6);
+  });
+
+  let resume = null; // direction of the line the previous segment stopped short of at its end vertex
+  for (let i = 1; i <= last; i++) {
+    const { a, b, len, dir, halfFor, crossings } = segments[i];
     // Gaps around a vertex on another line: the end of this segment, the start of the next.
     // A segment too short for both becomes one gap, with its ticks at the middle.
     const endHit = hits[i];
@@ -133,33 +169,7 @@ export function yieldingPath(points, others, radius = CORNER_RADIUS) {
       d += tick(start, resume) + ` M${start[0]} ${start[1]}`;
       resume = null;
     }
-    const gaps = [];
-    const consider = (t, odir) => {
-      const half = halfFor(odir);
-      if (t * len > lo + half + TICK && t * len < hi - half - TICK) gaps.push({ t, odir, half });
-    };
-    // On a stretch shared with an earlier line, a crossing that already yielded to that line
-    // shows its gap there; yielding again would break both lines.
-    const shown = (t, ci) => {
-      const x = [a[0] + dir[0] * t * len, a[1] + dir[1] * t * len];
-      return others.slice(0, ci).some((line) => line.some((p, k) => k > 0 && parallel(unitVector(line[k - 1], p), dir) &&
-        (alongSegment(x, line[k - 1], p) !== null || pointEquals(x, p) || pointEquals(x, line[k - 1])) &&
-        Math.abs((p[0] - a[0]) * dir[1] - (p[1] - a[1]) * dir[0]) < 1e-6));
-    };
-    for (const [ci, other] of others.entries()) {
-      for (let k = 1; k < other.length; k++) {
-        const p = other[k - 1], q = other[k];
-        const hit = intersection(a, b, p, q);
-        if (hit && !shown(hit.t, ci)) consider(hit.t, unitVector(p, q));
-        // The other line's bend lying on this segment; the tick follows its incoming side.
-        // A bend where the other line joins or leaves this segment is a junction: no gap.
-        if (k < other.length - 1) {
-          const t = alongSegment(q, a, b);
-          const joins = parallel(unitVector(p, q), dir) || parallel(unitVector(q, other[k + 1]), dir);
-          if (t !== null && !joins && !shown(t, ci)) consider(t, unitVector(p, q));
-        }
-      }
-    }
+    const gaps = crossings.filter((g) => g.t * len > lo + g.half + TICK && g.t * len < hi - g.half - TICK);
     gaps.sort((p, q) => p.t - q.t);
     // Gaps that are too close to draw separately are merged into one longer gap; each end
     // keeps the tick direction of the crossing line it stops at.
