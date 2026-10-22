@@ -40,8 +40,17 @@ test("yieldingPath cuts a gap around a bend that lies on another line", () => {
   assert.ok(!bend.includes("L50 0"), bend);
   assert.match(bend, /^M0 0 L43 0 M43 4 L43 -4 M/, "stops 7 px before the bend with a vertical tick");
   assert.match(bend, / L100 50$/, "resumes after the bend and reaches the far end");
-  // A bend that is not on any other line is drawn through as before.
-  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]]).startsWith("M0 0 L50 0 "), true);
+  // A bend that is not on any other line is drawn through as before (sharp with radius 0).
+  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]], 0).startsWith("M0 0 L50 0 "), true);
+});
+
+test("yieldingPath draws a bend as a curve, shortened where the segments are short", () => {
+  // A 90° bend with radius 20: the curve starts 20 px before the corner and ends 20 px after.
+  assert.equal(yieldingPath([[0, 0], [100, 0], [100, 100]], [], 20), "M0 0 L80 0 Q100 0 100 20 L100 100");
+  // Segments of 30 px leave room for at most 15 px on each side of the corner.
+  assert.equal(yieldingPath([[0, 0], [30, 0], [30, 30]], [], 20), "M0 0 L15 0 Q30 0 30 15 L30 30");
+  // A straight run through a vertex is not a bend.
+  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 0]], [], 20), "M0 0 L50 0 L100 0");
 });
 
 test("yieldingPath leaves no gap where a route branches off a shared stretch", () => {

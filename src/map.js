@@ -18,6 +18,7 @@ const STATION_RADIUS = 11;
 const RING_STEP = 5;
 const GAP_HALF = 7;   // half the length of the gap a yielding line leaves at a crossing
 const TICK = 4;       // half the length of the perpendicular tick at each end of the gap
+const CORNER_RADIUS = 36; // radius of the curve drawn at a route's bend, so a branch peels off smoothly
 const DEFAULT_MARGIN = { x: 2, y: 1 };
 
 function el(name, attrs = {}, children = []) {
@@ -77,8 +78,10 @@ export function intersection(p1, p2, p3, p4) {
 /* Path data for a polyline that yields at every crossing with `others` (arrays of points):
  * the line stops short of the crossing line, with a short tick at each end drawn parallel
  * to the crossing line, and resumes on the other side. The crossing line itself stays
- * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
-export function yieldingPath(points, others) {
+ * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line.
+ * Bends are drawn as curves of the given radius (smaller where the segments are short), so a
+ * route leaving a shared trunk curves away from it instead of meeting it at a corner. */
+export function yieldingPath(points, others, radius = CORNER_RADIUS) {
   let d = `M${points[0][0]} ${points[0][1]}`;
   // A bend sitting exactly on a line is a crossing that `intersection` never reports (it is
   // an end point of a segment on one side), so vertices are tested separately, both ways:
@@ -97,6 +100,17 @@ export function yieldingPath(points, others) {
     }
     return null;
   };
+  const last = points.length - 1;
+  const hits = points.map((_, i) => (i > 0 && i < last ? vertexHit(i) : null));
+  // How far before and after each bend the curve starts and ends; 0 for a bend on another line.
+  const corners = points.map((v, i) => {
+    if (i === 0 || i === last || hits[i]) return 0;
+    const lenIn = Math.hypot(v[0] - points[i - 1][0], v[1] - points[i - 1][1]);
+    const lenOut = Math.hypot(points[i + 1][0] - v[0], points[i + 1][1] - v[1]);
+    const [u, w] = [unitVector(points[i - 1], v), unitVector(v, points[i + 1])];
+    const turn = Math.acos(Math.max(-1, Math.min(1, u[0] * w[0] + u[1] * w[1])));
+    return Math.round(Math.min(radius * Math.tan(turn / 2), lenIn / 2, lenOut / 2) * 1e6) / 1e6;
+  });
   const tick = ([x, y], [tx, ty]) => ` M${x + tx * TICK} ${y + ty * TICK} L${x - tx * TICK} ${y - ty * TICK}`;
   let resume = null; // direction of the line the previous segment stopped short of at its end vertex
   for (let i = 1; i < points.length; i++) {
@@ -109,9 +123,9 @@ export function yieldingPath(points, others) {
     };
     // Gaps around a vertex on another line: the end of this segment, the start of the next.
     // A segment too short for both becomes one gap, with its ticks at the middle.
-    const endHit = i < points.length - 1 ? vertexHit(i) : null;
-    let lo = resume ? halfFor(resume) : 0;
-    let hi = len - (endHit ? halfFor(endHit) : 0);
+    const endHit = hits[i];
+    let lo = resume ? halfFor(resume) : corners[i - 1];
+    let hi = len - (endHit ? halfFor(endHit) : corners[i]);
     const squeezed = lo >= hi;
     if (squeezed) lo = hi = len / 2;
     if (resume) {
@@ -170,6 +184,10 @@ export function yieldingPath(points, others) {
       if (!squeezed) d += ` L${stop[0]} ${stop[1]}`;
       d += tick(stop, endHit);
       resume = endHit;
+    } else if (corners[i] > 0) {
+      const stop = [a[0] + dir[0] * hi, a[1] + dir[1] * hi];
+      const next = unitVector(b, points[i + 1]);
+      d += ` L${stop[0]} ${stop[1]} Q${b[0]} ${b[1]} ${b[0] + next[0] * corners[i]} ${b[1] + next[1] * corners[i]}`;
     } else {
       d += ` L${b[0]} ${b[1]}`;
     }
@@ -232,7 +250,7 @@ export function renderMap(container, model) {
     if (!map.stations[a] || !map.stations[b] || !route) continue;
     const points = [point(map.stations[a].x, map.stations[a].y), ...route.map(([x, y]) => point(x, y)), point(map.stations[b].x, map.stations[b].y)];
     const d = yieldingPath(points, drawn);
-    const hit = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const hit = yieldingPath(points, []);
     drawn.push(points);
     rendered.routes.set(iface.id, points);
     const line = connectionLine(iface.id, model);
@@ -356,7 +374,7 @@ function animateFlows(svg, hash) {
   const [a] = iface.processes;
   for (const from of iface.directions.keys()) {
     const oriented = from === a ? points : [...points].reverse();
-    const d = oriented.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const d = yieldingPath(oriented, []);
     const pathId = `flow-${id}-${from}`;
     group.append(el("path", { id: pathId, d, fill: "none", stroke: "none" }));
     const length = oriented.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - oriented[i][0], p[1] - oriented[i][1]), 0);
