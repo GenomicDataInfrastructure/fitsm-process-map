@@ -7,7 +7,7 @@
  * Consistency and contrast checks over the content store.
  * Contract: specs/001-fitsm-process-map/contracts/check-cli.md
  *
- *   node scripts/check.js [--content <dir>] [--editions <file>] [--quiet]
+ *   node scripts/check.js [--content <dir>] [--editions <file>] [--quiet] [--layout]
  *
  * Exit 0: no errors. Exit 1: errors. Exit 2: could not run (missing or invalid files).
  * Uses Node built-ins only.
@@ -17,6 +17,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve, join, basename, dirname } from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { layoutMetrics } from "./layout.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FILES = ["edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "map"];
@@ -34,15 +35,17 @@ const PATTERNS = {
 /* ---------- CLI ---------- */
 
 const args = process.argv.slice(2);
-const opts = { content: null, editions: "content/editions.json", quiet: false };
+const opts = { content: null, editions: "content/editions.json", quiet: false, layout: false };
 for (let i = 0; i < args.length; i++) {
   if (args[i] === "--content") opts.content = args[++i];
   else if (args[i] === "--editions") opts.editions = args[++i];
   else if (args[i] === "--quiet") opts.quiet = true;
+  else if (args[i] === "--layout") opts.layout = true;
   else fail(2, `Unknown option ${args[i]}`);
 }
 
 const findings = [];
+const layoutLines = []; // map readability metrics, printed on stdout before the summary
 let itemsChecked = 0;
 
 function report(level, edition, file, item, message) {
@@ -87,6 +90,7 @@ checkScripts();
 const errors = findings.filter((f) => f.level === "error").length;
 const warnings = findings.length - errors;
 for (const f of findings) console.error(f.line);
+if (!opts.quiet) for (const line of layoutLines) console.log(line);
 if (!opts.quiet) console.log(`${errors} errors, ${warnings} warnings, ${itemsChecked} items checked across ${editions.length} edition(s)`);
 process.exit(errors ? 1 : 0);
 
@@ -402,6 +406,16 @@ function checkEdition({ id: ed, dir }) {
   }
   itemsChecked += d.processes.length;
 
+  // 14. Layout metrics (informational): how often routes cross, overlap or run close together.
+  const metrics = layoutMetrics(d.map);
+  const at = (p) => `(${p.join(",")})`;
+  layoutLines.push(`layout  ${ed}/map.json: ${metrics.crossings.length} crossings, ${metrics.shared.length} shared segments, ${metrics.close.length} close parallels`);
+  if (opts.layout) {
+    for (const c of metrics.crossings) layoutLines.push(`  crossing  ${c.a} x ${c.b} at ${at(c.at)}`);
+    for (const s of metrics.shared) layoutLines.push(`  shared    ${s.a} = ${s.b} from ${at(s.from)} to ${at(s.to)}`);
+    for (const c of metrics.close) layoutLines.push(`  close     ${c.a} ~ ${c.b} from ${at(c.from)} to ${at(c.to)}, ${c.distance} apart`);
+  }
+
   // Line and transfer colours sit on the background and on every zone fill.
   function checkContrast(item, colour) {
     if (PATTERNS.colour.test(background || "")) {
@@ -422,7 +436,7 @@ function checkScripts() {
   // Resolved from this script's location, so the check works from any working directory.
   const files = [];
   if (existsSync(join(ROOT, "src"))) for (const f of readdirSync(join(ROOT, "src"))) if (f.endsWith(".js")) files.push(join("src", f));
-  files.push(join("scripts", "check.js"));
+  files.push(join("scripts", "check.js"), join("scripts", "layout.js"));
   for (const file of files) {
     if (!existsSync(join(ROOT, file))) continue;
     try {

@@ -51,6 +51,14 @@ const cases = {
   "zone-misplaced": "error   zone-misplaced/map.json: zones.top: station HH at row 4 is not inside rows 0-3",
 };
 
+test("the layout metrics are printed before the summary, and listed with --layout", () => {
+  const r = run("--content", "tests/fixtures/valid");
+  assert.match(r.out, /^layout  valid\/map\.json: 0 crossings, 0 shared segments, 0 close parallels$/m);
+  const real = run("--layout");
+  assert.match(real.out, /^  crossing  [A-Z]+-[A-Z]+ x [A-Z]+-[A-Z]+ at \(\d+,\d+\)$/m);
+  assert.equal(run("--quiet").out, "");
+});
+
 test("the syntax check does not depend on the working directory", () => {
   const args = [script, "--content", join(root, "tests", "fixtures", "valid")];
   const fromRoot = spawnSync(process.execPath, args, { cwd: root, encoding: "utf8" });

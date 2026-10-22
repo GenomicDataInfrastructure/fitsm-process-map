@@ -77,6 +77,7 @@ Then open http://localhost:8765. No build step and no dependencies are needed.
 | `content/editions.json` | Which FitSM editions are present and which one the page shows |
 | `content/fitsm-3.0/` | The FitSM 3.0 content: eight JSON files (see below) |
 | `scripts/check.js` | Consistency and contrast checks, run in CI |
+| `scripts/layout.js` | Layout metrics for the map (crossings, overlaps, close parallels), used by `check.js` |
 | `tests/` | Unit tests (`node --test`) and fixtures for the check script |
 
 Each edition directory holds `edition.json` (documents, versions, licence), `processes.json`,
@@ -97,6 +98,13 @@ least one error (each printed as `error   <edition>/<file>: <item>: <message>`);
 file could not be read. A line whose processes are not all connected through that line is a
 warning and does not fail the run. Options: `--content <dir>` checks one edition directory;
 `--editions <file>` names a different editions file; `--quiet` prints findings only.
+
+For each edition the script also prints a layout line, for example
+`layout  fitsm-3.0/map.json: 58 crossings, 10 shared segments, 28 close parallels`. It counts
+the points where two connections cross, the stretches where two connections lie on top of
+each other, and the parallel stretches at most one grid unit apart. The line is for
+information only and never fails the run. Add `--layout` to list each one with its grid
+coordinates, which helps when re-routing connections in `map.json`.
 
 ```bash
 node --test
