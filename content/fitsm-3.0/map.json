@@ -145,7 +145,7 @@
     "CONFM": {
       "x": 12,
       "y": 22,
-      "label": "s"
+      "label": "w"
     },
     "CHM": {
       "x": 20,
@@ -155,7 +155,7 @@
     "RDM": {
       "x": 28,
       "y": 22,
-      "label": "s"
+      "label": "e"
     }
   },
   "drawFirst": ["CONFM-ISRM", "CONFM-PM"],
