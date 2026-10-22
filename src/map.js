@@ -20,6 +20,9 @@ const GAP_HALF = 7;   // half the length of the gap a yielding line leaves at a 
 const TICK = 4;       // half the length of the perpendicular tick at each end of the gap
 const CORNER_RADIUS = 36; // radius of the curve drawn at a route's bend, so a branch peels off smoothly
 const DEFAULT_MARGIN = { x: 2, y: 1 };
+// Layout aid: draw the grid that stations and route bends sit on, with row and column
+// numbers in the margins. Off by default; also switched on by adding ?grid to the address.
+const SHOW_GRID = false;
 
 function el(name, attrs = {}, children = []) {
   const node = document.createElementNS(SVG_NS, name);
@@ -249,6 +252,7 @@ export function renderMap(container, model) {
     );
   }
   svg.append(zones);
+  if (SHOW_GRID || new URLSearchParams(location.search).has("grid")) svg.append(gridOverlay(map.grid, point));
 
   // Connections: coloured (line) connections first, transfers on top so their hops read.
   const connections = el("g", { class: "connections" });
@@ -316,6 +320,25 @@ export function renderMap(container, model) {
 
   container.replaceChildren(svg);
   return svg;
+}
+
+/* Thin lines through every grid point, a little stronger every fifth, numbered every second
+ * point along the top and left margins. */
+function gridOverlay(grid, point) {
+  const group = el("g", { class: "grid-overlay", "aria-hidden": "true" });
+  const line = (x1, y1, x2, y2, major) => group.append(el("line", { x1, y1, x2, y2, class: major ? "grid-line grid-line-major" : "grid-line" }));
+  const label = (x, y, text, anchor) => group.append(el("text", { x, y, class: "grid-label", "text-anchor": anchor }, [document.createTextNode(text)]));
+  for (let gx = 0; gx <= grid.cols; gx++) {
+    const [x, top] = point(gx, 0), [, bottom] = point(gx, grid.rows);
+    line(x, top, x, bottom, gx % 5 === 0);
+    if (gx % 2 === 0) label(x, top - 6, gx, "middle");
+  }
+  for (let gy = 0; gy <= grid.rows; gy++) {
+    const [left, y] = point(0, gy), [right] = point(grid.cols, gy);
+    line(left, y, right, y, gy % 5 === 0);
+    if (gy % 2 === 0) label(left - 6, y + 3, gy, "end");
+  }
+  return group;
 }
 
 /* Pure classification of one map element (`own`, "#CODE" or "#A-B") against the selected

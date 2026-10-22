@@ -92,6 +92,10 @@ a { color: var(--link); }
 
 .station-disc { fill: var(--paper); stroke-width: var(--station-stroke); }
 .station-ring { fill: none; }
+/* Layout aid (SHOW_GRID in src/map.js, or ?grid in the address). */
+.grid-line { stroke: #c4c4cc; stroke-width: 0.5; }
+.grid-line-major { stroke: #a4a4ae; stroke-width: 1; }
+.grid-label { font-size: 9px; fill: var(--ink-muted); }
 /* Names of the map's halves, set small and muted so they read as background. */
 .zone-label {
   font-size: 13px;
