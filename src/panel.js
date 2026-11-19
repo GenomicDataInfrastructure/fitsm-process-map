@@ -8,7 +8,7 @@
  * specs/…/contracts/content-files.md.
  */
 
-import { connectionLabel, stationLines } from "./graph.js";
+import { connectionLabel, stationLines, stationZone } from "./graph.js";
 
 export const LABELS = {
   interpretation: "Not part of FitSM",
@@ -66,8 +66,8 @@ function heading(text) {
   return h("h2", { id: "panel-title", tabindex: "-1", text });
 }
 
-function section(title, children) {
-  return [h("h3", { text: title }), ...children];
+function section(title, children, tag = "h3") {
+  return [h(tag, { text: title }), ...children];
 }
 
 function link(hash, text) {
@@ -90,6 +90,44 @@ function editionLine(model) {
   return `${model.edition.standard} ${model.edition.edition}: ${docs.join("; ")}.`;
 }
 
+/* What FitSM says about one interface: its description and the flows in each direction.
+ * `tag` is the heading level of its sections. */
+function interfaceDetails(iface, model, tag) {
+  const [a, b] = iface.processes;
+  const out = [];
+  if (iface.descriptions.length > 1) out.push(interpretation(` ${LABELS.multipleDescriptions}`));
+  if (iface.descriptions.length) {
+    out.push(...section("Interface description", [h("ul", {}, iface.descriptions.map((d) => quoted(d.text, d.source, model)))], tag));
+  } else if (!iface.flows.length) {
+    out.push(h("p", { class: "fixed-sentence", text: LABELS.noDescription }));
+  }
+
+  for (const [from, to] of [[a, b], [b, a]]) {
+    const flows = iface.directions.get(from) || [];
+    if (!flows.length) continue;
+    // The same row often appears under both processes' tables. Identical wording is shown
+    // once with every source; different wording is shown in full with the FR-020 note.
+    const byText = new Map();
+    for (const f of flows) {
+      if (!byText.has(f.item)) byText.set(f.item, []);
+      byText.get(f.item).push(f);
+    }
+    const listedBy = new Set(flows.map((f) => f.listedBy).filter(Boolean));
+    const children = [];
+    if (listedBy.size > 1 && byText.size > 1) {
+      children.push(interpretation(` ${LABELS.multipleDescriptions} Listed under ${[...listedBy].join(" and ")}.`));
+    }
+    children.push(h("ul", {}, [...byText.entries()].map(([text, group]) => h("li", {}, [
+      h("span", { class: "quote", text }),
+      ...group.map((f) => sourceLine(f.source, model)),
+    ]))));
+    out.push(...section(`${from} → ${to}`, children, tag));
+  }
+
+  if (iface.note) out.push(interpretation(` ${iface.note}`));
+  return out;
+}
+
 /* ---------- views ---------- */
 
 const views = {
@@ -106,14 +144,15 @@ const views = {
 
   process(process, ctx) {
     const { model } = ctx;
-    // Which line(s) the station is on, in words (FR-006): the lines are a study aid.
+    // Which half and line(s) the station is in, in words (FR-006): both are a study aid.
+    const zone = stationZone(process.code, model);
     const lineNames = stationLines(process.code, model).map((l) => l.name);
     const onLines = lineNames.length === 0 ? "On no line"
       : lineNames.length === 1 ? `On the ${lineNames[0]} line`
         : `On the ${lineNames.slice(0, -1).join(", ")} and ${lineNames[lineNames.length - 1]} lines`;
     const out = [
       heading(`${process.name} (${process.code})`),
-      h("p", { class: "subtitle", text: `${onLines} (study aid, not part of FitSM)` }),
+      h("p", { class: "subtitle", text: `${zone ? `In ${zone.name}. ` : ""}${onLines} (study aid, not part of FitSM)` }),
       ...section("Objective", [h("p", { class: "quote", text: process.objective.text }), sourceLine(process.objective.source, model)]),
     ];
 
@@ -191,42 +230,30 @@ const views = {
   interface(iface, ctx) {
     const { model } = ctx;
     const [a, b] = iface.processes;
-    const out = [
+    return [
       h("h2", { id: "panel-title", tabindex: "-1" }, [processLink(a, model), document.createTextNode(" ↔ "), processLink(b, model)]),
       h("p", { class: "subtitle", text: capitalise(connectionLabel(iface.id, model)) }),
       backControl(ctx),
+      ...interfaceDetails(iface, model, "h3"),
     ];
+  },
 
-    if (iface.descriptions.length > 1) out.push(interpretation(` ${LABELS.multipleDescriptions}`));
-    if (iface.descriptions.length) {
-      out.push(...section("Interface description", [h("ul", {}, iface.descriptions.map((d) => quoted(d.text, d.source, model)))]));
-    } else if (!iface.flows.length) {
-      out.push(h("p", { class: "fixed-sentence", text: LABELS.noDescription }));
+  // Several connections drawn along the same stretch of the map, clicked together.
+  interfaces(ifaces, ctx) {
+    const { model } = ctx;
+    const out = [
+      heading(`${ifaces.length} connections run here`),
+      h("p", { class: "subtitle", text: "They share this stretch of the map. Each is listed with what FitSM says about it." }),
+      backControl(ctx),
+    ];
+    for (const iface of ifaces) {
+      const [a, b] = iface.processes;
+      out.push(
+        h("h3", { class: "connection-heading" }, [link(`#${iface.id}`, `${model.processes.get(a).name} ↔ ${model.processes.get(b).name}`)]),
+        h("p", { class: "subtitle", text: capitalise(connectionLabel(iface.id, model)) }),
+        ...interfaceDetails(iface, model, "h4"),
+      );
     }
-
-    for (const [from, to] of [[a, b], [b, a]]) {
-      const flows = iface.directions.get(from) || [];
-      if (!flows.length) continue;
-      // The same row often appears under both processes' tables. Identical wording is shown
-      // once with every source; different wording is shown in full with the FR-020 note.
-      const byText = new Map();
-      for (const f of flows) {
-        if (!byText.has(f.item)) byText.set(f.item, []);
-        byText.get(f.item).push(f);
-      }
-      const listedBy = new Set(flows.map((f) => f.listedBy).filter(Boolean));
-      const children = [];
-      if (listedBy.size > 1 && byText.size > 1) {
-        children.push(interpretation(` ${LABELS.multipleDescriptions} Listed under ${[...listedBy].join(" and ")}.`));
-      }
-      children.push(h("ul", {}, [...byText.entries()].map(([text, group]) => h("li", {}, [
-        h("span", { class: "quote", text }),
-        ...group.map((f) => sourceLine(f.source, model)),
-      ]))));
-      out.push(...section(`${from} → ${to}`, children));
-    }
-
-    if (iface.note) out.push(interpretation(` ${iface.note}`));
     return out;
   },
 

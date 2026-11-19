@@ -48,7 +48,17 @@ const cases = {
   "bad-grid": "error   bad-grid/map.json: grid: unit, cols and rows must be positive integers",
   "role-without-tasks": "error   role-without-tasks/roles.json: AA.manager: tasks must be an array (may be empty)",
   "bad-waypoint": "error   bad-waypoint/map.json: routes.AA-BB: waypoint 0 is not a grid point [x, y] within the grid",
+  "bad-draw-first": 'error   bad-draw-first/map.json: drawFirst: "AA-ZZ" is not an interface',
+  "zone-misplaced": "error   zone-misplaced/map.json: zones.top: station HH at row 4 is not inside rows 0-3",
 };
+
+test("the layout metrics are printed before the summary, and listed with --layout", () => {
+  const r = run("--content", "tests/fixtures/valid");
+  assert.match(r.out, /^layout  valid\/map\.json: 0 crossing points \(0 crossings between pairs\), 0 shared segments \(0 transfer merges, 0 within a line, 0 mixed\), 0 close parallels$/m);
+  const real = run("--layout");
+  assert.match(real.out, /^  crossing  [A-Z]+-[A-Z]+ x [A-Z]+-[A-Z]+ at \(\d+,\d+\)$/m);
+  assert.equal(run("--quiet").out, "");
+});
 
 test("the syntax check does not depend on the working directory", () => {
   const args = [script, "--content", join(root, "tests", "fixtures", "valid")];

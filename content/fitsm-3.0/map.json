@@ -1,5 +1,5 @@
 {
-  "note": "The lines group related processes as a study aid. They are not part of FitSM.",
+  "note": "The lines and the two halves group related processes as a study aid. They are not part of FitSM.",
   "background": "#ffffff",
   "transfer": {
     "colour": "#8a8a8a",
@@ -14,6 +14,26 @@
       "y": 2
     }
   },
+  "zones": [
+    {
+      "id": "plan-deliver",
+      "name": "Plan & Deliver",
+      "fill": "#eef3f9",
+      "top": 0,
+      "bottom": 13,
+      "label": "nw",
+      "stations": ["SPM", "SLM", "CRM", "SUPPM", "SRM", "SACM", "CAPM", "ISM"]
+    },
+    {
+      "id": "operate-control",
+      "name": "Operate & Control",
+      "fill": "#f7f3ea",
+      "top": 13,
+      "bottom": 26,
+      "label": "sw",
+      "stations": ["ISRM", "PM", "CSI", "CONFM", "CHM", "RDM"]
+    }
+  ],
   "lines": [
     {
       "id": "agreements",
@@ -59,7 +79,7 @@
     {
       "id": "reporting",
       "name": "Reporting and improvement",
-      "colour": "#bf360c",
+      "colour": "#e06000",
       "stations": [
         "CSI",
         "SRM"
@@ -73,19 +93,19 @@
       "label": "n"
     },
     "SLM": {
-      "x": 12,
+      "x": 20,
       "y": 4,
       "label": "n"
     },
     "CRM": {
-      "x": 20,
+      "x": 12,
       "y": 4,
       "label": "n"
     },
     "SUPPM": {
       "x": 28,
       "y": 4,
-      "label": "n"
+      "label":"e"
     },
     "SRM": {
       "x": 4,
@@ -95,7 +115,7 @@
     "SACM": {
       "x": 12,
       "y": 10,
-      "label": "e"
+      "label": "n"
     },
     "CAPM": {
       "x": 20,
@@ -120,12 +140,12 @@
     "CSI": {
       "x": 34,
       "y": 16,
-      "label": "s"
+      "label": "e"
     },
     "CONFM": {
       "x": 12,
       "y": 22,
-      "label": "s"
+      "label": "w"
     },
     "CHM": {
       "x": 20,
@@ -135,53 +155,53 @@
     "RDM": {
       "x": 28,
       "y": 22,
-      "label": "s"
+      "label": "e"
     }
   },
+  "drawFirst": ["CONFM-ISRM", "CONFM-PM"],
   "routes": {
-    "SACM-SLM": [],
-    "SLM-SPM": [],
+    "SACM-SLM": [
+      [16, 10],
+      [20, 6]
+    ],
+    "SLM-SPM": [
+      [18, 2],
+      [6, 2]
+    ],
     "CRM-SLM": [],
     "SACM-SRM": [],
     "ISRM-PM": [],
     "CHM-CONFM": [],
     "CHM-RDM": [],
-    "CAPM-CHM": [
-      [26, 16]
-    ],
-    "CRM-SPM": [
-      [18, 6],
-      [6, 6]
-    ],
-    "SLM-SUPPM": [
-      [15, 7],
-      [25, 7]
-    ],
+    "CAPM-CHM": [],
+    "CRM-SPM": [],
+    "SLM-SUPPM": [],
     "CAPM-SRM": [
       [18, 12],
-      [6, 12]
+      [12, 12],
+      [10, 10]
     ],
     "CONFM-RDM": [
-      [14, 20],
-      [26, 20]
+      [14, 24],
+      [26, 24]
     ],
     "CHM-CRM": [
-      [20, 16],
-      [26, 10]
+      [20, 12]
     ],
     "SPM-SUPPM": [
       [2, 4],
-      [2, 1],
-      [24, 1],
-      [27, 4]
+      [2, 0],
+      [28, 0]
     ],
     "CSI-SRM": [
       [31, 16],
-      [23, 8],
-      [6, 8]
+      [29, 14],
+      [6, 14],
+      [4, 12]
     ],
     "ISRM-RDM": [
-      [11, 19],
+      [8, 18],
+      [9, 19],
       [28, 19]
     ],
     "CHM-SPM": [
@@ -190,66 +210,68 @@
       [0, 8]
     ],
     "ISM-SLM": [
-      [28, 9],
-      [24, 5],
-      [11, 5]
+      [24, 10],
+      [20, 6]
     ],
     "CRM-SRM": [
-      [20, 6],
-      [15, 11],
-      [4, 11]
-    ],
-    "CRM-CSI": [
-      [26, 4],
-      [32, 10],
-      [32, 14]
-    ],
-    "CHM-CSI": [
-      [21, 22],
-      [28, 15],
-      [34, 15]
-    ],
-    "ISRM-SPM": [
-      [8, 13],
+      [12, 5],
+      [11, 6],
+      [7, 6],
       [4, 9]
     ],
+    "CRM-CSI": [
+      [20, 12],
+      [20, 15],
+      [22, 17],
+      [33, 17]
+    ],
+    "CHM-CSI": [
+      [20, 17],
+      [33, 17]
+    ],
+    "ISRM-SPM": [
+      [8, 8]
+    ],
     "ISRM-SLM": [
-      [4, 12]
+      [8, 8],
+      [10, 6],
+      [18, 6]
     ],
     "CHM-SACM": [
-      [19, 21],
-      [19, 15],
-      [12, 15]
+      [20, 17],
+      [19, 16],
+      [18, 16]
     ],
     "CHM-ISM": [
-      [21, 21],
-      [21, 17]
+      [20, 17],
+      [25, 17],
+      [26, 16],
+      [26, 12]
     ],
     "CHM-ISRM": [
-      [19, 22],
-      [16, 25],
-      [8, 25]
+      [19, 21],
+      [9, 21],
+      [8, 20]
     ],
     "SLM-SRM": [
-      [11, 5],
-      [6, 5],
-      [3, 8],
-      [3, 9]
+      [18, 6],
+      [7, 6],
+      [4, 9]
     ],
-    "CAPM-SLM": [
-      [17, 10],
-      [12, 5]
-    ],
+    "CAPM-SLM": [],
     "CONFM-ISRM": [
-      [7, 17]
+      [12, 20],
+      [11, 19],
+      [9, 19],
+      [8, 18]
     ],
     "CONFM-PM": [
-      [12, 20]
+      [12, 18],
+      [14, 18]
     ],
     "CHM-PM": [
-      [21, 21],
-      [18, 18],
-      [18, 16]
+      [20, 17],
+      [19, 16]
     ]
   }
 }

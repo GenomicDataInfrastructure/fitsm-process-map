@@ -25,13 +25,15 @@ says about it, with a reference to the FitSM document and section for every item
 | --- | --- |
 | A process (station) | Its objective, requirements (FitSM-1), roles, databases and records, activities, interfaces, and inputs/outputs exchanged with parties outside the processes |
 | A connection | FitSM's description of the interface and the inputs and outputs exchanged in each direction |
+| A stretch where several connections run together | All of those connections, each with its description and flows, and each highlighted on the map |
 | A role | Its tasks (FitSM-3), split into tasks specific to the process and tasks common to every role of that kind |
 | An activity | Its procedure, as the ordered steps from FitSM-2 |
 | A database or record | Its FitSM-0 definition and the processes that use it |
 | **General requirements** (header) | FitSM-1's general requirements GR1–GR7 |
 
 Any view can be opened directly by link, for example `…/fitsm-process-map/#ISRM` for a
-process, `#ISRM-PM` for an interface or `#GR` for the general requirements.
+process, `#ISRM-PM` for an interface, `#CHM-ISRM,CONFM-ISRM` for several interfaces or `#GR`
+for the general requirements.
 
 The coloured lines group related processes as a study aid. They are not part of FitSM, and
 the page says so wherever they appear. Everything else on the page is FitSM's own text, with
@@ -77,6 +79,7 @@ Then open http://localhost:8765. No build step and no dependencies are needed.
 | `content/editions.json` | Which FitSM editions are present and which one the page shows |
 | `content/fitsm-3.0/` | The FitSM 3.0 content: eight JSON files (see below) |
 | `scripts/check.js` | Consistency and contrast checks, run in CI |
+| `scripts/layout.js` | Layout metrics for the map (crossings, overlaps, close parallels), used by `check.js` |
 | `tests/` | Unit tests (`node --test`) and fixtures for the check script |
 
 Each edition directory holds `edition.json` (documents, versions, licence), `processes.json`,
@@ -97,6 +100,20 @@ least one error (each printed as `error   <edition>/<file>: <item>: <message>`);
 file could not be read. A line whose processes are not all connected through that line is a
 warning and does not fail the run. Options: `--content <dir>` checks one edition directory;
 `--editions <file>` names a different editions file; `--quiet` prints findings only.
+
+For each edition the script also prints a layout line, for example:
+
+```text
+layout  fitsm-3.0/map.json: 15 crossing points (34 crossings between pairs), 40 shared segments (37 transfer merges, 3 within a line, 0 mixed), 7 close parallels
+```
+
+*Crossing points* are the places on the map where lines cross; a trunk of several
+connections crossing a line is one crossing point but one crossing per pair. *Shared
+segments* are stretches where two connections lie on top of each other: transfers merged
+into a trunk, two connections of the same line, or a mixed pair (such as a transfer over a
+coloured line), which is usually worth avoiding. *Close parallels* are parallel stretches at
+most one grid unit apart. The line is for information only and never fails the run. Add `--layout` to list each one with its grid
+coordinates, which helps when re-routing connections in `map.json`.
 
 ```bash
 node --test
@@ -138,6 +155,22 @@ Only `content/` changes for a content update; the page code does not.
 Edit `lines` in `map.json` only. Membership, names, colours and label sides are free to
 change; the checks verify that every process is on a line, that colours pass contrast, and
 warn when a line's stations are not connected through interfaces.
+
+### Choosing which line breaks at a crossing
+
+Where two connections cross, the one drawn later breaks with a short gap. Coloured lines are
+drawn first; transfers follow in the order of `interfaces.json`. To keep a transfer unbroken
+where it crosses other transfers, list its id under `drawFirst` in `map.json`; listed
+transfers are drawn before all other transfers, in the listed order.
+
+### Changing the halves
+
+The map is split into two halves, Plan & Deliver and Operate & Control, drawn as shaded bands
+behind the lines. They are defined under `zones` in `map.json`: each has a name, a fill
+colour, the grid rows it covers (`top` and `bottom`), the corner its name sits in (`label`:
+`nw`, `ne`, `sw` or `se`) and its stations. The checks verify that
+every listed station sits inside its band, that no station is in two halves, that bands do
+not overlap, and that line colours keep 3:1 contrast against each fill.
 
 ## CI/CD
 

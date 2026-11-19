@@ -10,6 +10,10 @@
     "cols": 14,
     "rows": 6
   },
+  "zones": [
+    { "id": "top", "name": "Top", "fill": "#eef3f9", "top": 0, "bottom": 3, "label": "nw", "stations": ["AA", "BB", "CC", "DD", "EE", "FF", "GG"] },
+    { "id": "bottom", "name": "Bottom", "fill": "#f7f3ea", "top": 3, "bottom": 6, "label": "sw", "stations": ["HH", "II", "JJ", "KK", "LL", "MM", "NN"] }
+  ],
   "lines": [
     {
       "id": "one",

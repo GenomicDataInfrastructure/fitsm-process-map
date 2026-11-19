@@ -9,7 +9,7 @@ import { parse, format, canonical } from "../src/router.js";
 const model = {
   processes: new Map([["ISRM", {}], ["PM", {}], ["CHM", {}]]),
   aliases: new Map([["INCM", "ISRM"]]),
-  interfaces: new Map([["ISRM-PM", {}]]),
+  interfaces: new Map([["ISRM-PM", {}], ["CHM-PM", {}]]),
   roles: new Map([["ISRM.manager", {}]]),
   activities: new Map([["ISRM.A1", {}]]),
   records: new Map([["incident-record", {}]]),
@@ -35,9 +35,9 @@ test("parse upper-cases codes typed by hand", () => {
 });
 
 test("format is the inverse of parse for every valid selection", () => {
-  for (const hash of ["", "#GR", "#ISRM", "#ISRM-PM", "#role/ISRM.manager", "#activity/ISRM.A1", "#record/incident-record"]) {
+  for (const hash of ["", "#GR", "#ISRM", "#ISRM-PM", "#CHM-PM,ISRM-PM", "#role/ISRM.manager", "#activity/ISRM.A1", "#record/incident-record"]) {
     const p = parse(hash);
-    assert.equal(format(p.kind, p.id), hash);
+    assert.equal(format(p.kind, p.ids ?? p.id), hash);
   }
 });
 
@@ -62,4 +62,13 @@ test("canonical reports unknown items without redirect", () => {
     assert.equal(c.kind, "unknown", hash);
     assert.equal(c.redirect, false, hash);
   }
+});
+
+test("several interfaces: parsed, sorted, de-duplicated, and one alone is a plain interface", () => {
+  assert.deepEqual(parse("#ISRM-PM,chm-pm"), { kind: "interfaces", ids: ["ISRM-PM", "CHM-PM"], raw: "ISRM-PM,chm-pm" });
+  assert.equal(parse("#ISRM-PM,GR").kind, "unknown");
+  assert.deepEqual(canonical(parse("#CHM-PM,ISRM-PM"), model), { kind: "interfaces", ids: ["CHM-PM", "ISRM-PM"], hash: "#CHM-PM,ISRM-PM", redirect: false });
+  assert.deepEqual(canonical(parse("#PM-INCM,PM-CHM"), model), { kind: "interfaces", ids: ["CHM-PM", "ISRM-PM"], hash: "#CHM-PM,ISRM-PM", redirect: true });
+  assert.deepEqual(canonical(parse("#ISRM-PM,PM-ISRM"), model), { kind: "interface", id: "ISRM-PM", hash: "#ISRM-PM", redirect: true });
+  assert.equal(canonical(parse("#ISRM-PM,ISRM-CHM"), model).kind, "unknown", "one unknown interface makes the whole address unknown");
 });

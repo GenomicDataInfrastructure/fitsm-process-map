@@ -5,7 +5,7 @@
 /*
  * Line and label helpers for the map (research R3, R8, R10).
  *
- * Model fields used: `model.map` (map.json), `model.processes` (Map by code,
+ * Model fields used: `model.map` (map.json, `zones` optional), `model.processes` (Map by code,
  * each with `name`), `model.interfaces` (Map by id, each with `processes: [a, b]`).
  * Pure: no DOM access.
  */
@@ -13,6 +13,11 @@
 /* Lines containing the station, in map.lines order. */
 export function stationLines(code, model) {
   return model.map.lines.filter((line) => line.stations.includes(code));
+}
+
+/* The half of the map (map.zones) the station is in, or null. */
+export function stationZone(code, model) {
+  return (model.map.zones || []).find((zone) => zone.stations.includes(code)) || null;
 }
 
 export function isInterchange(code, model) {
@@ -41,12 +46,15 @@ function lineNames(lines) {
   return `${names.join(", ")} and ${last} lines`;
 }
 
-/* Spoken name of a station: "Incident and service request management, ISRM, on the Operations line". */
+/* Spoken name of a station:
+ * "Incident and service request management, ISRM, in Operate & Control, on the Operations line". */
 export function stationLabel(code, model) {
   const process = model.processes.get(code);
   const lines = stationLines(code, model);
+  const zone = stationZone(code, model);
+  const half = zone ? `, in ${zone.name}` : "";
   const where = lines.length ? `, on the ${lineNames(lines)}` : "";
-  return `${process.name}, ${code}${where}`;
+  return `${process.name}, ${code}${half}${where}`;
 }
 
 /* Spoken name of a connection: "Interface between <A> and <B>, Operations line". */

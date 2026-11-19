@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   stationLines, isInterchange, connectionLine, connectionLabel,
-  stationLabel, interfaceLabel,
+  stationLabel, interfaceLabel, stationZone,
 } from "../src/graph.js";
 
 const model = {
@@ -56,4 +56,12 @@ test("labels name lines in words", () => {
   assert.equal(stationLabel("CHM", model), "Change management, CHM, on the Control and Everything lines");
   assert.equal(stationLabel("PM", model), "Problem management, PM, on the Operations, Control and Everything lines");
   assert.equal(interfaceLabel("ISRM-PM", model), "Interface between Incident and service request management and Problem management, Operations line");
+});
+
+test("a station in a half names it in its label", () => {
+  const zoned = { ...model, map: { ...model.map, zones: [{ id: "oc", name: "Operate & Control", stations: ["CHM"] }] } };
+  assert.equal(stationZone("CHM", zoned).id, "oc");
+  assert.equal(stationZone("PM", zoned), null);
+  assert.equal(stationZone("CHM", model), null);
+  assert.equal(stationLabel("CHM", zoned), "Change management, CHM, in Operate & Control, on the Control and Everything lines");
 });

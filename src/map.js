@@ -18,7 +18,11 @@ const STATION_RADIUS = 11;
 const RING_STEP = 5;
 const GAP_HALF = 7;   // half the length of the gap a yielding line leaves at a crossing
 const TICK = 4;       // half the length of the perpendicular tick at each end of the gap
+const CORNER_RADIUS = 36; // radius of the curve drawn at a route's bend, so a branch peels off smoothly
 const DEFAULT_MARGIN = { x: 2, y: 1 };
+// Layout aid: draw the grid that stations and route bends sit on, with row and column
+// numbers in the margins. Off by default; also switched on by adding ?grid to the address.
+const SHOW_GRID = false;
 
 function el(name, attrs = {}, children = []) {
   const node = document.createElementNS(SVG_NS, name);
@@ -46,6 +50,15 @@ function unitVector(p, q) {
   return [(q[0] - p[0]) / len, (q[1] - p[1]) / len];
 }
 
+function pointEquals(p, q) {
+  return Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-6;
+}
+
+/* True when two unit vectors point along the same line (either way). */
+function parallel(u, v) {
+  return Math.abs(u[0] * v[1] - u[1] * v[0]) < 1e-6;
+}
+
 /* Parameter (0..1, exclusive) of point v along segment p-q when v lies strictly inside it, else null. */
 function alongSegment(v, p, q) {
   const cross = (q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]);
@@ -68,24 +81,35 @@ export function intersection(p1, p2, p3, p4) {
 /* Path data for a polyline that yields at every crossing with `others` (arrays of points):
  * the line stops short of the crossing line, with a short tick at each end drawn parallel
  * to the crossing line, and resumes on the other side. The crossing line itself stays
- * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line. */
-export function yieldingPath(points, others) {
+ * unbroken. At shallow angles the gap widens so the ticks still clear the crossing line.
+ * Bends are drawn as curves of the given radius (smaller where the segments are short), so a
+ * route leaving a shared trunk curves away from it instead of meeting it at a corner. */
+export function yieldingPath(points, others, radius = CORNER_RADIUS) {
   let d = `M${points[0][0]} ${points[0][1]}`;
   // A bend sitting exactly on a line is a crossing that `intersection` never reports (it is
   // an end point of a segment on one side), so vertices are tested separately, both ways:
   // this route's own bends against the other lines, and the other lines' bends against
-  // this route's segments.
-  const vertexHit = (v) => {
+  // this route's segments. Where the two run along the same stretch on one side of the bend,
+  // the bend is a junction (one route branching off a shared trunk), not a crossing.
+  const vertexHit = (i) => {
+    const v = points[i];
+    const own = [unitVector(points[i - 1], v), unitVector(v, points[i + 1])];
     for (const other of others) {
       for (let k = 1; k < other.length; k++) {
-        if (alongSegment(v, other[k - 1], other[k]) !== null) return unitVector(other[k - 1], other[k]);
+        if (alongSegment(v, other[k - 1], other[k]) === null) continue;
+        const odir = unitVector(other[k - 1], other[k]);
+        if (!own.some((u) => parallel(u, odir))) return odir;
       }
     }
     return null;
   };
+  const last = points.length - 1;
+  const hits = points.map((_, i) => (i > 0 && i < last ? vertexHit(i) : null));
   const tick = ([x, y], [tx, ty]) => ` M${x + tx * TICK} ${y + ty * TICK} L${x - tx * TICK} ${y - ty * TICK}`;
-  let resume = null; // direction of the line the previous segment stopped short of at its end vertex
-  for (let i = 1; i < points.length; i++) {
+
+  // First pass: every crossing on every segment, as { t, odir, half }.
+  const segments = [null];
+  for (let i = 1; i <= last; i++) {
     const a = points[i - 1], b = points[i];
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
     const dir = unitVector(a, b);
@@ -93,11 +117,54 @@ export function yieldingPath(points, others) {
       const sin = Math.abs(dir[0] * odir[1] - dir[1] * odir[0]);
       return Math.min(GAP_HALF / Math.max(sin, 0.5), 2 * GAP_HALF);
     };
+    // On a stretch shared with an earlier line, a crossing that already yielded to that line
+    // shows its gap there; yielding again would break both lines.
+    const shown = (t, ci) => {
+      const x = [a[0] + dir[0] * t * len, a[1] + dir[1] * t * len];
+      return others.slice(0, ci).some((line) => line.some((p, k) => k > 0 && parallel(unitVector(line[k - 1], p), dir) &&
+        (alongSegment(x, line[k - 1], p) !== null || pointEquals(x, p) || pointEquals(x, line[k - 1])) &&
+        Math.abs((p[0] - a[0]) * dir[1] - (p[1] - a[1]) * dir[0]) < 1e-6));
+    };
+    const crossings = [];
+    const add = (t, odir) => crossings.push({ t, odir, half: halfFor(odir) });
+    for (const [ci, other] of others.entries()) {
+      for (let k = 1; k < other.length; k++) {
+        const p = other[k - 1], q = other[k];
+        const hit = intersection(a, b, p, q);
+        if (hit && !shown(hit.t, ci)) add(hit.t, unitVector(p, q));
+        // The other line's bend lying on this segment; the tick follows its incoming side.
+        // A bend where the other line joins or leaves this segment is a junction: no gap.
+        if (k < other.length - 1) {
+          const t = alongSegment(q, a, b);
+          const joins = parallel(unitVector(p, q), dir) || parallel(unitVector(q, other[k + 1]), dir);
+          if (t !== null && !joins && !shown(t, ci)) add(t, unitVector(p, q));
+        }
+      }
+    }
+    segments.push({ a, b, len, dir, halfFor, crossings });
+  }
+
+  // How far before and after each bend the curve starts and ends: 0 for a bend on another
+  // line, and never so far that it leaves no room for the gap of a crossing next to it (the
+  // bend turns sharp if it has to).
+  const corners = points.map((v, i) => {
+    if (i === 0 || i === last || hits[i]) return 0;
+    const into = segments[i], out = segments[i + 1];
+    const turn = Math.acos(Math.max(-1, Math.min(1, into.dir[0] * out.dir[0] + into.dir[1] * out.dir[1])));
+    let size = Math.min(radius * Math.tan(turn / 2), into.len / 2, out.len / 2);
+    for (const g of into.crossings) size = Math.min(size, into.len - g.t * into.len - g.half - TICK - 0.5);
+    for (const g of out.crossings) size = Math.min(size, g.t * out.len - g.half - TICK - 0.5);
+    return Math.max(0, Math.round(size * 1e6) / 1e6);
+  });
+
+  let resume = null; // direction of the line the previous segment stopped short of at its end vertex
+  for (let i = 1; i <= last; i++) {
+    const { a, b, len, dir, halfFor, crossings } = segments[i];
     // Gaps around a vertex on another line: the end of this segment, the start of the next.
     // A segment too short for both becomes one gap, with its ticks at the middle.
-    const endHit = i < points.length - 1 ? vertexHit(b) : null;
-    let lo = resume ? halfFor(resume) : 0;
-    let hi = len - (endHit ? halfFor(endHit) : 0);
+    const endHit = hits[i];
+    let lo = resume ? halfFor(resume) : corners[i - 1];
+    let hi = len - (endHit ? halfFor(endHit) : corners[i]);
     const squeezed = lo >= hi;
     if (squeezed) lo = hi = len / 2;
     if (resume) {
@@ -105,23 +172,7 @@ export function yieldingPath(points, others) {
       d += tick(start, resume) + ` M${start[0]} ${start[1]}`;
       resume = null;
     }
-    const gaps = [];
-    const consider = (t, odir) => {
-      const half = halfFor(odir);
-      if (t * len > lo + half + TICK && t * len < hi - half - TICK) gaps.push({ t, odir, half });
-    };
-    for (const other of others) {
-      for (let k = 1; k < other.length; k++) {
-        const p = other[k - 1], q = other[k];
-        const hit = intersection(a, b, p, q);
-        if (hit) consider(hit.t, unitVector(p, q));
-        // The other line's bend lying on this segment; the tick follows its incoming side.
-        if (k < other.length - 1) {
-          const t = alongSegment(q, a, b);
-          if (t !== null) consider(t, unitVector(p, q));
-        }
-      }
-    }
+    const gaps = crossings.filter((g) => g.t * len > lo + g.half + TICK && g.t * len < hi - g.half - TICK);
     gaps.sort((p, q) => p.t - q.t);
     // Gaps that are too close to draw separately are merged into one longer gap; each end
     // keeps the tick direction of the crossing line it stops at.
@@ -146,6 +197,10 @@ export function yieldingPath(points, others) {
       if (!squeezed) d += ` L${stop[0]} ${stop[1]}`;
       d += tick(stop, endHit);
       resume = endHit;
+    } else if (corners[i] > 0) {
+      const stop = [a[0] + dir[0] * hi, a[1] + dir[1] * hi];
+      const next = unitVector(b, points[i + 1]);
+      d += ` L${stop[0]} ${stop[1]} Q${b[0]} ${b[1]} ${b[0] + next[0] * corners[i]} ${b[1] + next[1] * corners[i]}`;
     } else {
       d += ` L${b[0]} ${b[1]}`;
     }
@@ -179,17 +234,41 @@ export function renderMap(container, model) {
     el("rect", { width, height, fill: map.background }),
   );
 
+  // Halves of the map, drawn as shaded bands across the full width with their name in the
+  // corner given by the zone's `label`. A band touching the top or bottom of the grid runs
+  // into the margin.
+  const zones = el("g", { class: "zones", "aria-hidden": "true" });
+  for (const zone of map.zones || []) {
+    const top = zone.top <= 0 ? 0 : point(0, zone.top)[1];
+    const bottom = zone.bottom >= map.grid.rows ? height : point(0, zone.bottom)[1];
+    zones.append(
+      el("rect", { class: "zone", x: 0, y: top, width, height: bottom - top, fill: zone.fill }),
+      el("text", {
+        class: "zone-label",
+        x: zone.label.endsWith("w") ? 12 : width - 12,
+        y: zone.label.startsWith("n") ? top + 22 : bottom - 12,
+        "text-anchor": zone.label.endsWith("w") ? "start" : "end",
+      }, [document.createTextNode(zone.name)]),
+    );
+  }
+  svg.append(zones);
+  if (SHOW_GRID || new URLSearchParams(location.search).has("grid")) svg.append(gridOverlay(map.grid, point));
+
   // Connections: coloured (line) connections first, transfers on top so their hops read.
+  // A connection drawn later yields where it crosses one drawn earlier; map.drawFirst lists
+  // transfers to draw before the others, so that the others yield to them.
   const connections = el("g", { class: "connections" });
   const drawn = [];
-  const ordered = [...model.interfaces.values()].sort((a, b) => Number(!!connectionLine(b.id, model)) - Number(!!connectionLine(a.id, model)));
+  const first = map.drawFirst || [];
+  const rank = (iface) => (connectionLine(iface.id, model) ? -1 : first.includes(iface.id) ? first.indexOf(iface.id) : first.length);
+  const ordered = [...model.interfaces.values()].sort((a, b) => rank(a) - rank(b));
   for (const iface of ordered) {
     const [a, b] = iface.processes;
     const route = map.routes[iface.id];
     if (!map.stations[a] || !map.stations[b] || !route) continue;
     const points = [point(map.stations[a].x, map.stations[a].y), ...route.map(([x, y]) => point(x, y)), point(map.stations[b].x, map.stations[b].y)];
     const d = yieldingPath(points, drawn);
-    const hit = points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const hit = yieldingPath(points, []);
     drawn.push(points);
     rendered.routes.set(iface.id, points);
     const line = connectionLine(iface.id, model);
@@ -247,18 +326,80 @@ export function renderMap(container, model) {
   return svg;
 }
 
+/* Thin lines through every grid point, a little stronger every fifth, numbered every second
+ * point along the top and left margins. */
+function gridOverlay(grid, point) {
+  const group = el("g", { class: "grid-overlay", "aria-hidden": "true" });
+  const line = (x1, y1, x2, y2, major) => group.append(el("line", { x1, y1, x2, y2, class: major ? "grid-line grid-line-major" : "grid-line" }));
+  const label = (x, y, text, anchor) => group.append(el("text", { x, y, class: "grid-label", "text-anchor": anchor }, [document.createTextNode(text)]));
+  for (let gx = 0; gx <= grid.cols; gx++) {
+    const [x, top] = point(gx, 0), [, bottom] = point(gx, grid.rows);
+    line(x, top, x, bottom, gx % 5 === 0);
+    if (gx % 2 === 0) label(x, top - 6, gx, "middle");
+  }
+  for (let gy = 0; gy <= grid.rows; gy++) {
+    const [left, y] = point(0, gy), [right] = point(grid.cols, gy);
+    line(left, y, right, y, gy % 5 === 0);
+    if (gy % 2 === 0) label(left - 6, y + 3, gy, "end");
+  }
+  return group;
+}
+
 /* Pure classification of one map element (`own`, "#CODE" or "#A-B") against the selected
- * hash (null for none): `selected` when they match; `related` for a connection touching the
- * selected station, or a station at either end of the selected connection. Far-end stations
- * of a selected station are added by setSelected once the connections are known. */
+ * hash (null for none; "#A-B,C-D" for several connections): `selected` when it is one of
+ * the selected items; `related` for a connection touching the selected station, or a
+ * station at either end of a selected connection. Far-end stations of a selected station
+ * are added by setSelected once the connections are known. */
 export function selectionState(hash, own) {
   if (hash === null || hash === undefined) return { selected: false, related: false };
-  if (own === hash) return { selected: true, related: false };
-  const selectedCodes = hash.slice(1).split("-");
+  const items = hash.slice(1).split(",");
+  if (items.includes(own.slice(1))) return { selected: true, related: false };
   const codes = own.slice(1).split("-");
-  const touches = codes.some((c) => selectedCodes.includes(c));
-  const related = touches && (codes.length === 2 ? selectedCodes.length === 1 : selectedCodes.length === 2);
+  const related = items.some((item) => {
+    const selectedCodes = item.split("-");
+    const touches = codes.some((c) => selectedCodes.includes(c));
+    return touches && (codes.length === 2 ? selectedCodes.length === 1 : selectedCodes.length === 2);
+  });
   return { selected: false, related };
+}
+
+/* ---------- connections under a point ---------- */
+
+/* Closest point to `p` on the polyline `points`, with the direction of that segment. */
+function closestOnPolyline(p, points) {
+  let best = null;
+  for (let k = 1; k < points.length; k++) {
+    const a = points[k - 1], b = points[k];
+    const l2 = (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2;
+    const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * (b[0] - a[0]) + (p[1] - a[1]) * (b[1] - a[1])) / l2));
+    const q = [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+    const dist = Math.hypot(p[0] - q[0], p[1] - q[1]);
+    if (!best || dist < best.dist) best = { point: q, dist, dir: unitVector(a, b) };
+  }
+  return best;
+}
+
+/* Ids of every route running along the clicked route `id` at `p` (map coordinates): the
+ * point on `id` nearest `p`, and every route that passes through that point in the same
+ * direction. A route merely crossing there is not included. Sorted; `id` alone when it
+ * shares nothing there. */
+export function connectionsThrough(routes, id, p) {
+  const own = closestOnPolyline(p, routes.get(id));
+  const ids = [];
+  for (const [other, points] of routes) {
+    const near = closestOnPolyline(own.point, points);
+    if (other === id || (near.dist < 0.5 && parallel(near.dir, own.dir))) ids.push(other);
+  }
+  return ids.sort();
+}
+
+/* The connection ids under a click on connection `id` at client coordinates (x, y). */
+export function connectionsAt(container, id, x, y) {
+  const svg = container.querySelector("svg");
+  const ctm = svg?.getScreenCTM();
+  if (!ctm || !rendered.routes.has(id)) return [id];
+  const p = new DOMPoint(x, y).matrixTransform(ctm.inverse());
+  return connectionsThrough(rendered.routes, id, [p.x, p.y]);
 }
 
 /* Highlights the station or connection whose hash matches; null clears all. Nothing gets
@@ -276,7 +417,7 @@ export function setSelected(container, hash) {
     else link.removeAttribute("aria-current");
   }
   // Stations at the far end of a selected station's connections stay at full strength too.
-  if (hash && selectedCodes.size === 1) {
+  if (hash && selectedCodes.size === 1 && !hash.includes(",")) {
     const [code] = selectedCodes;
     for (const conn of container.querySelectorAll(".connections a[data-hash]")) {
       const ends = conn.dataset.hash.slice(1).split("-");
@@ -294,26 +435,30 @@ export function setSelected(container, hash) {
 const DOTS_PER_DIRECTION = 3;
 const DOT_SPEED = 70; // px per second
 
-/* While a connection is selected, small markers travel along it in the direction of each
+/* While connections are selected, small markers travel along each in the direction of each
  * flow FitSM-2 lists (both ways when flows exist in both directions). Removed on deselect,
  * and never shown when the visitor prefers reduced motion. */
 function animateFlows(svg, hash) {
   svg.querySelector(".flow-animation")?.remove();
-  const { model, routes } = rendered;
+  const { model } = rendered;
   if (!model || !hash) return;
-  const id = hash.slice(1);
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const group = el("g", { class: "flow-animation", "aria-hidden": "true" });
+  for (const id of hash.slice(1).split(",")) addFlows(group, id);
+  if (group.childNodes.length) svg.append(group);
+}
+
+function addFlows(group, id) {
+  const { model, routes } = rendered;
   const iface = model.interfaces.get(id);
   const points = routes.get(id);
   if (!iface || !points) return;
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
   const line = connectionLine(id, model);
   const colour = line ? line.colour : model.map.transfer.colour;
-  const group = el("g", { class: "flow-animation", "aria-hidden": "true" });
   const [a] = iface.processes;
   for (const from of iface.directions.keys()) {
     const oriented = from === a ? points : [...points].reverse();
-    const d = oriented.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x} ${y}`).join(" ");
+    const d = yieldingPath(oriented, []);
     const pathId = `flow-${id}-${from}`;
     group.append(el("path", { id: pathId, d, fill: "none", stroke: "none" }));
     const length = oriented.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - oriented[i][0], p[1] - oriented[i][1]), 0);
@@ -325,5 +470,4 @@ function animateFlows(svg, hash) {
       group.append(el("circle", { class: "flow-dot", r: 4, stroke: colour }, [motion]));
     }
   }
-  svg.append(group);
 }

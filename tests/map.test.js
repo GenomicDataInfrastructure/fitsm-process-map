@@ -4,7 +4,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { intersection, yieldingPath, selectionState } from "../src/map.js";
+import { intersection, yieldingPath, selectionState, connectionsThrough } from "../src/map.js";
 
 test("intersection finds crossings strictly inside both segments", () => {
   const hit = intersection([0, 0], [10, 10], [0, 10], [10, 0]);
@@ -40,8 +40,46 @@ test("yieldingPath cuts a gap around a bend that lies on another line", () => {
   assert.ok(!bend.includes("L50 0"), bend);
   assert.match(bend, /^M0 0 L43 0 M43 4 L43 -4 M/, "stops 7 px before the bend with a vertical tick");
   assert.match(bend, / L100 50$/, "resumes after the bend and reaches the far end");
-  // A bend that is not on any other line is drawn through as before.
-  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]]).startsWith("M0 0 L50 0 "), true);
+  // A bend that is not on any other line is drawn through as before (sharp with radius 0).
+  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 50]], [[[70, -50], [70, 50]]], 0).startsWith("M0 0 L50 0 "), true);
+});
+
+test("yieldingPath draws a bend as a curve, shortened where the segments are short", () => {
+  // A 90° bend with radius 20: the curve starts 20 px before the corner and ends 20 px after.
+  assert.equal(yieldingPath([[0, 0], [100, 0], [100, 100]], [], 20), "M0 0 L80 0 Q100 0 100 20 L100 100");
+  // Segments of 30 px leave room for at most 15 px on each side of the corner.
+  assert.equal(yieldingPath([[0, 0], [30, 0], [30, 30]], [], 20), "M0 0 L15 0 Q30 0 30 15 L30 30");
+  // A straight run through a vertex is not a bend.
+  assert.equal(yieldingPath([[0, 0], [50, 0], [100, 0]], [], 20), "M0 0 L50 0 L100 0");
+});
+
+test("yieldingPath tightens a curve, down to a sharp corner, to make room for a nearby gap", () => {
+  // A vertical line crosses 20 px before the bend at (100,0). A full 30 px curve would cover
+  // the crossing; the gap (7 px each side plus a 4 px tick) leaves room for a 8.5 px curve.
+  const near = yieldingPath([[0, 0], [100, 0], [100, 100]], [[[80, -50], [80, 50]]], 30);
+  assert.match(near, /M87 0 L91\.5 0 Q100 0 100 8\.5 /, near);
+  // Closer still, the bend turns sharp.
+  const sharp = yieldingPath([[0, 0], [100, 0], [100, 100]], [[[88.5, -50], [88.5, 50]]], 30);
+  assert.match(sharp, /L100 0 L100 100$/, sharp);
+});
+
+test("yieldingPath leaves no gap where a route branches off a shared stretch", () => {
+  const trunk = [[0, 0], [100, 0]];
+  // This route runs along the trunk to x = 50, then turns away: a junction, not a crossing.
+  const branch = yieldingPath([[0, 0], [50, 0], [100, 50]], [trunk], 0);
+  assert.equal(branch, "M0 0 L50 0 L100 50");
+  // The trunk does not yield where the branch leaves it.
+  assert.equal(yieldingPath(trunk, [[[0, 0], [50, 0], [100, 50]]], 0), "M0 0 L100 0");
+});
+
+test("yieldingPath on a shared stretch skips a crossing an earlier line already yielded to", () => {
+  const cross = [[50, -50], [50, 50]];
+  const trunk = [[0, 0], [100, 0]];
+  // The crossing line was drawn after the first trunk line, so it already has a gap there;
+  // a second line on the same stretch stays unbroken too.
+  assert.equal(yieldingPath(trunk, [trunk, cross]), "M0 0 L100 0");
+  // Drawn before the trunk, the crossing line is unbroken, so the trunk yields as usual.
+  assert.equal(yieldingPath(trunk, [cross, trunk]), "M0 0 L43 0 M43 4 L43 -4 M57 4 L57 -4 M57 0 L100 0");
 });
 
 test("yieldingPath cuts a gap where another line's bend lies on this segment", () => {
@@ -78,4 +116,25 @@ test("selectionState: a connection is selected", () => {
   assert.deepEqual(selectionState("#ISRM-PM", "#ISRM-SLM"), { selected: false, related: false }, "sibling connections fade");
   assert.deepEqual(selectionState("#ISRM-PM", "#CHM-PM"), { selected: false, related: false });
   assert.deepEqual(selectionState("#ISRM-PM", "#SLM"), { selected: false, related: false });
+});
+
+test("selectionState: several connections are selected", () => {
+  const hash = "#CHM-ISRM,CONFM-ISRM";
+  assert.deepEqual(selectionState(hash, "#CHM-ISRM"), { selected: true, related: false });
+  assert.deepEqual(selectionState(hash, "#CONFM-ISRM"), { selected: true, related: false });
+  assert.deepEqual(selectionState(hash, "#CONFM"), { selected: false, related: true }, "an end of one of them");
+  assert.deepEqual(selectionState(hash, "#CHM-PM"), { selected: false, related: false });
+  assert.deepEqual(selectionState(hash, "#PM"), { selected: false, related: false });
+});
+
+test("connectionsThrough finds the routes sharing the clicked stretch, not those crossing it", () => {
+  const routes = new Map([
+    ["AA-BB", [[0, 0], [100, 0]]],
+    ["AA-CC", [[0, 0], [50, 0], [100, 50]]],   // shares the first half, then branches off
+    ["DD-EE", [[30, -50], [30, 50]]],          // crosses at x = 30
+    ["FF-GG", [[0, 40], [100, 40]]],           // elsewhere
+  ]);
+  assert.deepEqual(connectionsThrough(routes, "AA-BB", [30, 3]), ["AA-BB", "AA-CC"], "on the shared stretch, even at a crossing");
+  assert.deepEqual(connectionsThrough(routes, "AA-BB", [80, -2]), ["AA-BB"], "past the branch");
+  assert.deepEqual(connectionsThrough(routes, "FF-GG", [10, 40]), ["FF-GG"]);
 });

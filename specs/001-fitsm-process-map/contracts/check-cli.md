@@ -7,14 +7,15 @@ of constitution VI and the test for FR-027 and SC-006. Revised for edition direc
 ## Invocation
 
 ```bash
-node scripts/check.js [--content <dir>] [--quiet]
+node scripts/check.js [--content <dir>] [--editions <file>] [--quiet] [--layout]
 ```
 
 | Option | Default | Meaning |
 |---|---|---|
 | `--content <dir>` | none | Check one edition directory (the eight files) instead of reading an editions file |
 | `--editions <file>` | `content/editions.json`, relative to the current working directory | The editions file to read; every listed edition is checked. Edition `path`s inside it resolve relative to the file's own directory. Ignored when `--content` is given |
-| `--quiet` | off | Print errors and warnings only; suppress the summary line |
+| `--quiet` | off | Print errors and warnings only; suppress the layout and summary lines |
+| `--layout` | off | After each edition's layout line, list every crossing, shared segment and close parallel with its grid coordinates |
 
 No dependencies beyond `node:fs`, `node:path` and `node:child_process` (for `node --check`).
 Requires Node 22 or later.
@@ -29,12 +30,23 @@ Requires Node 22 or later.
 
 ## Output format
 
-One line per finding on stderr (errors and warnings), summary on stdout:
+One line per finding on stderr (errors and warnings); on stdout, one layout line per edition
+and then the summary:
 
 ```text
 error   <edition>/<file>: <item id or path>: <message>
 warning <edition>/<file>: <item id or path>: <message>
+layout  <edition>/map.json: <X> crossing points (<C> crossings between pairs), <S> shared segments (<M> transfer merges, <L> within a line, <Q> mixed), <P> close parallels
 <N> errors, <M> warnings, <K> items checked across <E> edition(s)
+```
+
+With `--layout`, each layout line is followed by one indented line per item, in grid
+coordinates:
+
+```text
+  crossing  SACM-SLM x CRM-SPM at (12,6)
+  shared    SACM-SLM = CAPM-SLM from (20,6) to (20,4) (line)
+  close     CONFM-RDM ~ ISRM-RDM from (14,20) to (26,20), 1 apart
 ```
 
 With `--content <dir>`, `<edition>` is the directory's base name.
@@ -89,8 +101,20 @@ than stopping at the first.
     transfer colour ≥ 3:1 against `background`.
 12. **Line connectivity** (warning): members of each line reachable from each other through
     same-line connections.
-13. **Scripts parse** (once, not per edition): `node --check` on every file in `src/` and on
-    `scripts/check.js`.
+    `map.drawFirst`, if present, is an array of interface ids, each listed once.
+13. **Halves** (`map.zones`, optional): ids are unique slugs; each has a name, a `#rrggbb`
+    fill, integer rows `0 <= top < bottom <= rows` and a `label` corner `nw`, `ne`, `sw` or
+    `se`; bands do not overlap; each listed station exists, is in one half only and sits
+    strictly inside its rows. Line and transfer colours are also ≥ 3:1 against every fill.
+14. **Layout metrics** (informational, never an error or warning; `scripts/layout.js`): for
+    every pair of routes, in grid units: *crossings*, the distinct points where they meet
+    other than a station both end at; *shared segments*, stretches where they lie on top of
+    each other, classed as *transfer merges* (two transfers on one trunk), *within a line*
+    (two connections of the same line) or *mixed* (any other pair, such as a transfer over a
+    line); *close parallels*, parallel stretches at most 1 grid unit apart. *Crossing points*
+    counts the distinct points among all crossings, so a trunk crossing a line counts once.
+15. **Scripts parse** (once, not per edition): `node --check` on every file in `src/` and on
+    `scripts/check.js` and `scripts/layout.js`.
 
 ## Tests
 

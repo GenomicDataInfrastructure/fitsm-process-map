@@ -8,10 +8,11 @@ resolve after a content update (FR-022, FR-023, edge case "renamed process").
 
 ```text
 hash        = "" | "#" selection
-selection   = process | general | interface | role | activity | record
+selection   = process | general | interface | interfaces | role | activity | record
 process     = CODE                      ; "#ISRM"
 general     = "GR"                      ; "#GR"  general requirements
 interface   = CODE "-" CODE             ; "#ISRM-PM"  alphabetical order is canonical
+interfaces  = interface 1*("," interface) ; "#CHM-ISRM,CONFM-ISRM"  sorted, no duplicates
 role        = "role/" ROLE_ID           ; "#role/ISRM.manager"
 activity    = "activity/" ACTIVITY_ID   ; "#activity/ISRM.A1"
 record      = "record/" RECORD_ID       ; "#record/incident-record"
@@ -31,6 +32,7 @@ Matching is case-sensitive except for `CODE`, which is upper-cased before lookup
 | `#<code>` where code is in some process's `aliases` | Redirect: hash replaced with the current code (no history entry), then as above |
 | `#A-B` where `A-B` is an interface id | Interface view; connection highlighted |
 | `#B-A` (wrong order) | Redirect to `#A-B` (no history entry) |
+| `#A-B,C-D,…` where every pair is an interface | Several-connections view: each connection's description and flows, each with a link to its own view; all of them highlighted, each with its flow markers. Unsorted, reversed, aliased or repeated pairs redirect to the sorted canonical list; a list that reduces to one interface redirects to `#A-B`; one unknown pair makes the whole address not found |
 | `#role/<id>`, `#activity/<id>`, `#record/<id>` that exists | That view; the owning process's station highlighted (records: no highlight) |
 | anything else | Not-found view: "No item called `<hash>`" and the list of the 14 process codes as links (FR-024); nothing highlighted |
 
@@ -44,12 +46,16 @@ Matching is case-sensitive except for `CODE`, which is upper-cased before lookup
   belongs to this page (`app.js` tags every entry with its depth in `history.state`). At the
   page's first entry: role or activity → its process; interface or record → `#` (nothing).
 - The hash is read once on load (User Story 1, scenario 4) and on every `hashchange`.
+- A pointer click on a connection where other connections are drawn along the same stretch
+  goes to the several-connections address for all of them (`app.js`, using
+  `connectionsAt` in `map.js`); a keyboard Enter on a connection, which has no position,
+  goes to that connection alone.
 
 ## Router API (`src/router.js`, pure)
 
 ```js
-parse(hash: string): { kind: "none"|"process"|"general"|"interface"|"role"|"activity"|"record"|"unknown", id?: string, raw: string }
-format(kind: string, id?: string): string   // inverse of parse; returns "#..." or ""
+parse(hash: string): { kind: "none"|"process"|"general"|"interface"|"interfaces"|"role"|"activity"|"record"|"unknown", id?: string, ids?: string[], raw: string }
+format(kind: string, id?: string | string[]): string   // inverse of parse; returns "#..." or "" (ids for "interfaces")
 canonical(parsed, model): { hash: string, redirect: boolean }   // applies alias and order rules
 ```
 

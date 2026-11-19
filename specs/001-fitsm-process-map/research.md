@@ -50,7 +50,10 @@ shows it when opened. Line names are not drawn on the map: the legend beside the
 frame's wording identify lines (FR-006). Stations and connections are SVG `<a href="#...">`
 elements. Each connection has a wide transparent stroke under the visible one
 as a hit area. The SVG uses `viewBox` and scales to its container; under 900 px the container
-scrolls horizontally.
+scrolls horizontally. Bends are drawn as quadratic curves (radius 36 px), shrunk where the
+segments are short or a crossing's gap needs the room. The optional halves (`zones`) are
+shaded bands drawn first; an optional grid overlay (`SHOW_GRID` in `map.js`, or `?grid`) is
+drawn over them for maintainers.
 
 **Rationale**: SVG is resolution-independent, styleable with CSS and accessible through native
 links. Generating it from data keeps the layout editable without touching code (FR-025).
@@ -156,9 +159,18 @@ plain links.
   heading is announced exactly once. `document.title` follows the selection.
 - Lines are told apart by name: the legend (name + swatch + "study aid") and the frame's
   wording; nothing on the map relies on reading a line's name. The transfer style is a thinner solid grey stroke, so width
-  differs as well as colour. Connections never share a segment; at crossings the later-drawn
-  connection yields: it stops short of the other with a short perpendicular tick at each end
-  and resumes beyond it, so the crossing line stays unbroken.
+  differs as well as colour. Transfers may share a stretch (a trunk) and connections of one line
+  may share a stretch; at crossings the later-drawn connection yields: it stops short of the
+  other with a short perpendicular tick at each end and resumes beyond it, so the crossing line
+  stays unbroken. Lines are drawn first, then the transfers named in `map.drawFirst`, then the
+  rest. A bend where a route joins or leaves a stretch it shares is a junction, not a crossing:
+  no gap. On a shared stretch a route does not yield to a crossing that an earlier route on the
+  same stretch already made yield, so a trunk is broken at most once per crossing.
+- A pointer click on a connection looks up every route running along the same stretch at the
+  click point (parallel and within half a unit; a line merely crossing there does not count).
+  Several give the address `#A-B,C-D`: the frame lists each connection and the map highlights
+  and animates each. A keyboard Enter (`event.detail === 0`) has no position and opens the
+  focused connection alone.
 - `check.js` computes WCAG 2.1 contrast: each line colour and the transfer colour against the
   map background ≥ 3:1; label text ≥ 4.5:1.
 - Focus is visible on every link (`:focus-visible` outline, 3 px, ≥ 3:1 against white).
