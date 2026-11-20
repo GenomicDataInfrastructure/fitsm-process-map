@@ -152,7 +152,7 @@ Each scenario maps to a spec acceptance scenario (US = user story). Tick each wh
       same is enforced by `check.js` for map colours.
 - [ ] E8 Performance: with devtools throttled to "Fast 3G", the map and frame are usable within
       2 s (SC-004); total transfer under 400 KB.
-- [ ] E9 Screen reader (FR-007b): with VoiceOver or NVDA, entering the map reads "Map of the 14
+- [ ] E9 *(deferred at closure, 2026-11-20)* Screen reader (FR-007b): with VoiceOver or NVDA, entering the map reads "Map of the 14
       FitSM processes and their interfaces"; each station reads "<name>, <code>, on the <line>
       line"; each connection reads "Interface between <A> and <B>, <line> line" or "…, transfer
       between lines"; activating one announces the frame's new heading.

@@ -51,6 +51,10 @@ document versions they bring in.
 
 ### Changed
 
+- SPM is now the main station: it is the only interchange, at the top centre of the map, on
+  the Agreements line (CRM–SPM–SUPPM) and the Assurance line, which runs from SPM down to SLM
+  and forks there to SACM, CAPM and ISM. SLM is on the Assurance line only, so CRM–SLM and
+  SLM–SUPPM are now transfers. The map still has 13 crossing points.
 - The Reporting and improvement line is orange (`#e06000`, was `#bf360c`) so it can be told
   apart from the red Operations line.
 - A new map layout: CRM and SLM swap places so the Agreements row is straight and the
