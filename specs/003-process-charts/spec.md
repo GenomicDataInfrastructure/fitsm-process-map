@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-24
 
-**Status**: Implemented (2026-11-24); pull request pending
+**Status**: Closed (2026-11-24), merged in pull request #6; screen-reader pass won't do (2026-11-24)
 
 **Input**: User description: "Show each FitSM process's own process chart on the FitSM Process Map, as an interactive flowchart in the process view. FitSM-2 v3.0.2 has a 'PROCESS CHART' in every process section (PR1–PR14). Each chart groups the process's ongoing activities as boxes, the steps inside them in order with arrows between them, and the information objects the steps read or produce, drawn as documents or databases with their states (e.g. 'Problem [new]', 'Problem [known error]', 'CMDB', 'Request for change' going 'to CHM'), with dashed arrows for information flow and solid arrows for sequence. The charts are vector drawings in the PDF, so they must be redrawn. (1) Each process view gets a 'Process chart' section that redraws FitSM-2's chart faithfully with its source; nothing is added; anything that differs from the PDF is labelled 'Not part of FitSM'. (2) The chart is clickable: activity groups open their activity view, information objects open their record view when they match a record from feature 002, flows to another process open that interface or process. (3) Keyboard, screen-reader (text alternative), WCAG 2.1 AA, not colour alone, phone width. (4) Chart content lives in the content store, one entry per process, with new checks. Constraints: quote FitSM unchanged, label interpretation, no new dependencies. Builds on feature 002. Out of scope: editing charts, BPMN export, charts for GR1–GR7."
 

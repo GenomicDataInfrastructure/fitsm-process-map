@@ -52,7 +52,7 @@ Open http://localhost:8765.
 - [X] R8 Pick three records; for each, the marked cells match the record view's two groups
   exactly, and the marks differ by shape, not only colour (check in greyscale). (FR-009,
   SC-005)
-- [ ] R9 *(deferred at closure, 2026-11-24)* With a screen reader, move through the table: each cell is read with its record and
+- [X] R9 *(won't do, 2026-11-24: not needed)* With a screen reader, move through the table: each cell is read with its record and
   process and "creates or maintains" or "uses". Tab moves only through record names and
   process codes, not cells. (FR-011)
 - [X] R10 Activate a record name, then the frame's back control: the overview returns. Same for
