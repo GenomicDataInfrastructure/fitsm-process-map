@@ -97,7 +97,7 @@ All content tasks edit content/fitsm-3.0/records.json and run in order. Apply FR
 - [X] T026 [US2] Handle the `records` route in src/app.js: render the overview, page title "Records – FitSM Process Map", nothing highlighted on the map, back target the intro when entered directly; links from the overview push history so back returns to it
 - [X] T027 [P] [US2] Add the "Records" header link next to "General requirements" in index.html (`href="#RECORDS"`, class `header-link`)
 - [X] T028 [P] [US2] Style the overview in styles.css: horizontally scrolling table container, `position: sticky` row-header column with an opaque background, readable marks, focus-visible on header links; the page itself must not scroll sideways at 375 px (FR-012)
-- [ ] T029 [US2] Run quickstart R7–R12 on the served site (R9 with VoiceOver or NVDA) and fix any finding — **Partly done (2026-11-21)**: R7, R8, R10–R12 pass in the browser; the screen-reader run (R9) needs a person with VoiceOver or NVDA.
+- [ ] T029 [US2] Run quickstart R7–R12 on the served site (R9 with VoiceOver or NVDA) and fix any finding — **Deferred at closure (2026-11-24)**: R7, R8 and R10–R12 pass; the screen-reader run (R9) needs a manual run with VoiceOver or NVDA, like feature 001\'s T045.
 
 **Checkpoint**: User Stories 1 and 2 work on their own.
 
@@ -124,7 +124,7 @@ All content tasks edit content/fitsm-3.0/records.json and run in order. Apply FR
 
 - [X] T036 [P] Add a CHANGELOG.md entry under Unreleased naming FitSM-0 v3.0.1 and FitSM-2 v3.0.2, the number of records and relationships, the overview and the renamed section
 - [X] T037 [P] Run quickstart R16 (the nine old record addresses) and R17 (under 400 KB, usable within 2 s on "Fast 3G")
-- [ ] T038 Final `node scripts/check.js`, `node --test` and `reuse lint`; set spec.md status to "Implemented"; open the pull request citing FitSM-0 v3.0.1 and FitSM-2 v3.0.2 sections used (constitution, Development Workflow) — **Partly done (2026-11-21)**: checks, tests and `reuse lint` pass and spec.md is marked Implemented; committing and the pull request wait for the maintainer (commits are GPG-signed with a smart card).
+- [X] T038 Final `node scripts/check.js`, `node --test` and `reuse lint`; set spec.md status to "Implemented"; open the pull request citing FitSM-0 v3.0.1 and FitSM-2 v3.0.2 sections used (constitution, Development Workflow) — **Closure note (2026-11-24)**: delivered in pull request #5 (merged); checks, 85 tests and `reuse lint` passed in CI.
 
 ---
 
@@ -150,3 +150,11 @@ All content tasks edit content/fitsm-3.0/records.json and run in order. Apply FR
 3. **Increment 3**: Phase 5, full checks and maintainer docs; then Phase 6.
 
 Each checkpoint leaves `node scripts/check.js` and `node --test` passing.
+
+---
+
+## Closure (2026-11-24)
+
+Feature 002 is closed, merged through pull request #5. Every task is done except the
+screen-reader pass of the records overview (T029's R9), deferred because it needs a manual
+run with VoiceOver or NVDA. It can be done together with feature 001's deferred T045.

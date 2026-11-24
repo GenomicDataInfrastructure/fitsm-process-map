@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { parse, format, canonical } from "../src/router.js";
 
 const model = {
-  processes: new Map([["ISRM", {}], ["PM", {}], ["CHM", {}]]),
+  processes: new Map([["ISRM", { chart: {} }], ["PM", { chart: {} }], ["CHM", {}]]),
   aliases: new Map([["INCM", "ISRM"]]),
   interfaces: new Map([["ISRM-PM", {}], ["CHM-PM", {}]]),
   roles: new Map([["ISRM.manager", {}]]),
@@ -75,4 +75,14 @@ test("several interfaces: parsed, sorted, de-duplicated, and one alone is a plai
   assert.deepEqual(canonical(parse("#PM-INCM,PM-CHM"), model), { kind: "interfaces", ids: ["CHM-PM", "ISRM-PM"], hash: "#CHM-PM,ISRM-PM", redirect: true });
   assert.deepEqual(canonical(parse("#ISRM-PM,PM-ISRM"), model), { kind: "interface", id: "ISRM-PM", hash: "#ISRM-PM", redirect: true });
   assert.equal(canonical(parse("#ISRM-PM,ISRM-CHM"), model).kind, "unknown", "one unknown interface makes the whole address unknown");
+});
+
+test("#chart/<code> resolves codes and aliases, any case, and needs a chart", () => {
+  assert.deepEqual(parse("#chart/pm"), { kind: "chart", id: "PM", raw: "chart/pm" });
+  assert.equal(format("chart", "PM"), "#chart/PM");
+  assert.deepEqual(canonical(parse("#chart/PM"), model), { kind: "chart", id: "PM", hash: "#chart/PM", redirect: false });
+  assert.deepEqual(canonical(parse("#chart/pm"), model), { kind: "chart", id: "PM", hash: "#chart/PM", redirect: true });
+  assert.deepEqual(canonical(parse("#chart/incm"), model), { kind: "chart", id: "ISRM", hash: "#chart/ISRM", redirect: true });
+  assert.equal(canonical(parse("#chart/CHM"), model).kind, "unknown"); // no chart yet
+  assert.equal(canonical(parse("#chart/XYZ"), model).kind, "unknown");
 });

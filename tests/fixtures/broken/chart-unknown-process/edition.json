@@ -1,0 +1,32 @@
+{
+  "standard": "FitSM",
+  "edition": "9.9",
+  "documents": {
+    "FitSM-0": {
+      "title": "FitSM-0: Vocabulary",
+      "version": "9.9",
+      "url": "https://example.test/0"
+    },
+    "FitSM-1": {
+      "title": "FitSM-1: Requirements",
+      "version": "9.9",
+      "url": "https://example.test/1"
+    },
+    "FitSM-2": {
+      "title": "FitSM-2: Activities",
+      "version": "9.9",
+      "url": "https://example.test/2"
+    },
+    "FitSM-3": {
+      "title": "FitSM-3: Roles",
+      "version": "9.9",
+      "url": "https://example.test/3"
+    }
+  },
+  "downloads": "https://example.test/downloads",
+  "licence": {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "attribution": "ITEMO e.V."
+}

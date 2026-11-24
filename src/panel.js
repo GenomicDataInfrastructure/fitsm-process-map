@@ -9,6 +9,7 @@
  */
 
 import { connectionLabel, stationLines, stationZone } from "./graph.js";
+import { renderChart, chartOutline, chartScale, fitLabels } from "./chart.js";
 
 export const LABELS = {
   interpretation: "Not part of FitSM",
@@ -24,6 +25,10 @@ export const LABELS = {
   maintainedBy: "Created or maintained by",
   usedBy: "Used by",
   overview: "Records",
+  chart: "Process chart",
+  openChart: "Open chart, with text version",
+  inCharts: "In process charts",
+  chartRecords: "Which record each object of a chart is taken to be is the site's reading; FitSM-2's charts name the objects only.",
   overviewIntro: "Every record of every process. Rows are records, grouped by the first process (in FitSM order) that creates or maintains them; columns are the 14 processes.",
 };
 
@@ -167,6 +172,67 @@ function relationItem(rel, model) {
   return h("li", {}, children);
 }
 
+/* ---------- process charts (feature 003) ---------- */
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+function svgEl(name, attrs = {}, children = []) {
+  const node = document.createElementNS(SVG_NS, name);
+  for (const [key, value] of Object.entries(attrs)) if (value !== undefined && value !== null) node.setAttribute(key, value);
+  for (const child of children) node.append(typeof child === "object" ? child : String(child));
+  return node;
+}
+
+/* The chart drawing in a figure: compact (scaled to the frame) or wide (up to 2×). */
+function chartFigure(process, model, wide) {
+  const chart = process.chart;
+  const svg = renderChart(chart, model, svgEl);
+  const { minWidth } = chartScale(chart, 0);
+  svg.style.minWidth = `${minWidth}px`;
+  if (wide) svg.style.maxWidth = `${chart.size.w * 2}px`;
+  return h("figure", { class: wide ? "chart-figure chart-wide" : "chart-figure", "aria-label": `Process chart of ${process.name}` }, [
+    h("div", { class: "chart-compact" }, [svg]),
+    h("figcaption", {}, [sourceLine(chart.source, model)]),
+  ]);
+}
+
+function chartNotes(chart) {
+  return (chart.notes || []).map((n) => interpretation(` ${n.text}`));
+}
+
+/* The text version of a chart (FR-010, research R7). */
+function chartText(process, model) {
+  const o = chartOutline(process.chart, model);
+  const items = (list) => h("ul", {}, list);
+  const out = [h("h3", { text: "The chart as text" })];
+  out.push(h("ol", { class: "chart-text-groups" }, o.groups.map((g) => h("li", {}, [
+    g.link ? link(g.link, g.label) : document.createTextNode(g.label),
+    document.createTextNode(" (activity)"),
+    h("ol", {}, g.steps.map((s) => h("li", {}, [
+      document.createTextNode(s.label + (s.record ? " (creates a record)" : "")),
+      ...(s.reads.length ? [h("br"), document.createTextNode(`reads: ${s.reads.join("; ")}`)] : []),
+      ...(s.produces.length ? [h("br"), document.createTextNode(`produces: ${s.produces.join("; ")}`)] : []),
+    ]))),
+    ...g.decisions.map((d) => h("p", { text: `Decision "${d.label}": ${d.branches.map((b) => `${b.label || "→"} → ${b.to}`).join("; ")}` })),
+  ]))));
+  if (o.ends.length) out.push(h("h4", { text: "End states" }), items(o.ends.map((t) => h("li", { text: t }))));
+  if (o.objects.length) {
+    out.push(h("h4", { text: "Information" }));
+    if (o.objects.some((x) => x.record)) out.push(interpretation(` ${LABELS.chartRecords}`));
+    out.push(items(o.objects.map((x) => h("li", {}, [
+      document.createTextNode(x.label),
+      ...(x.record ? [document.createTextNode(" – taken to be the record "), link(`#record/${x.record.id}`, x.record.name)] : []),
+    ]))));
+  }
+  if (o.notes.length) out.push(h("h4", { text: "Notes in the chart" }), items(o.notes.map((t) => h("li", { text: t }))));
+  if (o.externals.length) {
+    out.push(h("h4", { text: "Other processes" }), items(o.externals.map((x) => h("li", {}, [link(x.link, x.label)]))));
+  }
+  out.push(h("h4", { text: "All arrows" }), items(o.arrows.map((a) => h("li", {
+    text: `${a.heads === "both" ? `${a.from} ↔ ${a.to}` : a.heads === "none" ? `${a.from} – ${a.to}` : `${a.from} → ${a.to}`} (${a.kind === "sequence" ? "sequence" : "information flow"}${a.label ? `, ${a.label}` : ""})`,
+  }))));
+  return out;
+}
+
 /* ---------- views ---------- */
 
 const views = {
@@ -220,6 +286,14 @@ const views = {
         children.push(h("ul", {}, items.map((a) => h("li", {}, [link(`#activity/${a.id}`, a.name)]))));
       }
       out.push(...section("Activities", children));
+    }
+
+    if (process.chart) {
+      out.push(...section(LABELS.chart, [
+        chartFigure(process, model, false),
+        ...chartNotes(process.chart),
+        h("p", {}, [link(`#chart/${process.code}`, LABELS.openChart)]),
+      ]));
     }
 
     if (process.inputs.length) {
@@ -353,7 +427,29 @@ const views = {
       out.push(interpretation(` ${LABELS.derivedRecords}`));
       for (const [title, list] of groups) out.push(...section(title, [h("ul", {}, list.map((rel) => relationItem(rel, model)))]));
     }
+    if (record.charts && record.charts.length) {
+      out.push(...section(LABELS.inCharts, [
+        interpretation(` ${LABELS.chartRecords}`),
+        h("ul", {}, record.charts.map((c) => h("li", {}, [
+          link(`#chart/${c.process}`, `${model.processes.get(c.process).name} (${c.process})`),
+          document.createTextNode(c.states.length ? ` – as ${c.states.join(", ")}` : ""),
+        ]))),
+      ]));
+    }
     return out;
+  },
+
+  // A process chart across the map's area, with its text version (specs/003, FR-001a, FR-010).
+  chart(process, ctx) {
+    const { model } = ctx;
+    return [
+      h("h2", { id: "panel-title", tabindex: "-1" }, [document.createTextNode(`${LABELS.chart}: `), processLink(process.code, model)]),
+      backControl(ctx),
+      h("div", { class: "chart-wide-layout" }, [
+        h("div", {}, [chartFigure(process, model, true), ...chartNotes(process.chart)]),
+        h("div", { class: "chart-text" }, chartText(process, model)),
+      ]),
+    ];
   },
 
   // Records overview (FR-008 – FR-012): a table of records against processes.
@@ -426,4 +522,5 @@ export function render(view, data, ctx) {
   if (!builder) throw new Error(`Unknown view: ${view}`);
   ctx.panel.replaceChildren(...builder(data, ctx));
   ctx.panel.scrollTop = 0;
+  for (const svg of ctx.panel.querySelectorAll("svg.chart")) fitLabels(svg);
 }

@@ -19,6 +19,7 @@ const SITE_TITLE = "FitSM Process Map";
 const dom = {
   map: document.getElementById("map"),
   panel: document.getElementById("panel"),
+  main: document.querySelector("main.layout"),
   legend: document.getElementById("legend-list"),
   edition: document.getElementById("edition-label"),
   attribution: document.getElementById("attribution"),
@@ -92,6 +93,8 @@ function route() {
   state.current = hash;
 
   let title = SITE_TITLE;
+  // A process chart's wide view takes the map's place (specs/003, FR-001a).
+  dom.main.classList.toggle("chart-mode", result.kind === "chart");
   switch (result.kind) {
     case "none":
       render("intro", null, ctx);
@@ -102,6 +105,13 @@ function route() {
       setSelected(dom.map, null);
       title = `General requirements – ${SITE_TITLE}`;
       break;
+    case "chart": {
+      const process = model.processes.get(result.id);
+      render("chart", process, ctx);
+      setSelected(dom.map, `#${result.id}`);
+      title = `${process.name} chart – ${SITE_TITLE}`;
+      break;
+    }
     case "records":
       render("records", null, ctx);
       setSelected(dom.map, null);
@@ -178,6 +188,7 @@ function goBack() {
   let target = "";
   if (parsed.kind === "role") target = format("process", state.model.roles.get(parsed.id).process);
   else if (parsed.kind === "activity") target = format("process", state.model.activities.get(parsed.id).process);
+  else if (parsed.kind === "chart") target = format("process", parsed.id);
   if (target === "") {
     history.pushState({ depth: state.depth + 1 }, "", location.pathname + location.search);
     route();

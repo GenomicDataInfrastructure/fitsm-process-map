@@ -65,6 +65,23 @@ const cases = {
   "basis-not-interface-end": 'error   basis-not-interface-end/records.json: report: relations[0]: CC is not an end of interface "AA-BB"',
   "basis-match-not-found": 'error   basis-match-not-found/records.json: report: relations[0]: "Nothing like it" not found in outputs of CC',
   "record-usedBy": "error   record-usedBy/records.json: report: usedBy is replaced by relations",
+  // Process charts (feature 003, contracts/check-cli.md rule 17)
+  "chart-missing": "error   chart-missing/charts.json: NN: no chart",
+  "chart-duplicate": "error   chart-duplicate/charts.json: AA: duplicate chart",
+  "chart-bad-source": "error   chart-bad-source/charts.json: AA: source must be FitSM-2 PR1 with a page",
+  "chart-bad-size": "error   chart-bad-size/charts.json: AA: size must be { w, h } positive integers",
+  "chart-bad-id": "error   chart-bad-id/charts.json: AA.main: id must be a unique slug",
+  "chart-bad-kind": "error   chart-bad-kind/charts.json: AA.first: unknown kind \"box\"",
+  "chart-box-outside": "error   chart-box-outside/charts.json: AA.main: needs a label and a box inside the chart",
+  "chart-wrong-activity": "error   chart-wrong-activity/charts.json: AA.main: activity \"BB.A1\" is not an activity of AA",
+  "chart-step-outside-group": "error   chart-step-outside-group/charts.json: AA.first: step must lie inside group \"main\"",
+  "chart-bad-object": "error   chart-bad-object/charts.json: AA.doc: shape must be document, documents or database and fill white or grey",
+  "chart-unknown-record": "error   chart-unknown-record/charts.json: AA.doc: unknown record \"nothing\"",
+  "chart-bad-external": "error   chart-bad-external/charts.json: AA.out: external end must name another process and \"to\" or \"from\"",
+  "chart-arrow-unknown-end": "error   chart-arrow-unknown-end/charts.json: AA.arrows[0]: \"ghost\" is not an element of this chart",
+  "chart-arrow-bad-kind": "error   chart-arrow-bad-kind/charts.json: AA.arrows[0]: kind must be sequence or flow, heads end, both or none",
+  "chart-bend-outside": "error   chart-bend-outside/charts.json: AA.arrows[0]: bend 0 lies outside the chart",
+  "chart-unknown-process": "error   chart-unknown-process/charts.json: ZZ: unknown process",
 };
 
 test("the layout metrics are printed before the summary, and listed with --layout", () => {

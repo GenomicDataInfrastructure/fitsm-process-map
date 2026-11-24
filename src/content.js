@@ -9,10 +9,10 @@
  */
 
 export const FILES = [
-  "edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "map",
+  "edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "charts", "map",
 ];
 
-/* Builds the model from the eight parsed files. Cross-references are resolved into
+/* Builds the model from the nine parsed files. Cross-references are resolved into
  * Maps and reverse indexes; nothing is validated here (scripts/check.js does that). */
 export function buildModel(files) {
   const model = {
@@ -41,6 +41,7 @@ export function buildModel(files) {
       records: { maintains: [], uses: [] },
       interfaces: [],
       requirementGroup: null,
+      chart: null,
     });
     for (const alias of p.aliases || []) model.aliases.set(alias, p.code);
   }
@@ -91,6 +92,23 @@ export function buildModel(files) {
     }
   }
 
+  // Process charts (feature 003): one per process; records list the charts that draw them.
+  for (const record of model.records.values()) record.charts = [];
+  for (const chart of files.charts || []) {
+    const process = model.processes.get(chart.process);
+    if (!process) continue;
+    process.chart = chart;
+    for (const el of chart.elements || []) {
+      if (el.kind !== "object" || !el.record) continue;
+      const record = model.records.get(el.record);
+      if (!record) continue;
+      let entry = record.charts.find((c) => c.process === chart.process);
+      if (!entry) record.charts.push((entry = { process: chart.process, states: [] }));
+      const state = labelState(el.label);
+      if (state && !entry.states.includes(state)) entry.states.push(state);
+    }
+  }
+
   for (const line of files.map.lines) model.lines.set(line.id, line);
 
   model.overview = buildOverview(model);
@@ -123,6 +141,13 @@ export function buildOverview(model) {
   };
 }
 
+/* The state in a chart label: the text in square brackets, e.g. "Problem [known error]" →
+ * "known error"; null when there is none. */
+export function labelState(label) {
+  const m = /\[([^\]]+)\]/.exec(String(label || "").replace(/\s+/g, " "));
+  return m ? m[1].trim() : null;
+}
+
 /* The FitSM-2 text a relationship rests on (data-model.md "Basis"): the first activity step,
  * process input or output, or interface flow containing `match`, with its source and, where
  * it has a view, a link. Null when nothing matches (scripts/check.js reports that). */
@@ -147,7 +172,7 @@ export function resolveBasis(basis, model) {
   return null;
 }
 
-/* Fetches editions.json, then the current edition's eight files in parallel.
+/* Fetches editions.json, then the current edition's nine files in parallel.
  * Throws Error("Could not load content/<edition>/<file>") naming the first failure. */
 export async function loadContent(fetchImpl, baseUrl = "content/") {
   const editionsUrl = `${baseUrl}editions.json`;

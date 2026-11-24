@@ -31,10 +31,13 @@ says about it, with a reference to the FitSM document and section for every item
 | A record | Its FitSM-0 definition (or, for a store FitSM-0 does not define, FitSM-2's wording), the processes that create or maintain it and those that use it, each with the FitSM-2 text it rests on |
 | **General requirements** (header) | FitSM-1's general requirements GR1–GR7 |
 | **Records** (header) | Every record against the 14 processes in one table: ● creates or maintains, ○ uses |
+| A process's **Process chart** | FitSM-2's chart of the process, redrawn: activity groups, steps in order, the information they read and produce, and links to activities, records and interfaces |
+| **Open chart, with text version** | The chart across the map's area, beside a text version that lists every group, step and arrow |
 
 Any view can be opened directly by link, for example `…/fitsm-process-map/#ISRM` for a
 process, `#ISRM-PM` for an interface, `#CHM-ISRM,CONFM-ISRM` for several interfaces, `#GR`
-for the general requirements or `#RECORDS` for the records overview.
+for the general requirements, `#RECORDS` for the records overview or `#chart/PM` for a
+process chart.
 
 The coloured lines group related processes as a study aid. They are not part of FitSM, and
 the page says so wherever they appear. Everything else on the page is FitSM's own text, with
@@ -77,15 +80,17 @@ Then open http://localhost:8765. No build step and no dependencies are needed.
 | `src/router.js` | Parses and formats the address hash (pure, tested in Node) |
 | `src/map.js` | Draws the SVG map |
 | `src/panel.js` | Renders the detail frame views |
+| `src/chart.js` | Draws a FitSM-2 process chart as SVG and builds its text version (pure, tested in Node) |
 | `content/editions.json` | Which FitSM editions are present and which one the page shows |
-| `content/fitsm-3.0/` | The FitSM 3.0 content: eight JSON files (see below) |
+| `content/fitsm-3.0/` | The FitSM 3.0 content: nine JSON files (see below) |
 | `scripts/check.js` | Consistency and contrast checks, run in CI |
 | `scripts/layout.js` | Layout metrics for the map (crossings, overlaps, close parallels), used by `check.js` |
 | `tests/` | Unit tests (`node --test`) and fixtures for the check script |
 
 Each edition directory holds `edition.json` (documents, versions, licence), `processes.json`,
-`requirements.json`, `roles.json`, `activities.json`, `records.json`, `interfaces.json` and
-`map.json` (lines, station positions, routes). Every content item carries a `source` naming
+`requirements.json`, `roles.json`, `activities.json`, `records.json`, `interfaces.json`,
+`charts.json` (FitSM-2's process charts, redrawn) and `map.json` (lines, station positions,
+routes). Every content item carries a `source` naming
 the FitSM document and section it comes from.
 
 ## Checks and tests
@@ -136,7 +141,7 @@ Only `content/` changes for a content update; the page code does not.
    of its licence statement.
 4. Work through the files in this order, because later files reference earlier ones:
    `processes.json` → `requirements.json` → `roles.json` → `activities.json` →
-   `interfaces.json` → `records.json` → `map.json`. Quote FitSM text unchanged; put wording
+   `interfaces.json` → `records.json` → `charts.json` → `map.json`. Quote FitSM text unchanged; put wording
    of your own only into `note` fields.
 5. Run `node scripts/check.js` and fix every error; read the warnings.
 6. Set `current` in `content/editions.json` to the new id and add a line to `CHANGELOG.md`
@@ -158,6 +163,23 @@ Only `content/` changes for a content update; the page code does not.
    `{ "activity": "PM.A1", "match": "Register a problem" }`.
 4. Run `node scripts/check.js`: every `match` must occur in the text it points at. After a
    new FitSM edition, the check lists each relationship whose text moved or changed.
+
+### Adding or correcting a process chart
+
+1. Render the chart's page of the FitSM-2 PDF and crop it to the chart:
+   `pdftoppm -f <page> -l <page> -r 200 -png FitSM-2.pdf chart` (poppler, a reading aid; not
+   part of the project). All of FitSM-2 v3.0.2's charts are bitmaps, so they are transcribed by
+   hand.
+2. In `charts.json`, give each element its kind (`group`, `step`, `decision`, `end`, `object`,
+   `note`, `external`), its label exactly as printed (`\n` where the chart breaks the line) and
+   its box in PDF points from the chart's top-left corner (pixels × 72 ÷ 200). Link groups to
+   activities, objects to records only where the object is that record, and external ends to
+   processes.
+3. Add every arrow with its kind (`sequence` solid, `flow` dashed), heads, label and bends
+   (`curve: true` where FitSM-2 draws it curved).
+4. In `notes`, list anything the site draws differently and every difference in meaning
+   between the chart's wording and FitSM-2's activity text, naming both wordings.
+5. Run `node scripts/check.js`, open `#chart/<code>` and compare it with the PDF side by side.
 
 ### Adding a connection
 

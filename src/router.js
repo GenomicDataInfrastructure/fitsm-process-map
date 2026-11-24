@@ -8,6 +8,7 @@
  *   ""                    nothing selected
  *   "#GR"                 general requirements
  *   "#RECORDS"            records overview (case-insensitive, like "#GR")
+ *   "#chart/PM"           a process's chart, wide (code or alias, case-insensitive)
  *   "#ISRM"               process (code, case-insensitive)
  *   "#ISRM-PM"            interface (codes in alphabetical order)
  *   "#CHM-PM,CHM-SACM"    several interfaces at once (ids sorted, comma-separated)
@@ -18,13 +19,13 @@
 
 const CODE = /^[A-Z]{2,6}$/;
 const PAIR = /^([A-Z]{2,6})-([A-Z]{2,6})$/;
-const PREFIXED = /^(role|activity|record)\/(.+)$/;
+const PREFIXED = /^(role|activity|record|chart)\/(.+)$/;
 
 export function parse(hash) {
   const raw = String(hash || "").replace(/^#/, "");
   if (raw === "") return { kind: "none", raw };
   const prefixed = raw.match(PREFIXED);
-  if (prefixed) return { kind: prefixed[1], id: prefixed[2], raw };
+  if (prefixed) return { kind: prefixed[1], id: prefixed[1] === "chart" ? prefixed[2].toUpperCase() : prefixed[2], raw };
   const upper = raw.toUpperCase();
   if (upper === "GR") return { kind: "general", raw };
   if (upper === "RECORDS") return { kind: "records", raw };
@@ -53,6 +54,7 @@ export function format(kind, id) {
     case "role":
     case "activity":
     case "record":
+    case "chart":
       return `#${kind}/${id}`;
     default:
       return "";
@@ -107,6 +109,12 @@ export function canonical(parsed, model) {
       if (unique.length === 1) return { kind: "interface", id: unique[0], hash: format("interface", unique[0]), redirect: true };
       const hash = format("interfaces", unique);
       return { kind: "interfaces", ids: unique, hash, redirect: hash !== `#${parsed.raw}` };
+    }
+    case "chart": {
+      const code = resolveCode(parsed.id, model);
+      if (!code || !model.processes.get(code).chart) return unknown;
+      const hash = format("chart", code);
+      return { kind: "chart", id: code, hash, redirect: hash !== `#${parsed.raw}` };
     }
     case "role":
     case "activity":

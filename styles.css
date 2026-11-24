@@ -219,3 +219,51 @@ a { color: var(--link); }
 .records-table tbody tr:hover th, .records-table tbody tr:hover td { background: var(--paper-alt); }
 .mark { font-size: 1rem; line-height: 1; color: var(--ink); }
 .records-legend { color: var(--ink-muted); }
+
+/* Process charts (feature 003). FitSM-2's colour roles, checked for WCAG 2.1 AA
+ * (specs/003-process-charts/research.md R5). Chart units are PDF points; labels are 9 units. */
+/* chart-styles:start */
+.chart { display: block; width: 100%; height: auto; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.chart text { font-size: 7.5px; }
+.chart-group { fill: #2f5f98; }
+.chart-group-title { fill: #ffffff; font-weight: 600; font-size: 8.5px; }
+.chart-step, .chart-decision { fill: #c6d7ec; stroke: #2f5f98; stroke-width: 0.8; }
+.chart-end { fill: #ffffff; stroke: #1d1d1f; stroke-width: 0.8; }
+.chart-note { fill: #d9d9d9; }
+.chart-note-text { fill: #1d1d1f; }
+.chart-object { stroke: #1d1d1f; stroke-width: 0.8; }
+.chart-object-white { fill: #ffffff; }
+.chart-object-grey { fill: #d9d9d9; }
+.chart-object-rim { fill: none; }
+.chart-record-mark { fill: #ffffff; stroke: #2f5f98; stroke-width: 0.6; }
+.chart-label { fill: #1d1d1f; }
+.chart-arrow { fill: none; stroke-width: 1; }
+.chart-flow { stroke-dasharray: 4 3; }
+.chart-line-dark { stroke: #1d1d1f; }
+.chart-line-light { stroke: #ffffff; }
+.chart-head-dark { fill: #1d1d1f; }
+.chart-head-light { fill: #ffffff; }
+.chart-head-grey { fill: #6b6b6b; }
+.chart-external-line { stroke: #6b6b6b; stroke-width: 1.5; }
+.chart-arrow-label { fill: #1d1d1f; paint-order: stroke; stroke: #ffffff; stroke-width: 2.5px; stroke-linejoin: round; }
+.chart-arrows { pointer-events: none; }
+/* chart-styles:end */
+.chart-link:focus { outline: none; }
+.chart-link:focus-visible > :first-child { stroke: var(--focus); stroke-width: 2.5; }
+.chart-compact { overflow-x: auto; max-width: 100%; position: relative; margin: 0.5rem 0; }
+
+/* Chart sections and the wide chart view (feature 003, FR-001a, FR-011). */
+.chart-figure { margin: 0.5rem 0; }
+.chart-figure figcaption { margin-top: 0.25rem; }
+.chart-wide-layout { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.chart-wide-layout > * { min-width: 0; } /* let the chart scroll in its box, not the page */
+.chart-text ol, .chart-text ul { padding-left: 1.3rem; }
+.chart-text h3 { margin-top: 0.5rem; }
+@media (min-width: 900px) {
+  .layout.chart-mode { grid-template-columns: 1fr; }
+  .chart-mode .map-column { display: none; }
+  .chart-wide-layout { grid-template-columns: minmax(0, 3fr) minmax(16rem, 2fr); align-items: start; }
+}
+@media (max-width: 899px) {
+  .chart-mode .map-column { display: none; }
+}
