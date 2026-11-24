@@ -1,0 +1,18 @@
+[
+  {
+    "id": "record",
+    "name": "Record",
+    "general": true,
+    "definition": { "text": "Documentation of an event", "source": { "doc": "FitSM-0", "section": "6.1", "page": 2 } },
+    "relations": []
+  },
+  {
+    "id": "report",
+    "name": "Report",
+    "definition": { "text": "A structured record", "source": { "doc": "FitSM-0", "section": "6.1", "page": 2 } },
+    "relations": [
+      { "process": "CC", "kind": "maintains", "basis": { "output": "CC", "match": "A record" } },
+      { "process": "AA", "kind": "uses", "basis": { "activity": "AA.A1", "match": "Step one" } }
+    ]
+  }
+]

@@ -15,6 +15,17 @@ document versions they bring in.
 
 ### Added
 
+- Process charts (feature 003): every process view shows FitSM-2's own process chart (FitSM-2
+  v3.0.2, PR1–PR14), redrawn from the PDF with its source: activity groups, steps in order,
+  decisions, end states, the information read and produced (with states such as "Problem
+  [known error]"), notes and arrows to other processes. Groups and steps open their activity,
+  information objects open their record, and "to/from" arrows open the interface. Where the
+  chart's wording differs in meaning from FitSM-2's activity text, a "Not part of FitSM" note
+  shows both.
+- `#chart/<code>` shows a chart across the map's area beside a text version of everything it
+  draws; record views list the charts a record appears in.
+- `content/<edition>/charts.json` and check rule 17 for charts.
+
 - Records aligned with FitSM (feature 002): 36 records with 84 process relationships, up from
   9 records. Every information object FitSM-0 defines that a process creates, maintains or
   uses has its own record with its FitSM-0 definition (FitSM-0

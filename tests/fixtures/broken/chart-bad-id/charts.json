@@ -1,0 +1,506 @@
+[
+  {
+    "process": "AA",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR1",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "AA.A1",
+        "label": "Do AA",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "main",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "BB",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR2",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "BB.A1",
+        "label": "Do BB",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "CC",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR3",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "CC.A1",
+        "label": "Do CC",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "DD",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR4",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "DD.A1",
+        "label": "Do DD",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "EE",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR5",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "EE.A1",
+        "label": "Do EE",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "FF",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR6",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "FF.A1",
+        "label": "Do FF",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "GG",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR7",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "GG.A1",
+        "label": "Do GG",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "HH",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR8",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "HH.A1",
+        "label": "Do HH",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "II",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR9",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "II.A1",
+        "label": "Do II",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "JJ",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR10",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "JJ.A1",
+        "label": "Do JJ",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "KK",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR11",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "KK.A1",
+        "label": "Do KK",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "LL",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR12",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "LL.A1",
+        "label": "Do LL",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "MM",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR13",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "MM.A1",
+        "label": "Do MM",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  },
+  {
+    "process": "NN",
+    "source": {
+      "doc": "FitSM-2",
+      "section": "PR14",
+      "page": 5
+    },
+    "size": {
+      "w": 200,
+      "h": 100
+    },
+    "notes": [],
+    "elements": [
+      {
+        "id": "main",
+        "kind": "group",
+        "activity": "NN.A1",
+        "label": "Do NN",
+        "x": 10,
+        "y": 10,
+        "w": 180,
+        "h": 80
+      },
+      {
+        "id": "first",
+        "kind": "step",
+        "group": "main",
+        "label": "Step one",
+        "x": 30,
+        "y": 40,
+        "w": 140,
+        "h": 30
+      }
+    ],
+    "arrows": []
+  }
+]

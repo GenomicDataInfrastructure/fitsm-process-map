@@ -137,3 +137,14 @@ test("buildModel orders the records overview by FitSM process order, then by nam
   const zeta = overview.rows.find((r) => r.record.id === "zeta");
   assert.deepEqual([...zeta.cells], [["BB", "maintains"], ["AA", "uses"]]);
 });
+
+test("buildModel attaches each process's chart and lists, per record, the charts that draw it", () => {
+  const files = readFixture(fixture);
+  const report = { id: "rep", kind: "object", shape: "document", fill: "white", x: 0, y: 0, w: 10, h: 10 };
+  files.charts[0].elements.push({ ...report, label: "Report\n[draft]", record: "report" }, { ...report, id: "rep2", label: "Report [final]", record: "report" });
+  files.charts[1].elements.push({ ...report, label: "Report", record: "report" });
+  const model = buildModel(files);
+  assert.equal(model.processes.get("AA").chart.process, "AA");
+  assert.deepEqual(model.records.get("report").charts, [{ process: "AA", states: ["draft", "final"] }, { process: "BB", states: [] }]);
+  assert.deepEqual(model.records.get("record").charts, []);
+});

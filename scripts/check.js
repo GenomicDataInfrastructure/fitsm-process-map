@@ -20,7 +20,10 @@ import { fileURLToPath } from "node:url";
 import { layoutMetrics } from "./layout.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const FILES = ["edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "map"];
+const FILES = ["edition", "processes", "requirements", "roles", "activities", "records", "interfaces", "charts", "map"];
+// Rule 17 (process charts).
+const REQUIRE_EVERY_CHART = true;
+const CHART_KINDS = new Set(["group", "step", "decision", "end", "object", "note", "external"]);
 const ROLE_KINDS = ["owner", "manager", "case-owner", "staff", "specific"];
 const SIDES = ["n", "s", "e", "w"];
 const PATTERNS = {
@@ -108,7 +111,7 @@ function checkEdition({ id: ed, dir }) {
     Array.isArray(d.processes) &&
     isObj(d.requirements) && Array.isArray(d.requirements.general) && Array.isArray(d.requirements.process) &&
     isObj(d.roles) && isObj(d.roles.generic) && Array.isArray(d.roles.roles) &&
-    Array.isArray(d.activities) && Array.isArray(d.records) && Array.isArray(d.interfaces) &&
+    Array.isArray(d.activities) && Array.isArray(d.records) && Array.isArray(d.interfaces) && Array.isArray(d.charts) &&
     isObj(d.map) && Array.isArray(d.map.lines) && isObj(d.map.stations) && isObj(d.map.routes) && isObj(d.map.grid) && isObj(d.map.transfer);
   if (!shapeOk) {
     err("edition", "shape", "one or more files do not have the expected top-level shape");
@@ -332,6 +335,10 @@ function checkEdition({ id: ed, dir }) {
     itemsChecked++;
   }
 
+  // 17. Process charts (feature 003, contracts/check-cli.md).
+  const cs = checkCharts(d, { codes, recordIds, activityById, err, warn });
+  layoutLines.push(`charts  ${ed}/charts.json: ${cs.charts} charts, ${cs.elements} elements, ${cs.arrows} arrows, ${cs.links} record links`);
+
   // 7. Completeness per process (roles, activities, line membership)
   const lineMembership = new Map();
   for (const line of d.map.lines) for (const s of line.stations || []) lineMembership.set(s, (lineMembership.get(s) || 0) + 1);
@@ -537,4 +544,83 @@ function luminance(hex) {
 function contrast(a, b) {
   const [l1, l2] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (l1 + 0.05) / (l2 + 0.05);
+}
+
+/* ---------- rule 17: process charts ---------- */
+
+
+function checkCharts(d, { codes, recordIds, activityById, err, warn }) {
+  const int = (n) => Number.isInteger(n);
+  const groupOf = new Map((d.requirements.process || []).map((g) => [g.process, g.id]));
+  const seen = new Set();
+  let elements = 0, arrows = 0, links = 0;
+  for (const chart of d.charts) {
+    const code = chart && chart.process;
+    if (!codes.has(code)) { err("charts", code || "?", "unknown process"); continue; }
+    if (seen.has(code)) { err("charts", code, "duplicate chart"); continue; }
+    seen.add(code);
+    const src = chart.source;
+    if (!isObj(src) || src.doc !== "FitSM-2" || src.section !== groupOf.get(code) || !int(src.page)) {
+      err("charts", code, `source must be FitSM-2 ${groupOf.get(code) || "PR<n>"} with a page`);
+    }
+    const size = chart.size;
+    const sizeOk = isObj(size) && int(size.w) && int(size.h) && size.w > 0 && size.h > 0;
+    if (!sizeOk) err("charts", code, "size must be { w, h } positive integers");
+    const within = (x, y) => sizeOk && x >= 0 && y >= 0 && x <= size.w && y <= size.h;
+    const els = Array.isArray(chart.elements) ? chart.elements : [];
+    const byId = new Map();
+    for (const e of els) {
+      const id = e && e.id;
+      if (!PATTERNS.slug.test(id || "") || byId.has(id)) { err("charts", `${code}.${id || "?"}`, "id must be a unique slug"); continue; }
+      byId.set(id, e);
+    }
+    for (const [id, e] of byId) {
+      const item = `${code}.${id}`;
+      elements++;
+      if (!CHART_KINDS.has(e.kind)) { err("charts", item, `unknown kind "${e.kind}"`); continue; }
+      if (typeof e.label !== "string" || !e.label.trim() || ![e.x, e.y, e.w, e.h].every(int) || e.w <= 0 || e.h <= 0 ||
+        !within(e.x, e.y) || !within(e.x + e.w, e.y + e.h)) {
+        err("charts", item, "needs a label and a box inside the chart");
+      }
+      if (e.kind === "group") {
+        const a = activityById.get(e.activity);
+        if (!a || a.process !== code) err("charts", item, `activity "${e.activity}" is not an activity of ${code}`);
+      }
+      if (e.kind === "step") {
+        const g = byId.get(e.group);
+        const fits = g && g.kind === "group" && e.x >= g.x && e.y >= g.y && e.x + e.w <= g.x + g.w && e.y + e.h <= g.y + g.h;
+        if (!fits) err("charts", item, `step must lie inside group "${e.group}"`);
+      }
+      if (e.kind === "object") {
+        if (!["document", "documents", "database"].includes(e.shape) || !["white", "grey"].includes(e.fill)) {
+          err("charts", item, "shape must be document, documents or database and fill white or grey");
+        }
+        if (e.record !== undefined) {
+          if (!recordIds.has(e.record)) err("charts", item, `unknown record "${e.record}"`);
+          else links++;
+        }
+      }
+      if (e.kind === "external" && (!codes.has(e.process) || e.process === code || !["to", "from"].includes(e.direction))) {
+        err("charts", item, 'external end must name another process and "to" or "from"');
+      }
+    }
+    for (const [k, a] of (Array.isArray(chart.arrows) ? chart.arrows : []).entries()) {
+      const item = `${code}.arrows[${k}]`;
+      arrows++;
+      const bad = [a.from, a.to].find((id) => !byId.has(id));
+      if (bad !== undefined || a.from === a.to) {
+        err("charts", item, `"${bad !== undefined ? bad : a.to}" is not an element of this chart`);
+        continue;
+      }
+      if (!["sequence", "flow"].includes(a.kind) || (a.heads !== undefined && !["end", "both", "none"].includes(a.heads))) {
+        err("charts", item, "kind must be sequence or flow, heads end, both or none");
+      }
+      for (const [n, pt] of (a.points || []).entries()) {
+        if (!Array.isArray(pt) || !within(pt[0], pt[1])) err("charts", item, `bend ${n} lies outside the chart`);
+      }
+    }
+    itemsChecked++;
+  }
+  if (REQUIRE_EVERY_CHART) for (const code of codes) if (!seen.has(code)) err("charts", code, "no chart");
+  return { charts: seen.size, elements, arrows, links };
 }
