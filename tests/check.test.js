@@ -50,6 +50,21 @@ const cases = {
   "bad-waypoint": "error   bad-waypoint/map.json: routes.AA-BB: waypoint 0 is not a grid point [x, y] within the grid",
   "bad-draw-first": 'error   bad-draw-first/map.json: drawFirst: "AA-ZZ" is not an interface',
   "zone-misplaced": "error   zone-misplaced/map.json: zones.top: station HH at row 4 is not inside rows 0-3",
+  // Records and relationships (feature 002, contracts/check-cli.md rule 16)
+  "record-no-definition": "error   record-no-definition/records.json: report: definition must have text and source",
+  "record-not-fitsm0": 'error   record-not-fitsm0/records.json: report: definition must come from FitSM-0, or set "fitsm0": false',
+  "store-not-fitsm2": "error   store-not-fitsm2/records.json: report: a store FitSM-0 does not define must be quoted from FitSM-2",
+  "two-general": "error   two-general/records.json: record: only one record may be general",
+  "record-no-relation": "error   record-no-relation/records.json: report: needs at least one relationship",
+  "relation-unknown-process": 'error   relation-unknown-process/records.json: report: relations[0]: unknown process "ZZ"',
+  "relation-bad-kind": 'error   relation-bad-kind/records.json: report: relations[0]: kind must be "maintains" or "uses"',
+  "relation-duplicate-process": "error   relation-duplicate-process/records.json: report: process CC appears more than once",
+  "basis-malformed": "error   basis-malformed/records.json: report: relations[0]: basis must name one activity, input, output or flow and a match of at least 3 characters",
+  "basis-wrong-activity": 'error   basis-wrong-activity/records.json: report: relations[1]: activity "BB.A1" is not an activity of AA',
+  "basis-wrong-io-process": "error   basis-wrong-io-process/records.json: report: relations[0]: input/output must be the relationship's own process",
+  "basis-not-interface-end": 'error   basis-not-interface-end/records.json: report: relations[0]: CC is not an end of interface "AA-BB"',
+  "basis-match-not-found": 'error   basis-match-not-found/records.json: report: relations[0]: "Nothing like it" not found in outputs of CC',
+  "record-usedBy": "error   record-usedBy/records.json: report: usedBy is replaced by relations",
 };
 
 test("the layout metrics are printed before the summary, and listed with --layout", () => {

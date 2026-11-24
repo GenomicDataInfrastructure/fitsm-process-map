@@ -38,7 +38,7 @@ export function buildModel(files) {
       outputs: p.outputs || [],
       roles: [],
       activities: [],
-      records: [],
+      records: { maintains: [], uses: [] },
       interfaces: [],
       requirementGroup: null,
     });
@@ -62,14 +62,9 @@ export function buildModel(files) {
   }
 
   for (const activity of files.activities) {
-    model.activities.set(activity.id, activity);
-    model.processes.get(activity.process)?.activities.push(activity);
-  }
-
-  for (const record of files.records) {
-    const r = { ...record, processes: record.usedBy.map((u) => u.process) };
-    model.records.set(r.id, r);
-    for (const use of record.usedBy) model.processes.get(use.process)?.records.push(r);
+    const a = { ...activity, records: { maintains: [], uses: [] } };
+    model.activities.set(a.id, a);
+    model.processes.get(a.process)?.activities.push(a);
   }
 
   for (const iface of files.interfaces) {
@@ -83,9 +78,73 @@ export function buildModel(files) {
     for (const code of i.processes) model.processes.get(code)?.interfaces.push(i);
   }
 
+  // Records after activities and interfaces: each relationship's basis resolves against them.
+  for (const record of files.records) {
+    const relations = (record.relations || []).map((rel) => ({ ...rel, resolved: resolveBasis(rel.basis, model) }));
+    const r = { ...record, relations, processes: relations.map((rel) => rel.process) };
+    model.records.set(r.id, r);
+    if (r.general) continue;
+    for (const rel of relations) {
+      const group = rel.kind === "maintains" ? "maintains" : "uses";
+      model.processes.get(rel.process)?.records[group].push(r);
+      if (rel.basis?.activity) model.activities.get(rel.basis.activity)?.records[group].push(r);
+    }
+  }
+
   for (const line of files.map.lines) model.lines.set(line.id, line);
 
+  model.overview = buildOverview(model);
   return model;
+}
+
+/* The records overview (FR-009, FR-010): processes in FitSM order (PR1 … PR14); one row per
+ * record, grouped by the first process in that order that creates or maintains it, then by
+ * name; records nobody creates or maintains last. The general record heads the view, not a row. */
+export function buildOverview(model) {
+  const prNumber = (group) => Number(String(group.id).replace(/\D/g, "")) || Infinity;
+  const processes = [...model.requirementGroups.values()]
+    .filter((g) => g.kind === "process" && model.processes.has(g.process))
+    .sort((a, b) => prNumber(a) - prNumber(b))
+    .map((g) => g.process);
+  const position = new Map(processes.map((code, i) => [code, i]));
+  const rows = [...model.records.values()].filter((r) => !r.general).map((record) => {
+    const cells = new Map();
+    for (const rel of record.relations) {
+      if (cells.get(rel.process) !== "maintains") cells.set(rel.process, rel.kind === "maintains" ? "maintains" : "uses");
+    }
+    const owners = record.relations.filter((rel) => rel.kind === "maintains").map((rel) => position.get(rel.process) ?? Infinity);
+    return { record, cells, group: owners.length ? Math.min(...owners) : Infinity };
+  });
+  rows.sort((a, b) => a.group - b.group || a.record.name.localeCompare(b.record.name));
+  return {
+    general: [...model.records.values()].find((r) => r.general) || null,
+    processes,
+    rows: rows.map(({ record, cells }) => ({ record, cells })),
+  };
+}
+
+/* The FitSM-2 text a relationship rests on (data-model.md "Basis"): the first activity step,
+ * process input or output, or interface flow containing `match`, with its source and, where
+ * it has a view, a link. Null when nothing matches (scripts/check.js reports that). */
+export function resolveBasis(basis, model) {
+  if (!basis || typeof basis.match !== "string") return null;
+  const has = (text) => typeof text === "string" && text.includes(basis.match);
+  if (basis.activity) {
+    const activity = model.activities.get(basis.activity);
+    const step = activity?.procedure.find(has);
+    return step ? { kind: "activity", text: step, source: activity.source, link: `#activity/${activity.id}`, label: activity.name } : null;
+  }
+  for (const kind of ["input", "output"]) {
+    if (!basis[kind]) continue;
+    const item = model.processes.get(basis[kind])?.[`${kind}s`].find((x) => has(x.text));
+    return item ? { kind, text: item.text, source: item.source } : null;
+  }
+  if (basis.flow) {
+    const iface = model.interfaces.get(basis.flow);
+    const flow = iface?.flows.find((f) => has(f.item));
+    return flow ? { kind: "flow", text: flow.item, source: flow.source, link: `#${iface.id}`, from: flow.from, to: flow.to } : null;
+  }
+  return null;
 }
 
 /* Fetches editions.json, then the current edition's eight files in parallel.

@@ -15,6 +15,20 @@ document versions they bring in.
 
 ### Added
 
+- Records aligned with FitSM (feature 002): 36 records with 84 process relationships, up from
+  9 records. Every information object FitSM-0 defines that a process creates, maintains or
+  uses has its own record with its FitSM-0 definition (FitSM-0
+  v3.0.1), for example Problem, Known error, Incident, Change and Configuration item, plus
+  the stores FitSM-2 names without a FitSM-0 definition, such as the known error database
+  (FitSM-2 v3.0.2). Each process–record relationship names the FitSM-2 activity step, input,
+  output or interface flow it rests on and is labelled "Not part of FitSM".
+- The process view's "Information and records" (formerly "Databases and records") lists what
+  the process creates or maintains and what it uses; the activity view lists its records.
+- A records overview at `#RECORDS`, opened from the header: every record against the 14
+  processes, ● creates or maintains, ○ uses.
+- Checks for records and relationships: every relationship must resolve to FitSM-2 text in
+  the content.
+
 - The map shows its two halves, Plan & Deliver and Operate & Control, as shaded bands
   (`zones` in `map.json`, checked by `scripts/check.js`), named in the legend, in each
   station's spoken name and in its frame subtitle, and labelled as a study aid.

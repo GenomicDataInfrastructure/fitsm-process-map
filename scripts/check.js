@@ -233,23 +233,30 @@ function checkEdition({ id: ed, dir }) {
     activitiesByProcess.set(a.process, (activitiesByProcess.get(a.process) || 0) + 1);
   }
 
-  // Records
+  // Records: ids, names and definitions here; relationships (rule 16) after interfaces.
   const recordIds = new Set();
+  let generalCount = 0;
   for (const r of d.records) {
     const item = r.id || "?";
     if (!PATTERNS.slug.test(r.id || "")) err("records", item, "id must be a slug");
     if (recordIds.has(r.id)) err("records", item, "duplicate record id");
     recordIds.add(r.id);
     if (!r.name) err("records", item, "missing name");
-    if (!isObj(r.definition) || !r.definition.text) err("records", item, "missing definition");
-    else hasSource("records", `${item}.definition`, r.definition.source);
-    if (!Array.isArray(r.usedBy) || !r.usedBy.length) err("records", item, "usedBy is empty");
-    for (const [i, u] of (r.usedBy || []).entries()) {
-      if (!codes.has(u.process)) err("records", `${item}.usedBy[${i}]`, `process "${u.process}" does not exist`);
-      if (u.derived !== true) warn("records", `${item}.usedBy[${i}]`, "derived is not true; FitSM does not list records per process");
-      hasSource("records", `${item}.usedBy[${i}]`, u.source);
+    if ("usedBy" in r) err("records", item, "usedBy is replaced by relations");
+    if (!isObj(r.definition) || !r.definition.text || !isObj(r.definition.source)) err("records", item, "definition must have text and source");
+    else {
+      hasSource("records", `${item}.definition`, r.definition.source);
+      const doc = r.definition.source.doc;
+      if (r.fitsm0 === false && doc !== "FitSM-2") err("records", item, "a store FitSM-0 does not define must be quoted from FitSM-2");
+      if (r.fitsm0 !== false && doc !== "FitSM-0") err("records", item, 'definition must come from FitSM-0, or set "fitsm0": false');
     }
+    for (const [k, a] of (r.alsoCalled || []).entries()) {
+      if (!isObj(a) || !a.text) err("records", item, `alsoCalled[${k}]: missing text`);
+      else hasSource("records", `${item}.alsoCalled[${k}]`, a.source);
+    }
+    if (r.general === true) generalCount++;
   }
+  if (generalCount > 1) for (const r of d.records) if (r.general === true) err("records", r.id, "only one record may be general");
 
   // Interfaces
   const interfaceIds = new Set();
@@ -277,6 +284,50 @@ function checkEdition({ id: ed, dir }) {
       if (![a, b].includes(f.from) || ![a, b].includes(f.to) || f.from === f.to) err("interfaces", fi, `flow ${f.from} → ${f.to} is not between ${a} and ${b}`);
       if (!f.item) err("interfaces", fi, "missing item");
       hasSource("interfaces", fi, f.source);
+    }
+    itemsChecked++;
+  }
+
+  // 16. Records and relationships: every basis resolves to FitSM-2 text in the content.
+  const processByCode = new Map(d.processes.map((p) => [p.code, p]));
+  const activityById = new Map(d.activities.map((a) => [a.id, a]));
+  const interfaceById = new Map(d.interfaces.map((i) => [i.id, i]));
+  for (const r of d.records) {
+    const item = r.id || "?";
+    const relations = Array.isArray(r.relations) ? r.relations : [];
+    if (!Array.isArray(r.relations) && !("usedBy" in r)) err("records", item, "relations must be an array");
+    if (r.general !== true && !relations.length) err("records", item, "needs at least one relationship");
+    const seen = new Set();
+    for (const [k, rel] of relations.entries()) {
+      const at = `relations[${k}]`;
+      itemsChecked++;
+      const code = rel?.process;
+      if (!codes.has(code)) { err("records", item, `${at}: unknown process "${code}"`); continue; }
+      if (seen.has(code)) err("records", item, `process ${code} appears more than once`);
+      seen.add(code);
+      if (rel.kind !== "maintains" && rel.kind !== "uses") err("records", item, `${at}: kind must be "maintains" or "uses"`);
+      const b = rel.basis;
+      const forms = isObj(b) ? ["activity", "input", "output", "flow"].filter((f) => f in b) : [];
+      if (forms.length !== 1 || typeof b.match !== "string" || b.match.length < 3) {
+        err("records", item, `${at}: basis must name one activity, input, output or flow and a match of at least 3 characters`);
+        continue;
+      }
+      const has = (text) => typeof text === "string" && text.includes(b.match);
+      let texts, where;
+      if (forms[0] === "activity") {
+        const a = activityById.get(b.activity);
+        if (!a || a.process !== code) { err("records", item, `${at}: activity "${b.activity}" is not an activity of ${code}`); continue; }
+        texts = a.procedure || []; where = `activity ${b.activity}`;
+      } else if (forms[0] === "flow") {
+        const i = interfaceById.get(b.flow);
+        if (!i || !(i.processes || []).includes(code)) { err("records", item, `${at}: ${code} is not an end of interface "${b.flow}"`); continue; }
+        texts = (i.flows || []).map((f) => f.item); where = `flows of ${b.flow}`;
+      } else {
+        const kind = forms[0];
+        if (b[kind] !== code) { err("records", item, `${at}: input/output must be the relationship's own process`); continue; }
+        texts = (processByCode.get(code)?.[`${kind}s`] || []).map((x) => x.text); where = `${kind}s of ${code}`;
+      }
+      if (!texts.some(has)) err("records", item, `${at}: "${b.match}" not found in ${where}`);
     }
     itemsChecked++;
   }

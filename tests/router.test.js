@@ -19,6 +19,8 @@ test("parse recognises every kind", () => {
   assert.deepEqual(parse(""), { kind: "none", raw: "" });
   assert.deepEqual(parse("#"), { kind: "none", raw: "" });
   assert.deepEqual(parse("#GR"), { kind: "general", raw: "GR" });
+  assert.deepEqual(parse("#RECORDS"), { kind: "records", raw: "RECORDS" });
+  assert.deepEqual(parse("#records"), { kind: "records", raw: "records" });
   assert.deepEqual(parse("#ISRM"), { kind: "process", id: "ISRM", raw: "ISRM" });
   assert.deepEqual(parse("#ISRM-PM"), { kind: "interface", id: "ISRM-PM", raw: "ISRM-PM" });
   assert.deepEqual(parse("#role/ISRM.manager"), { kind: "role", id: "ISRM.manager", raw: "role/ISRM.manager" });
@@ -35,7 +37,7 @@ test("parse upper-cases codes typed by hand", () => {
 });
 
 test("format is the inverse of parse for every valid selection", () => {
-  for (const hash of ["", "#GR", "#ISRM", "#ISRM-PM", "#CHM-PM,ISRM-PM", "#role/ISRM.manager", "#activity/ISRM.A1", "#record/incident-record"]) {
+  for (const hash of ["", "#GR", "#RECORDS", "#ISRM", "#ISRM-PM", "#CHM-PM,ISRM-PM", "#role/ISRM.manager", "#activity/ISRM.A1", "#record/incident-record"]) {
     const p = parse(hash);
     assert.equal(format(p.kind, p.ids ?? p.id), hash);
   }
@@ -45,6 +47,8 @@ test("canonical keeps a canonical address without redirect", () => {
   assert.deepEqual(canonical(parse("#ISRM"), model), { kind: "process", id: "ISRM", hash: "#ISRM", redirect: false });
   assert.deepEqual(canonical(parse("#ISRM-PM"), model), { kind: "interface", id: "ISRM-PM", hash: "#ISRM-PM", redirect: false });
   assert.deepEqual(canonical(parse("#GR"), model), { kind: "general", hash: "#GR", redirect: false });
+  assert.deepEqual(canonical(parse("#RECORDS"), model), { kind: "records", hash: "#RECORDS", redirect: false });
+  assert.deepEqual(canonical(parse("#Records"), model), { kind: "records", hash: "#RECORDS", redirect: true });
   assert.deepEqual(canonical(parse(""), model), { kind: "none", hash: "", redirect: false });
 });
 
