@@ -108,7 +108,7 @@ Every transcription is validated by rule 17 (T009) as it is written. For each ch
 **Independent Test**: quickstart C8–C10.
 
 - [X] T027 [P] [US3] Finish the responsive layout in styles.css: wide view side by side at ≥ 900 px and stacked below; compact and wide charts scrolling sideways in their boxes at phone width with labels ≥ 12 px; focus ring on chart links like the map's (FR-011)
-- [ ] T028 [US3] Run quickstart C8–C10 and fix any finding in src/chart.js, src/panel.js or styles.css; C9 (VoiceOver or NVDA) is best done in one session with feature 001's T045/T057 and feature 002's R9, all of which need the same manual run — **Partly done (2026-11-24)**: C8 (keyboard, focus ring) and C10 (375 px: no page scroll, 12 px labels) pass; C9 needs the manual VoiceOver/NVDA session.
+- [ ] T028 [US3] Run quickstart C8–C10 and fix any finding in src/chart.js, src/panel.js or styles.css; C9 (VoiceOver or NVDA) is best done in one session with feature 001's T045/T057 and feature 002's R9, all of which need the same manual run — **Deferred at closure (2026-11-24)**: C8 and C10 pass; C9 (VoiceOver or NVDA) needs a manual run, like feature 001\'s T045 and feature 002\'s R9.
 
 **Checkpoint**: Stories 1–3 work on their own.
 
@@ -133,7 +133,7 @@ Every transcription is validated by rule 17 (T009) as it is written. For each ch
 
 - [X] T033 [P] Add a CHANGELOG.md entry under Unreleased naming FitSM-2 v3.0.2 and the 14 process charts, the wide view `#chart/<code>` and the new check rule; add the chart rows to README.md "What you can explore" and `#chart/PM` to the direct-link examples
 - [X] T034 [P] Run quickstart C13–C14 (canonical addresses, not found, page weight under 400 KB, timing)
-- [ ] T035 Final `node scripts/check.js`, `node --test` and `reuse lint`; set spec.md status to "Implemented"; open the pull request citing FitSM-2 v3.0.2 PR1–PR14 chart pages — **Partly done (2026-11-24)**: checks, 111 tests and `reuse lint` pass; committing and the pull request wait for the maintainer.
+- [X] T035 Final `node scripts/check.js`, `node --test` and `reuse lint`; set spec.md status to "Implemented"; open the pull request citing FitSM-2 v3.0.2 PR1–PR14 chart pages — **Closure note (2026-11-24)**: delivered in pull request #6 (merged); checks, 111 tests and `reuse lint` passed in CI.
 
 ---
 
@@ -161,3 +161,12 @@ Every transcription is validated by rule 17 (T009) as it is written. For each ch
 4. **Increment 4**: Phase 6 (fixtures, docs), then Phase 7.
 
 Each checkpoint leaves `node scripts/check.js` and `node --test` passing.
+
+---
+
+## Closure (2026-11-24)
+
+Feature 003 is closed, merged through pull request #6. Every task is done except the
+screen-reader pass of the charts (T028's C9), deferred because it needs a manual run with
+VoiceOver or NVDA. One session can cover it together with feature 001's T045/T057 and feature
+002's R9.
