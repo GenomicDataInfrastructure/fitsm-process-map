@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-03
 
-**Status**: Closed (2026-11-20); screen-reader pass deferred, see tasks.md "Closure"
+**Status**: Closed (2026-11-20); screen-reader pass won't do (2026-11-24)
 
 **Input**: User description: "I want to build a website deployable in GitHub pages, that should contain the process map of the latest version of FitSM. As FitSM has a lot of process, inputs, outputs, interfaces, requirements and roles, I need the process map to dynamic and clickable. Let's try to use public transportation maps styles, like subway maps, only connecting processes (stations). When clicking on the processes, we display on the right, in a frame: databases, records, processes requirements, roles, activities. When clicking on roles you show tasks. When clicking on activities, you show procedures. When clicking on processes relationship, you details in that right frame inputs and outputs and intesrfaces. Keep it simple to update, when new fitsm versions are releases. Ensure references are kept to the original document. Respect license requirements. This project is opensource and must be distributed under the same license as FitSM. I have removed old files, so you must ignore previous commits and start from scratch."
 

@@ -53,7 +53,7 @@ Open http://localhost:8765.
 
 - [X] C8 Keyboard only: Tab reaches every group, step, linked object and external end of the
   compact and the wide chart, each with a visible focus ring, in reading order. (FR-011)
-- [ ] C9 *(deferred at closure, 2026-11-24)* With a screen reader on `#PM`: the chart is announced as "Process chart of Problem
+- [X] C9 *(won't do, 2026-11-24: not needed)* With a screen reader on `#PM`: the chart is announced as "Process chart of Problem
   Management" and the link as "Open chart, with text version"; on `#chart/PM` the text version
   lists groups, steps in order with what they read and produce, objects with states, and all
   arrows. From the text alone, redraw the chart's structure. (FR-010, SC-004)

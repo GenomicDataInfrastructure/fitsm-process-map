@@ -97,7 +97,7 @@ All content tasks edit content/fitsm-3.0/records.json and run in order. Apply FR
 - [X] T026 [US2] Handle the `records` route in src/app.js: render the overview, page title "Records – FitSM Process Map", nothing highlighted on the map, back target the intro when entered directly; links from the overview push history so back returns to it
 - [X] T027 [P] [US2] Add the "Records" header link next to "General requirements" in index.html (`href="#RECORDS"`, class `header-link`)
 - [X] T028 [P] [US2] Style the overview in styles.css: horizontally scrolling table container, `position: sticky` row-header column with an opaque background, readable marks, focus-visible on header links; the page itself must not scroll sideways at 375 px (FR-012)
-- [ ] T029 [US2] Run quickstart R7–R12 on the served site (R9 with VoiceOver or NVDA) and fix any finding — **Deferred at closure (2026-11-24)**: R7, R8 and R10–R12 pass; the screen-reader run (R9) needs a manual run with VoiceOver or NVDA, like feature 001\'s T045.
+- [X] T029 [US2] Run quickstart R7–R12 on the served site (R9 with VoiceOver or NVDA) and fix any finding — **Won't do (2026-11-24)**: the maintainer decided the manual screen-reader pass is not needed.
 
 **Checkpoint**: User Stories 1 and 2 work on their own.
 
@@ -158,3 +158,6 @@ Each checkpoint leaves `node scripts/check.js` and `node --test` passing.
 Feature 002 is closed, merged through pull request #5. Every task is done except the
 screen-reader pass of the records overview (T029's R9), deferred because it needs a manual
 run with VoiceOver or NVDA. It can be done together with feature 001's deferred T045.
+
+**Update (2026-11-24)**: the screen-reader pass (T029, quickstart R9) is marked won't do; the maintainer
+decided it is not needed. The feature is complete.

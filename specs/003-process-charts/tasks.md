@@ -108,7 +108,7 @@ Every transcription is validated by rule 17 (T009) as it is written. For each ch
 **Independent Test**: quickstart C8–C10.
 
 - [X] T027 [P] [US3] Finish the responsive layout in styles.css: wide view side by side at ≥ 900 px and stacked below; compact and wide charts scrolling sideways in their boxes at phone width with labels ≥ 12 px; focus ring on chart links like the map's (FR-011)
-- [ ] T028 [US3] Run quickstart C8–C10 and fix any finding in src/chart.js, src/panel.js or styles.css; C9 (VoiceOver or NVDA) is best done in one session with feature 001's T045/T057 and feature 002's R9, all of which need the same manual run — **Deferred at closure (2026-11-24)**: C8 and C10 pass; C9 (VoiceOver or NVDA) needs a manual run, like feature 001\'s T045 and feature 002\'s R9.
+- [X] T028 [US3] Run quickstart C8–C10 and fix any finding in src/chart.js, src/panel.js or styles.css; C9 (VoiceOver or NVDA) is best done in one session with feature 001's T045/T057 and feature 002's R9, all of which need the same manual run — **Won't do (2026-11-24)**: the maintainer decided the manual screen-reader pass is not needed.
 
 **Checkpoint**: Stories 1–3 work on their own.
 
@@ -170,3 +170,6 @@ Feature 003 is closed, merged through pull request #6. Every task is done except
 screen-reader pass of the charts (T028's C9), deferred because it needs a manual run with
 VoiceOver or NVDA. One session can cover it together with feature 001's T045/T057 and feature
 002's R9.
+
+**Update (2026-11-24)**: the screen-reader pass (T028, quickstart C9) is marked won't do; the maintainer
+decided it is not needed. The feature is complete.
