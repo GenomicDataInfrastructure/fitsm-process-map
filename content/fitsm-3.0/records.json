@@ -1,90 +1,382 @@
 [
   {
+    "id": "record",
+    "name": "Record",
+    "general": true,
+    "definition": { "text": "Documentation of an event or of the results of performing a process or activity", "source": { "doc": "FitSM-0", "section": "6.53", "page": 15 } },
+    "relations": []
+  },
+  {
     "id": "service-portfolio",
     "name": "Service portfolio",
     "definition": { "text": "Internal list that details all the services offered by a service provider, including those in preparation, live and discontinued", "source": { "doc": "FitSM-0", "section": "6.69", "page": 18 } },
-    "usedBy": [
-      { "process": "SPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } }
+    "relations": [
+      { "process": "SPM", "kind": "maintains", "basis": { "activity": "SPM.A2", "match": "Add a new service to the service portfolio" } },
+      { "process": "SLM", "kind": "uses", "basis": { "activity": "SLM.S", "match": "based on the information in the service portfolio" } }
     ]
   },
   {
     "id": "service-catalogue",
     "name": "Service catalogue",
     "definition": { "text": "Customer-facing list of all live services offered along with relevant information about these services", "source": { "doc": "FitSM-0", "section": "6.62", "page": 17 } },
-    "usedBy": [
-      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    "relations": [
+      { "process": "SLM", "kind": "maintains", "basis": { "activity": "SLM.A1", "match": "Create a new service catalogue" } },
+      { "process": "CRM", "kind": "uses", "basis": { "input": "CRM", "match": "Current service catalogue" } }
     ]
   },
   {
     "id": "service-level-agreement",
     "name": "Service level agreement (SLA)",
     "definition": { "text": "Documented agreement between a customer and service provider that specifies the service to be provided and the service targets that define how it will be provided", "source": { "doc": "FitSM-0", "section": "6.64", "page": 17 } },
-    "usedBy": [
-      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    "relations": [
+      { "process": "SLM", "kind": "maintains", "basis": { "activity": "SLM.A2", "match": "agree a new SLA" } },
+      { "process": "SRM", "kind": "uses", "basis": { "activity": "SRM.A1", "match": "reported to customers based on SLAs" } },
+      { "process": "SACM", "kind": "uses", "basis": { "activity": "SACM.A1", "match": "Derive availability targets from SLAs" } },
+      { "process": "CAPM", "kind": "uses", "basis": { "activity": "CAPM.A1", "match": "Derive performance targets from SLAs" } },
+      { "process": "ISM", "kind": "uses", "basis": { "activity": "ISM.A1", "match": "Derive information security requirements from SLAs" } },
+      { "process": "CRM", "kind": "uses", "basis": { "input": "CRM", "match": "Existing SLAs with customers" } },
+      { "process": "ISRM", "kind": "uses", "basis": { "activity": "ISRM.S", "match": "based on service descriptions and SLAs" } }
     ]
   },
   {
     "id": "operational-level-agreement",
     "name": "Operational level agreement (OLA)",
     "definition": { "text": "Documented agreement between a service provider and an internal supplier that specifies the underpinning service(s) or service component(s) to be provided by the internal supplier or federation member, together with the related operational targets", "source": { "doc": "FitSM-0", "section": "6.45", "page": 14 } },
-    "usedBy": [
-      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
+    "relations": [
+      { "process": "SLM", "kind": "maintains", "basis": { "activity": "SLM.A3", "match": "agree a new OLA / UA" } },
+      { "process": "SUPPM", "kind": "uses", "basis": { "input": "SUPPM", "match": "OLAs with internal suppliers" } }
     ]
   },
   {
     "id": "underpinning-agreement",
     "name": "Underpinning agreement (UA)",
     "definition": { "text": "Documented agreement between a service provider and an external supplier that specifies the underpinning service(s) or service component(s) to be provided by the supplier, together with the related operational targets", "source": { "doc": "FitSM-0", "section": "6.76", "page": 19 } },
-    "usedBy": [
-      { "process": "SLM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR2", "page": 14 } }
-    ]
-  },
-  {
-    "id": "configuration-management-database",
-    "name": "Configuration management database (CMDB)",
-    "definition": { "text": "Store for data about configuration items (CIs)", "source": { "doc": "FitSM-0", "section": "6.16", "page": 11 } },
-    "usedBy": [
-      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } }
-    ]
-  },
-  {
-    "id": "record",
-    "name": "Record",
-    "definition": { "text": "Documentation of an event or of the results of performing a process or activity", "source": { "doc": "FitSM-0", "section": "6.53", "page": 15 } },
-    "usedBy": [
-      { "process": "CAPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
-      { "process": "CRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
-      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
-      { "process": "PM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
-      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
-      { "process": "CHM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    "relations": [
+      { "process": "SLM", "kind": "maintains", "basis": { "activity": "SLM.A3", "match": "agree a new OLA / UA" } },
+      { "process": "SUPPM", "kind": "uses", "basis": { "input": "SUPPM", "match": "UAs with external suppliers" } }
     ]
   },
   {
     "id": "report",
     "name": "Report",
     "definition": { "text": "A structured record communicating results gathered through measurement, monitoring, assessment, audit or observation", "source": { "doc": "FitSM-0", "section": "6.56", "page": 16 } },
-    "usedBy": [
-      { "process": "SRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
-      { "process": "CAPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
-      { "process": "ISM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
-      { "process": "CRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
-      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
-      { "process": "CONFM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } },
-      { "process": "CHM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
-      { "process": "RDM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR13", "page": 38 } }
+    "relations": [
+      { "process": "SRM", "kind": "maintains", "basis": { "activity": "SRM.A2", "match": "Define/specify a new report" } },
+      { "process": "SLM", "kind": "maintains", "basis": { "flow": "SLM-SUPPM", "match": "reports on operational targets" } },
+      { "process": "CAPM", "kind": "maintains", "basis": { "output": "CAPM", "match": "monitoring records / reports" } },
+      { "process": "ISM", "kind": "maintains", "basis": { "output": "ISM", "match": "Reports on information security events, incidents and follow-up actions" } },
+      { "process": "CRM", "kind": "maintains", "basis": { "output": "CRM", "match": "Service review reports" } },
+      { "process": "SUPPM", "kind": "uses", "basis": { "flow": "SLM-SUPPM", "match": "reports on operational targets" } },
+      { "process": "ISRM", "kind": "maintains", "basis": { "output": "ISRM", "match": "Regular incident reports" } },
+      { "process": "PM", "kind": "uses", "basis": { "flow": "ISRM-PM", "match": "incident tickets and reports" } },
+      { "process": "CONFM", "kind": "maintains", "basis": { "output": "CONFM", "match": "Configuration verification reports" } },
+      { "process": "CHM", "kind": "maintains", "basis": { "output": "CHM", "match": "Post implementation review reports" } },
+      { "process": "RDM", "kind": "maintains", "basis": { "output": "RDM", "match": "reports on the success and failure of releases" } },
+      { "process": "CSI", "kind": "uses", "basis": { "flow": "CSI-SRM", "match": "Service reports" } }
+    ]
+  },
+  {
+    "id": "plans-for-new-or-changed-services",
+    "name": "Plans for new or changed services",
+    "fitsm0": false,
+    "definition": { "text": "Plans for new or changed services (and related requests for changes)", "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
+    "relations": [
+      { "process": "SPM", "kind": "maintains", "basis": { "activity": "SPM.A3", "match": "Design and plan a new or changed service" } },
+      { "process": "SUPPM", "kind": "uses", "basis": { "flow": "SPM-SUPPM", "match": "part of plans for new or changed services" } }
+    ]
+  },
+  {
+    "id": "list-of-all-agreed-reports",
+    "name": "List of all (agreed) reports",
+    "fitsm0": false,
+    "definition": { "text": "Create a list of all reports that are currently produced or will be produced on a regular basis.", "source": { "doc": "FitSM-2", "section": "PR3", "page": 17 } },
+    "relations": [
+      { "process": "SRM", "kind": "maintains", "basis": { "activity": "SRM.S", "match": "Create a list of all reports" } }
+    ]
+  },
+  {
+    "id": "customer-database",
+    "name": "Customer database",
+    "fitsm0": false,
+    "definition": { "text": "Set up an initial customer database, and for each service customer document the most important information including contact information.", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+    "alsoCalled": [
+      { "text": "database of service customers", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } }
+    ],
+    "relations": [
+      { "process": "CRM", "kind": "maintains", "basis": { "activity": "CRM.A1", "match": "Add a new customer to the customer database" } }
+    ]
+  },
+  {
+    "id": "customer-complaints-records",
+    "name": "Customer complaints records",
+    "fitsm0": false,
+    "definition": { "text": "Customer complaints records", "source": { "doc": "FitSM-2", "section": "PR7", "page": 25 } },
+    "relations": [
+      { "process": "CRM", "kind": "maintains", "basis": { "activity": "CRM.A3", "match": "Register, address and close a customer complaint" } }
+    ]
+  },
+  {
+    "id": "supplier-database",
+    "name": "Supplier database",
+    "fitsm0": false,
+    "definition": { "text": "Set up an initial supplier database (covering all internal and external suppliers).", "source": { "doc": "FitSM-2", "section": "PR8", "page": 27 } },
+    "relations": [
+      { "process": "SUPPM", "kind": "maintains", "basis": { "activity": "SUPPM.A1", "match": "Add a new supplier to the supplier database" } }
+    ]
+  },
+  {
+    "id": "information-security-control",
+    "name": "Information security control",
+    "definition": { "text": "Means of controlling or treating one or more risks to information security", "source": { "doc": "FitSM-0", "section": "6.31", "page": 13 } },
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "activity": "ISM.A2", "match": "define other controls" } }
+    ]
+  },
+  {
+    "id": "information-security-event",
+    "name": "Information security event",
+    "definition": { "text": "Occurrence or previously unknown situation indicating a possible breach of information security", "source": { "doc": "FitSM-0", "section": "6.32", "page": 13 } },
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "activity": "ISM.A3", "match": "Monitor, record and classify information security events" } }
+    ]
+  },
+  {
+    "id": "information-security-incident",
+    "name": "Information security incident",
+    "definition": { "text": "Single information security event or a series of information security events with a significant probability of having a negative impact on the delivery of services to customers, and therefore on the customers’ business operations", "source": { "doc": "FitSM-0", "section": "6.33", "page": 13 } },
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "activity": "ISM.A3", "match": "Identify and handle information security incidents" } }
+    ]
+  },
+  {
+    "id": "policy",
+    "name": "Policy",
+    "definition": { "text": "Documented set of intentions, expectations, goals, rules and requirements, often formally expressed by top management representatives in an organisation or federation", "source": { "doc": "FitSM-0", "section": "6.47", "page": 15 } },
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "activity": "ISM.A2", "match": "Create information security policies" } }
+    ]
+  },
+  {
+    "id": "risk",
+    "name": "Risk",
+    "definition": { "text": "Possible negative occurrence that would have a negative impact on the service provider’s ability to deliver agreed services to customers, or that would decrease the value generated through some service", "source": { "doc": "FitSM-0", "section": "6.58", "page": 16 } },
+    "alsoCalled": [
+      { "text": "information security risk assessment", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } }
+    ],
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "output": "ISM", "match": "information security risk assessment" } },
+      { "process": "SACM", "kind": "uses", "basis": { "activity": "SACM.A2", "match": "Assess risks related to service availability and continuity" } }
+    ]
+  },
+  {
+    "id": "service-availability-and-continuity-plans",
+    "name": "Service availability and continuity plans",
+    "fitsm0": false,
+    "definition": { "text": "Service availability and continuity plans", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
+    "alsoCalled": [
+      { "text": "service continuity and availability plans", "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } }
+    ],
+    "relations": [
+      { "process": "SACM", "kind": "maintains", "basis": { "activity": "SACM.A2", "match": "Create service continuity and availability plans" } }
+    ]
+  },
+  {
+    "id": "capacity-plans",
+    "name": "Capacity plans",
+    "fitsm0": false,
+    "definition": { "text": "Capacity plans (reflecting demands, planned upgrades, downgrades and reallocations of resources)", "source": { "doc": "FitSM-2", "section": "PR5", "page": 21 } },
+    "relations": [
+      { "process": "CAPM", "kind": "maintains", "basis": { "activity": "CAPM.A2", "match": "Create capacity plans" } }
+    ]
+  },
+  {
+    "id": "inventory-of-information-assets",
+    "name": "Inventory of information assets",
+    "fitsm0": false,
+    "definition": { "text": "Up-to-date inventory of information assets", "source": { "doc": "FitSM-2", "section": "PR6", "page": 24 } },
+    "relations": [
+      { "process": "ISM", "kind": "maintains", "basis": { "output": "ISM", "match": "inventory of information assets" } }
+    ]
+  },
+  {
+    "id": "incident",
+    "name": "Incident",
+    "definition": { "text": "Unplanned disruption of operation in a service or service component, or degradation of service quality versus the expected or agreed service level or operational level according to service level agreements (SLAs), operational level agreements (OLAs) and underpinning agreements (UAs).", "source": { "doc": "FitSM-0", "section": "6.29", "page": 12 } },
+    "alsoCalled": [
+      { "text": "Incident records", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } }
+    ],
+    "relations": [
+      { "process": "ISRM", "kind": "maintains", "basis": { "activity": "ISRM.A1", "match": "Register incident" } },
+      { "process": "PM", "kind": "uses", "basis": { "activity": "PM.A1", "match": "incident pattern and trend analysis" } }
+    ]
+  },
+  {
+    "id": "major-incident",
+    "name": "Major incident",
+    "definition": { "text": "Incident that (may) have significant impact on the customer", "source": { "doc": "FitSM-0", "section": "6.40", "page": 14 } },
+    "relations": [
+      { "process": "ISRM", "kind": "maintains", "basis": { "activity": "ISRM.A2", "match": "close the major incident" } }
+    ]
+  },
+  {
+    "id": "service-request",
+    "name": "Service request",
+    "definition": { "text": "User request for information, advice, access to a service or a change", "source": { "doc": "FitSM-0", "section": "6.71", "page": 18 } },
+    "alsoCalled": [
+      { "text": "Service request records", "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } }
+    ],
+    "relations": [
+      { "process": "ISRM", "kind": "maintains", "basis": { "activity": "ISRM.A1", "match": "Register incident or service request" } },
+      { "process": "PM", "kind": "uses", "basis": { "input": "PM", "match": "Incident and service request records" } }
+    ]
+  },
+  {
+    "id": "problem",
+    "name": "Problem",
+    "definition": { "text": "Underlying cause of one or more incidents that requires further investigation to prevent incidents from recurring or reduce the negative impact on services", "source": { "doc": "FitSM-0", "section": "6.50", "page": 15 } },
+    "relations": [
+      { "process": "PM", "kind": "maintains", "basis": { "activity": "PM.A1", "match": "Register a problem" } }
+    ]
+  },
+  {
+    "id": "known-error",
+    "name": "Known error",
+    "definition": { "text": "Problem which has not (yet) been resolved, but for which there are documented workarounds or measures to reduce or prevent negative impact on services", "source": { "doc": "FitSM-0", "section": "6.38", "page": 13 } },
+    "alsoCalled": [
+      { "text": "known error record", "source": { "doc": "FitSM-2", "section": "PR10", "page": 32 } }
+    ],
+    "relations": [
+      { "process": "PM", "kind": "maintains", "basis": { "activity": "PM.A3", "match": "Add a known error" } },
+      { "process": "ISRM", "kind": "uses", "basis": { "flow": "ISRM-PM", "match": "information on known errors" } }
+    ]
+  },
+  {
+    "id": "workaround",
+    "name": "Workaround",
+    "definition": { "text": "Means of circumventing or mitigating the symptoms of a known error that helps to resolve incidents caused by this known error, while the underlying root cause is not permanently eliminated", "source": { "doc": "FitSM-0", "section": "6.80", "page": 19 } },
+    "relations": [
+      { "process": "PM", "kind": "maintains", "basis": { "activity": "PM.A3", "match": "including one or more workarounds" } },
+      { "process": "ISRM", "kind": "uses", "basis": { "flow": "ISRM-PM", "match": "related workarounds" } }
+    ]
+  },
+  {
+    "id": "known-error-database",
+    "name": "Known error database (KEDB)",
+    "fitsm0": false,
+    "definition": { "text": "Known error database (KEDB) containing information on known errors and related workarounds to support the resolution of incidents caused by known errors", "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
+    "relations": [
+      { "process": "PM", "kind": "maintains", "basis": { "activity": "PM.A3", "match": "to the KEDB" } },
+      { "process": "ISRM", "kind": "uses", "basis": { "activity": "ISRM.A3", "match": "taking into account the KEDB" } }
+    ]
+  },
+  {
+    "id": "configuration-item",
+    "name": "Configuration item (CI)",
+    "definition": { "text": "Element that contributes to the delivery of one or more services or service components, therefore requiring control of its configuration", "source": { "doc": "FitSM-0", "section": "6.15", "page": 11 } },
+    "alsoCalled": [
+      { "text": "configuration record", "source": { "doc": "FitSM-2", "section": "PR11", "page": 34 } }
+    ],
+    "relations": [
+      { "process": "ISRM", "kind": "uses", "basis": { "flow": "CONFM-ISRM", "match": "information on configuration items" } },
+      { "process": "PM", "kind": "uses", "basis": { "flow": "CONFM-PM", "match": "information on configuration items" } },
+      { "process": "CONFM", "kind": "maintains", "basis": { "activity": "CONFM.A1", "match": "Record new CI in the CMDB" } }
+    ]
+  },
+  {
+    "id": "configuration-management-database",
+    "name": "Configuration management database (CMDB)",
+    "definition": { "text": "Store for data about configuration items (CIs)", "source": { "doc": "FitSM-0", "section": "6.16", "page": 11 } },
+    "relations": [
+      { "process": "ISRM", "kind": "uses", "basis": { "input": "ISRM", "match": "Configuration information (CMDB)" } },
+      { "process": "PM", "kind": "uses", "basis": { "input": "PM", "match": "Configuration information (CMDB)" } },
+      { "process": "CONFM", "kind": "maintains", "basis": { "activity": "CONFM.A1", "match": "Record new CI in the CMDB" } },
+      { "process": "RDM", "kind": "uses", "basis": { "flow": "CONFM-RDM", "match": "Configuration information (CMDB)" } }
+    ]
+  },
+  {
+    "id": "change",
+    "name": "Change",
+    "definition": { "text": "Alteration (such as addition, removal, modification, replacement) of a configuration item (CI) or another entity that requires change control.", "source": { "doc": "FitSM-0", "section": "6.8", "page": 10 } },
+    "alsoCalled": [
+      { "text": "Change records", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } }
+    ],
+    "relations": [
+      { "process": "PM", "kind": "uses", "basis": { "input": "PM", "match": "change and release records" } },
+      { "process": "CONFM", "kind": "uses", "basis": { "input": "CONFM", "match": "Information on changes to CIs" } },
+      { "process": "CHM", "kind": "maintains", "basis": { "activity": "CHM.A1", "match": "Register a change" } },
+      { "process": "RDM", "kind": "uses", "basis": { "input": "RDM", "match": "Information on approved changes" } }
+    ]
+  },
+  {
+    "id": "emergency-change",
+    "name": "Emergency change",
+    "definition": { "text": "Change with a very high urgency to being implemented in order to avoid negative consequences", "source": { "doc": "FitSM-0", "section": "6.23", "page": 12 } },
+    "relations": [
+      { "process": "CHM", "kind": "maintains", "basis": { "activity": "CHM.S", "match": "dealing with emergency changes from recording to closure" } }
     ]
   },
   {
     "id": "request-for-change",
     "name": "Request for change (RFC)",
     "definition": { "text": "Documented proposal for a change", "source": { "doc": "FitSM-0", "section": "6.57", "page": 16 } },
-    "usedBy": [
-      { "process": "SPM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR1", "page": 12 } },
-      { "process": "SACM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR4", "page": 19 } },
-      { "process": "ISRM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR9", "page": 30 } },
-      { "process": "PM", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR10", "page": 33 } },
-      { "process": "CSI", "basis": "output", "derived": true, "source": { "doc": "FitSM-2", "section": "PR14", "page": 41 } }
+    "relations": [
+      { "process": "SPM", "kind": "maintains", "basis": { "output": "SPM", "match": "related requests for changes" } },
+      { "process": "SACM", "kind": "maintains", "basis": { "output": "SACM", "match": "Requests for change" } },
+      { "process": "CAPM", "kind": "maintains", "basis": { "flow": "CAPM-CHM", "match": "Request for changes" } },
+      { "process": "ISM", "kind": "maintains", "basis": { "flow": "CHM-ISM", "match": "Requests for changes" } },
+      { "process": "CRM", "kind": "maintains", "basis": { "flow": "CHM-CRM", "match": "Requests for changes" } },
+      { "process": "ISRM", "kind": "maintains", "basis": { "output": "ISRM", "match": "Requests for changes raised" } },
+      { "process": "PM", "kind": "maintains", "basis": { "output": "PM", "match": "Requests for changes raised" } },
+      { "process": "CHM", "kind": "uses", "basis": { "activity": "CHM.A1", "match": "based on a request for change (RFC)" } },
+      { "process": "CSI", "kind": "maintains", "basis": { "output": "CSI", "match": "Requests for changes" } }
+    ]
+  },
+  {
+    "id": "list-of-pre-defined-standard-changes",
+    "name": "List of (pre-defined) standard changes",
+    "fitsm0": false,
+    "definition": { "text": "Up-to-date list of (pre-defined) standard changes and step-by-step-workflows for handling them", "source": { "doc": "FitSM-2", "section": "PR12", "page": 37 } },
+    "relations": [
+      { "process": "CHM", "kind": "maintains", "basis": { "activity": "CHM.S", "match": "create a standardised change" } }
+    ]
+  },
+  {
+    "id": "release",
+    "name": "Release",
+    "definition": { "text": "Set of one or more changes that are grouped together and deployed as a logical unit", "source": { "doc": "FitSM-0", "section": "6.54", "page": 15 } },
+    "alsoCalled": [
+      { "text": "release records", "source": { "doc": "FitSM-2", "section": "PR13", "page": 39 } }
+    ],
+    "relations": [
+      { "process": "ISRM", "kind": "uses", "basis": { "flow": "ISRM-RDM", "match": "planned or recently deployed releases" } },
+      { "process": "PM", "kind": "uses", "basis": { "input": "PM", "match": "release records" } },
+      { "process": "CONFM", "kind": "uses", "basis": { "flow": "CONFM-RDM", "match": "Information on the deployment of releases" } },
+      { "process": "CHM", "kind": "uses", "basis": { "input": "CHM", "match": "Information on planned releases" } },
+      { "process": "RDM", "kind": "maintains", "basis": { "activity": "RDM.A1", "match": "Build a release" } }
+    ]
+  },
+  {
+    "id": "release-and-deployment-strategy",
+    "name": "Release and deployment strategy",
+    "definition": { "text": "Approach taken to manage releases and their deployment for a given set of service components and related configuration items (CIs), including organisational and technical aspects of planning, building, testing, evaluating, accepting and deploying releases", "source": { "doc": "FitSM-0", "section": "6.55", "page": 16 } },
+    "relations": [
+      { "process": "RDM", "kind": "maintains", "basis": { "activity": "RDM.S", "match": "Define release and deployment strategies" } }
+    ]
+  },
+  {
+    "id": "service-acceptance-criteria",
+    "name": "Service acceptance criteria",
+    "definition": { "text": "Criteria that must be fulfilled by the time a new or changed service is deployed and made available to customers / users", "source": { "doc": "FitSM-0", "section": "6.61", "page": 16 } },
+    "relations": [
+      { "process": "RDM", "kind": "uses", "basis": { "activity": "RDM.S", "match": "evaluation of acceptance criteria" } }
+    ]
+  },
+  {
+    "id": "improvement",
+    "name": "Improvement",
+    "definition": { "text": "Action or set of actions carried out to increase the level of conformity, effectiveness or efficiency of a management system, process or activity, or to increase the quality or performance of a service or service component", "source": { "doc": "FitSM-0", "section": "6.28", "page": 12 } },
+    "relations": [
+      { "process": "CSI", "kind": "maintains", "basis": { "activity": "CSI.A2", "match": "Track the status and progress of improvement actions" } }
     ]
   }
 ]

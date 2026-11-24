@@ -23,17 +23,18 @@ says about it, with a reference to the FitSM document and section for every item
 
 | Click on | You see |
 | --- | --- |
-| A process (station) | Its objective, requirements (FitSM-1), roles, databases and records, activities, interfaces, and inputs/outputs exchanged with parties outside the processes |
+| A process (station) | Its objective, requirements (FitSM-1), roles, information and records (what it creates or maintains and what it uses), activities, interfaces, and inputs/outputs exchanged with parties outside the processes |
 | A connection | FitSM's description of the interface and the inputs and outputs exchanged in each direction |
 | A stretch where several connections run together | All of those connections, each with its description and flows, and each highlighted on the map |
 | A role | Its tasks (FitSM-3), split into tasks specific to the process and tasks common to every role of that kind |
-| An activity | Its procedure, as the ordered steps from FitSM-2 |
-| A database or record | Its FitSM-0 definition and the processes that use it |
+| An activity | Its procedure, as the ordered steps from FitSM-2, and the records it creates, maintains or uses |
+| A record | Its FitSM-0 definition (or, for a store FitSM-0 does not define, FitSM-2's wording), the processes that create or maintain it and those that use it, each with the FitSM-2 text it rests on |
 | **General requirements** (header) | FitSM-1's general requirements GR1–GR7 |
+| **Records** (header) | Every record against the 14 processes in one table: ● creates or maintains, ○ uses |
 
 Any view can be opened directly by link, for example `…/fitsm-process-map/#ISRM` for a
-process, `#ISRM-PM` for an interface, `#CHM-ISRM,CONFM-ISRM` for several interfaces or `#GR`
-for the general requirements.
+process, `#ISRM-PM` for an interface, `#CHM-ISRM,CONFM-ISRM` for several interfaces, `#GR`
+for the general requirements or `#RECORDS` for the records overview.
 
 The coloured lines group related processes as a study aid. They are not part of FitSM, and
 the page says so wherever they appear. Everything else on the page is FitSM's own text, with
@@ -135,12 +136,28 @@ Only `content/` changes for a content update; the page code does not.
    of its licence statement.
 4. Work through the files in this order, because later files reference earlier ones:
    `processes.json` → `requirements.json` → `roles.json` → `activities.json` →
-   `records.json` → `interfaces.json` → `map.json`. Quote FitSM text unchanged; put wording
+   `interfaces.json` → `records.json` → `map.json`. Quote FitSM text unchanged; put wording
    of your own only into `note` fields.
 5. Run `node scripts/check.js` and fix every error; read the warnings.
 6. Set `current` in `content/editions.json` to the new id and add a line to `CHANGELOG.md`
    naming the edition and the documents' versions.
 7. Open a pull request citing the FitSM document and section for each content change.
+
+### Adding or correcting a record
+
+1. Find the FitSM-0 term (§6.x), or, for a store FitSM-0 does not define, the FitSM-2 text
+   that names it. A record is something a process registers, records, documents, stores or
+   maintains, or one of its inputs or outputs.
+2. In `records.json`, quote the name and definition unchanged with the document, section and
+   PDF page (FitSM-0: printed page + 4; FitSM-2: printed page + 2). A store FitSM-0 does not
+   define gets `"fitsm0": false` and a FitSM-2 quote. Never rename or remove an existing `id`:
+   links use it.
+3. Add one relationship per process: `"kind": "maintains"` (shown as "Creates or maintains")
+   or `"uses"`, and a `basis` pointing at the activity step, process input or output, or
+   interface flow it rests on, with a `match` copied from that text, for example
+   `{ "activity": "PM.A1", "match": "Register a problem" }`.
+4. Run `node scripts/check.js`: every `match` must occur in the text it points at. After a
+   new FitSM edition, the check lists each relationship whose text moved or changed.
 
 ### Adding a connection
 

@@ -35,11 +35,13 @@ test("buildModel derives the reverse indexes", () => {
   const aa = model.processes.get("AA");
   assert.deepEqual(aa.roles.map((r) => r.id), ["AA.owner", "AA.manager", "AA.staff", "AA.case-owner"]);
   assert.deepEqual(aa.activities.map((a) => a.id), ["AA.S", "AA.A1"]);
-  assert.deepEqual(aa.records.map((r) => r.id), ["record"]);
+  assert.deepEqual(aa.records.maintains.map((r) => r.id), []);
+  assert.deepEqual(aa.records.uses.map((r) => r.id), ["report"]);
+  assert.deepEqual(model.processes.get("CC").records.maintains.map((r) => r.id), ["report"]);
   assert.deepEqual(aa.interfaces.map((i) => i.id), ["AA-BB"]);
   assert.equal(aa.requirementGroup.id, "PR1");
   assert.equal(aa.externalFlows.length, 1);
-  assert.deepEqual(model.records.get("record").processes, ["AA", "BB"]);
+  assert.deepEqual(model.records.get("report").processes, ["CC", "AA"]);
   const iface = model.interfaces.get("AA-BB");
   assert.deepEqual([...iface.directions.keys()], ["AA", "BB"]);
   assert.equal(iface.directions.get("AA")[0].item, "Records");
@@ -82,4 +84,56 @@ test("loadContent names the file that failed", async () => {
 test("loadContent rejects an editions file whose current edition is not listed", async () => {
   const dir = join(here, "fixtures", "editions");
   await assert.rejects(loadContent(fakeFetch(dir), "content/"), /current edition "nope" is not listed/);
+});
+
+test("buildModel resolves each kind of relationship basis", () => {
+  const files = readFixture(fixture);
+  files.records = [
+    { id: "record", name: "Record", general: true, definition: files.records[0].definition, relations: [{ process: "AA", kind: "maintains", basis: { output: "AA", match: "A record" } }] },
+    {
+      id: "thing", name: "Thing", definition: files.records[1].definition,
+      relations: [
+        { process: "AA", kind: "maintains", basis: { activity: "AA.A1", match: "Step two" } },
+        { process: "BB", kind: "uses", basis: { input: "BB", match: "An input" } },
+        { process: "CC", kind: "maintains", basis: { output: "CC", match: "A record" } },
+        { process: "DD", kind: "uses", basis: { flow: "AA-BB", match: "Reports" } },
+        { process: "EE", kind: "uses", basis: { output: "EE", match: "not in the text" } },
+      ],
+    },
+  ];
+  const model = buildModel(files);
+  const [activity, input, output, flow, missing] = model.records.get("thing").relations.map((r) => r.resolved);
+  assert.deepEqual(activity, { kind: "activity", text: "Step two", source: model.activities.get("AA.A1").source, link: "#activity/AA.A1", label: model.activities.get("AA.A1").name });
+  assert.equal(input.kind, "input");
+  assert.equal(input.text, "An input");
+  assert.equal(output.text, "A record");
+  assert.equal(flow.link, "#AA-BB");
+  assert.equal(flow.text, "Reports");
+  assert.equal(missing, null);
+  // Grouped by kind on processes and on the activity the basis names.
+  assert.deepEqual(model.activities.get("AA.A1").records.maintains.map((r) => r.id), ["thing"]);
+  assert.deepEqual(model.activities.get("AA.S").records.maintains, []);
+  assert.deepEqual(model.processes.get("BB").records.uses.map((r) => r.id), ["thing"]);
+  // The general record appears in no process or activity list.
+  assert.deepEqual(model.processes.get("AA").records.maintains.map((r) => r.id), ["thing"]);
+});
+
+test("buildModel orders the records overview by FitSM process order, then by name", () => {
+  const files = readFixture(fixture);
+  const def = files.records[1].definition;
+  const rel = (process, kind, match = "A record") => ({ process, kind, basis: { output: process, match } });
+  files.records = [
+    files.records[0],
+    { id: "zeta", name: "Zeta", definition: def, relations: [rel("BB", "maintains"), rel("AA", "uses")] },
+    { id: "alpha", name: "Alpha", definition: def, relations: [rel("BB", "maintains")] },
+    { id: "first", name: "First", definition: def, relations: [rel("AA", "maintains"), rel("CC", "uses")] },
+    { id: "loose", name: "Loose", definition: def, relations: [rel("CC", "uses")] },
+  ];
+  const { overview } = buildModel(files);
+  assert.equal(overview.general.id, "record");
+  assert.equal(overview.processes.length, 14);
+  assert.deepEqual(overview.processes.slice(0, 3), ["AA", "BB", "CC"]);
+  assert.deepEqual(overview.rows.map((r) => r.record.id), ["first", "alpha", "zeta", "loose"]);
+  const zeta = overview.rows.find((r) => r.record.id === "zeta");
+  assert.deepEqual([...zeta.cells], [["BB", "maintains"], ["AA", "uses"]]);
 });

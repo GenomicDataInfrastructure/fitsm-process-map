@@ -102,6 +102,11 @@ function route() {
       setSelected(dom.map, null);
       title = `General requirements – ${SITE_TITLE}`;
       break;
+    case "records":
+      render("records", null, ctx);
+      setSelected(dom.map, null);
+      title = `Records – ${SITE_TITLE}`;
+      break;
     case "process": {
       const process = model.processes.get(result.id);
       render("process", process, ctx);

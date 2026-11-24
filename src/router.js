@@ -7,6 +7,7 @@
  *
  *   ""                    nothing selected
  *   "#GR"                 general requirements
+ *   "#RECORDS"            records overview (case-insensitive, like "#GR")
  *   "#ISRM"               process (code, case-insensitive)
  *   "#ISRM-PM"            interface (codes in alphabetical order)
  *   "#CHM-PM,CHM-SACM"    several interfaces at once (ids sorted, comma-separated)
@@ -26,6 +27,7 @@ export function parse(hash) {
   if (prefixed) return { kind: prefixed[1], id: prefixed[2], raw };
   const upper = raw.toUpperCase();
   if (upper === "GR") return { kind: "general", raw };
+  if (upper === "RECORDS") return { kind: "records", raw };
   if (upper.includes(",")) {
     const ids = upper.split(",");
     return ids.every((id) => PAIR.test(id)) ? { kind: "interfaces", ids, raw } : { kind: "unknown", raw };
@@ -41,6 +43,8 @@ export function format(kind, id) {
       return "";
     case "general":
       return "#GR";
+    case "records":
+      return "#RECORDS";
     case "process":
     case "interface":
       return `#${id}`;
@@ -82,6 +86,8 @@ export function canonical(parsed, model) {
       return { kind: "none", hash: "", redirect: false };
     case "general":
       return { kind: "general", hash: "#GR", redirect: parsed.raw !== "GR" };
+    case "records":
+      return { kind: "records", hash: "#RECORDS", redirect: parsed.raw !== "RECORDS" };
     case "process": {
       const code = resolveCode(parsed.id, model);
       if (!code) return unknown;

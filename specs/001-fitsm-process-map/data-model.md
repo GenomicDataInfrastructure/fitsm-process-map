@@ -154,6 +154,10 @@ every <kind>", each group labelled (FR-011).
 
 ### Record (`records.json`, array)
 
+> **Superseded by feature 002**: records now carry `relations` instead of `usedBy`; see
+> [../002-fitsm-records/data-model.md](../002-fitsm-records/data-model.md). The text below
+> describes feature 001 as delivered.
+
 Covers both "databases" and "records" in the user's words; FitSM-0 defines both. Shown on
 the page under the heading "Databases and records", the user's term.
 

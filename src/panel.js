@@ -12,12 +12,25 @@ import { connectionLabel, stationLines, stationZone } from "./graph.js";
 
 export const LABELS = {
   interpretation: "Not part of FitSM",
-  derivedRecords: "Derived from this process's outputs; FitSM does not list records per process.",
+  derivedRecords: "Derived from FitSM-2's activities, inputs and outputs; FitSM does not list records per process.",
+  notInFitSM0: "FitSM-0 gives no definition for this; the text is from FitSM-2.",
   noDescription: "FitSM-2 lists these inputs and outputs but gives no interface description.",
   multipleDescriptions: "FitSM describes this interface in more than one place.",
   noSpecificTasks: "FitSM-3 lists no process-specific tasks for this role.",
   externalFlows: "Inputs from and outputs to outside the processes",
-  records: "Databases and records",
+  records: "Information and records",
+  maintains: "Creates or maintains",
+  uses: "Uses",
+  maintainedBy: "Created or maintained by",
+  usedBy: "Used by",
+  overview: "Records",
+  overviewIntro: "Every record of every process. Rows are records, grouped by the first process (in FitSM order) that creates or maintains them; columns are the 14 processes.",
+};
+
+// Text marks of the records overview: told apart by shape, not colour (FR-009).
+export const MARKS = {
+  maintains: { symbol: "●", text: "creates or maintains" },
+  uses: { symbol: "○", text: "uses" },
 };
 
 const GENERIC_KIND_NAMES = {
@@ -128,6 +141,32 @@ function interfaceDetails(iface, model, tag) {
   return out;
 }
 
+/* The records of a process or an activity in two groups (FR-006, FR-006b); [] when none. */
+function recordGroups(records, tag = "h3") {
+  const groups = [[LABELS.maintains, records.maintains], [LABELS.uses, records.uses]].filter(([, list]) => list.length);
+  if (!groups.length) return [];
+  const sub = tag === "h3" ? "h4" : "h5";
+  return section(LABELS.records, [
+    interpretation(` ${LABELS.derivedRecords}`),
+    ...groups.flatMap(([title, list]) => [
+      h(sub, { text: title }),
+      h("ul", {}, list.map((record) => h("li", {}, [link(`#record/${record.id}`, record.name)]))),
+    ]),
+  ], tag);
+}
+
+/* One process entry of a record view: the process and the FitSM-2 text the relationship rests on. */
+function relationItem(rel, model) {
+  const r = rel.resolved;
+  const children = [processLink(rel.process, model)];
+  if (!r) return h("li", {}, children);
+  const where = r.kind === "activity" ? [document.createTextNode(" – activity "), link(r.link, r.label)]
+    : r.kind === "flow" ? [document.createTextNode(" – interface "), link(r.link, `${r.from} → ${r.to}`)]
+      : [document.createTextNode(` – process ${r.kind}`)];
+  children.push(...where, document.createTextNode(": "), h("span", { class: "quote", text: r.text }), sourceLine(r.source, model));
+  return h("li", {}, children);
+}
+
 /* ---------- views ---------- */
 
 const views = {
@@ -136,7 +175,7 @@ const views = {
     return [
       heading("FitSM Process Map"),
       h("p", { text: `This map shows the ${model.processes.size} FitSM processes as stations and the interfaces FitSM-2 defines between them as connections.` }),
-      h("p", { text: "Click a station to read the process's objective, requirements, roles, records and activities. Click a connection to see what the two processes exchange. Everything can be reached with the keyboard: Tab to a station or connection and press Enter." }),
+      h("p", { text: "Click a station to read the process's objective, requirements, roles, information and records, and activities. Click a connection to see what the two processes exchange. Everything can be reached with the keyboard: Tab to a station or connection and press Enter." }),
       h("p", { text: `Content: ${editionLine(model)}` }),
       interpretation(` ${model.map.note}`),
     ];
@@ -169,12 +208,7 @@ const views = {
       ]));
     }
 
-    if (process.records.length) {
-      out.push(...section(LABELS.records, [
-        interpretation(` ${LABELS.derivedRecords}`),
-        h("ul", {}, process.records.map((record) => h("li", {}, [link(`#record/${record.id}`, record.name)]))),
-      ]));
-    }
+    out.push(...recordGroups(process.records));
 
     if (process.activities.length) {
       const phases = [["setup", "Initial process setup"], ["execution", "Ongoing process execution"]];
@@ -292,22 +326,80 @@ const views = {
         h("ol", {}, activity.procedure.map((step) => h("li", {}, [h("span", { class: "quote", text: step })]))),
         sourceLine(activity.source, model),
       ]),
+      ...recordGroups(activity.records),
     ];
   },
 
   record(record, ctx) {
     const { model } = ctx;
-    return [
+    const out = [
       heading(record.name),
       backControl(ctx),
       ...section("Definition", [h("p", { class: "quote", text: record.definition.text }), sourceLine(record.definition.source, model)]),
-      ...section("Used by", [
-        h("ul", {}, record.usedBy.map((use) => h("li", {}, [
-          processLink(use.process, model),
-          interpretation(` Derived from this process's outputs (see ${sourceRef(use.source, model)}).`),
-        ]))),
-      ]),
     ];
+    if (record.fitsm0 === false) out.push(h("p", { class: "fixed-sentence", text: LABELS.notInFitSM0 }));
+    for (const also of record.alsoCalled || []) {
+      out.push(h("p", {}, [document.createTextNode("FitSM-2 wording: "), h("span", { class: "quote", text: also.text }), sourceLine(also.source, model)]));
+      if (also.note) out.push(interpretation(` ${also.note}`));
+    }
+    if (record.general) {
+      out.push(h("p", {}, [document.createTextNode("This is FitSM's general term. Every record of every process is listed in the "), link("#RECORDS", "records overview"), document.createTextNode(".")]));
+      return out;
+    }
+    const groups = [[LABELS.maintainedBy, "maintains"], [LABELS.usedBy, "uses"]]
+      .map(([title, kind]) => [title, record.relations.filter((rel) => rel.kind === kind)])
+      .filter(([, list]) => list.length);
+    if (groups.length) {
+      out.push(interpretation(` ${LABELS.derivedRecords}`));
+      for (const [title, list] of groups) out.push(...section(title, [h("ul", {}, list.map((rel) => relationItem(rel, model)))]));
+    }
+    return out;
+  },
+
+  // Records overview (FR-008 – FR-012): a table of records against processes.
+  records(_, ctx) {
+    const { model } = ctx;
+    const { general, processes, rows } = model.overview;
+    const out = [heading(LABELS.overview)];
+    if (general) {
+      out.push(h("p", {}, [
+        h("strong", {}, [link(`#record/${general.id}`, general.name)]), document.createTextNode(": "),
+        h("span", { class: "quote", text: general.definition.text }), sourceLine(general.definition.source, model),
+      ]));
+    }
+    out.push(h("p", { text: LABELS.overviewIntro }));
+    out.push(interpretation(` ${LABELS.derivedRecords}`));
+    out.push(h("p", { class: "records-legend" }, Object.values(MARKS).flatMap((m, i) => [
+      i ? document.createTextNode(" · ") : null,
+      h("span", { class: "mark", "aria-hidden": "true", text: m.symbol }),
+      document.createTextNode(` ${m.text}`),
+    ].filter(Boolean))));
+
+    const headRow = h("tr", {}, [
+      h("th", { scope: "col", text: "Record" }),
+      ...processes.map((code) => h("th", { scope: "col" }, [
+        h("a", { href: `#${code}`, title: model.processes.get(code).name, "aria-label": `${model.processes.get(code).name} (${code})`, text: code }),
+      ])),
+    ]);
+    const bodyRows = rows.map(({ record, cells }) => h("tr", {}, [
+      h("th", { scope: "row" }, [link(`#record/${record.id}`, record.name)]),
+      ...processes.map((code) => {
+        const kind = cells.get(code);
+        if (!kind) return h("td", {});
+        return h("td", {}, [
+          h("span", { class: "mark", "aria-hidden": "true", text: MARKS[kind].symbol }),
+          h("span", { class: "visually-hidden", text: MARKS[kind].text }),
+        ]);
+      }),
+    ]));
+    out.push(h("div", { class: "records-table-wrap" }, [
+      h("table", { class: "records-table" }, [
+        h("caption", { class: "visually-hidden", text: "Records against processes: creates or maintains, or uses" }),
+        h("thead", {}, [headRow]),
+        h("tbody", {}, bodyRows),
+      ]),
+    ]));
+    return out;
   },
 
   notFound(raw, ctx) {

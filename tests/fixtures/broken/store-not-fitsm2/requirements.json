@@ -1,0 +1,426 @@
+{
+  "general": [
+    {
+      "id": "GR1",
+      "name": "General 1",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR1.1",
+          "text": "Requirement GR1.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR2",
+      "name": "General 2",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR2.1",
+          "text": "Requirement GR2.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR3",
+      "name": "General 3",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR3.1",
+          "text": "Requirement GR3.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR4",
+      "name": "General 4",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR4.1",
+          "text": "Requirement GR4.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR5",
+      "name": "General 5",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR5.1",
+          "text": "Requirement GR5.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR6",
+      "name": "General 6",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR6.1",
+          "text": "Requirement GR6.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "GR7",
+      "name": "General 7",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "GR7.1",
+          "text": "Requirement GR7.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    }
+  ],
+  "process": [
+    {
+      "id": "PR1",
+      "process": "AA",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR1.1",
+          "text": "Requirement PR1.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR2",
+      "process": "BB",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR2.1",
+          "text": "Requirement PR2.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR3",
+      "process": "CC",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR3.1",
+          "text": "Requirement PR3.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR4",
+      "process": "DD",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR4.1",
+          "text": "Requirement PR4.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR5",
+      "process": "EE",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR5.1",
+          "text": "Requirement PR5.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR6",
+      "process": "FF",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR6.1",
+          "text": "Requirement PR6.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR7",
+      "process": "GG",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR7.1",
+          "text": "Requirement PR7.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR8",
+      "process": "HH",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR8.1",
+          "text": "Requirement PR8.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR9",
+      "process": "II",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR9.1",
+          "text": "Requirement PR9.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR10",
+      "process": "JJ",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR10.1",
+          "text": "Requirement PR10.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR11",
+      "process": "KK",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR11.1",
+          "text": "Requirement PR11.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR12",
+      "process": "LL",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR12.1",
+          "text": "Requirement PR12.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR13",
+      "process": "MM",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR13.1",
+          "text": "Requirement PR13.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "PR14",
+      "process": "NN",
+      "source": {
+        "doc": "FitSM-1",
+        "section": "PR1",
+        "page": 3
+      },
+      "items": [
+        {
+          "id": "PR14.1",
+          "text": "Requirement PR14.1",
+          "source": {
+            "doc": "FitSM-1",
+            "section": "PR1",
+            "page": 3
+          }
+        }
+      ]
+    }
+  ]
+}
